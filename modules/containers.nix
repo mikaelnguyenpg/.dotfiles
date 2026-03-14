@@ -6,6 +6,7 @@
   home.packages = with pkgs; [
     podman-compose
     distrobox        # Linux only, macOS sẽ ignore nếu không có
+    lazydocker
     # docker compat wrapper — tạo symlink docker → podman
     (pkgs.runCommand "docker-compat" {} ''
       mkdir -p $out/bin

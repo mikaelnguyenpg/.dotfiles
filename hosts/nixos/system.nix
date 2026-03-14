@@ -18,6 +18,7 @@
     users.codevibe = {
       imports = [ 
         ./home.nix 
+        ./vm.nix
       ];
     };
   };
@@ -34,9 +35,19 @@
     cacert         # ca-certificates
   ];
 
-  # Nếu configuration.nix cũ đã có users.users.codevibe, 
-  # thì khai báo ở đây sẽ bổ sung thêm (ví dụ thêm group)
-  users.users.codevibe = {
-    extraGroups = [ "libvirtd" "kvm" ]; 
+  # fcitx5 system-level — NixOS quản lý hoàn toàn
+  i18n.inputMethod = {
+    enable = true;
+    type   = "fcitx5";
+    fcitx5 = {
+      waylandFrontend = true;   # bắt buộc cho Wayland
+      addons = with pkgs; [
+        fcitx5-bamboo
+        fcitx5-chewing
+        fcitx5-gtk
+        fcitx5-qt
+        qt6Packages.fcitx5-configtool
+      ];
+    };
   };
 }

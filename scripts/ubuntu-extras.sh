@@ -41,6 +41,16 @@ APT_PACKAGES=(
   uidmap
   slirp4netns            # Container vẫn có internet, vẫn map được port, nhưng không cần root.
   fuse-overlayfs         # Container dùng overlay filesystem để layer các image lên nhau
+
+  # Fcitx5-bamboo + Fcitx5-chewing
+  fcitx5
+  fcitx5-bamboo
+  fcitx5-chewing
+  fcitx5-frontend-gtk3
+  fcitx5-frontend-gtk4
+  fcitx5-frontend-qt5
+  fcitx5-config-qt
+  im-config
 )
 
 log "Installing apt packages..."
@@ -87,6 +97,9 @@ if systemctl --user is-enabled podman.socket &>/dev/null; then
 else
   systemctl --user enable --now podman.socket && ok "podman.socket enabled"
 fi
+
+log "Set fcitx5 làm default input method"
+im-config -n fcitx5
 
 # ─── 4. Flatpak: thêm Flathub remote ─────────────────────────────────────────
 
