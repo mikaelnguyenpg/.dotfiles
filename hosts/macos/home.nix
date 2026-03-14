@@ -4,11 +4,13 @@
   home.stateVersion = "25.11";
 
   imports = [
-    ../../modules/shell.nix
-    ../../modules/git.nix
-    ../../modules/tools.nix
+    ../../modules/apps.nix
     ../../modules/containers.nix
     ../../modules/editor.nix
+    ../../modules/git.nix
+    ../../modules/shell.nix
+    ../../modules/ssh.nix
+    ../../modules/tools.nix
   ];
 
   # Chỗ này là config RIÊNG của máy ubuntu-work

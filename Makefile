@@ -14,7 +14,7 @@ macos:
 	bash scripts/macos-extras.sh    # utm, extras
 
 nixos:
-	sudo nixos-rebuild switch --flake .#$(HOSTNAME)
+	sudo nixos-rebuild switch --flake .#$(HOSTNAME) --impure
 
 update:
 	nix flake update && make detect

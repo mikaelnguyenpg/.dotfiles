@@ -1,27 +1,37 @@
-{ pkgs, config, ... }: {
-  imports = [ ./hardware-configuration.nix ];  # tự generate khi install NixOS
+{ pkgs, config, inputs, ... }: {
+  imports = [ 
+    # Import cấu hình cũ của hệ thống
+    # ./configuration.nix
+    /etc/nixos/configuration.nix
+    inputs.home-manager.nixosModules.home-manager
+  ];
 
-  # Bootloader
-  boot.loader.systemd-boot.enable = true;
+  services.openssh = {
+    enable = true;
+  };
 
-  # Networking
-  networking.hostName = "nixos-desktop";
-  networking.networkmanager.enable = true;
+  # Cấu hình Home Manager ngay trong system
+  home-manager = {
+    useGlobalPkgs = true;
+    useUserPackages = true;
+    extraSpecialArgs = { inherit inputs; };
+    users.codevibe = {
+      imports = [ 
+        ./home.nix 
+        inputs.agenix.homeManagerModules.default # Aginex cho user
+      ];
+    };
+  };
 
-  # System packages (khác với home packages)
-  environment.systemPackages = with pkgs; [ git vim ];
+  # Các thiết lập "thêm vào" của bạn ở đây
+  environment.systemPackages = with pkgs; [ 
+    wl-clipboard
+    xclip
+  ];
 
-  # Flatpak
-  services.flatpak.enable = true;
-  xdg.portal.enable = true;
-
-  # QEMU/KVM + libvirt
-  virtualisation.libvirtd.enable = true;
-  users.users.yourname.extraGroups = [ "libvirtd" "kvm" ];
-
-  # Docker (nếu vẫn cần song song podman)
-  # virtualisation.docker.enable = true;
-
-  # home-manager tích hợp vào NixOS
-  home-manager.users.yourname = import ./home.nix;
+  # Nếu configuration.nix cũ đã có users.users.codevibe, 
+  # thì khai báo ở đây sẽ bổ sung thêm (ví dụ thêm group)
+  users.users.codevibe = {
+    extraGroups = [ "libvirtd" "kvm" ]; 
+  };
 }

@@ -1,9 +1,10 @@
 # secrets/secrets.nix
 let
   ubuntu = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOfwcwFNrx0JYfKfQLFMc1G6rBKzpiy6n06GQvbTVZlP";  # paste host key ở đây
+  nixos = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFs1MxSwsAGb6GBgHcuFHWSQzdbrFSb6Zp88hdN9eYjH";  # paste host key ở đây
   # macos = "ssh-ed25519 AAAAC3Nzb...";  # thêm khi có máy mac
 in {
-  "ssh-personal.age".publicKeys = [ ubuntu ];
+  "ssh-personal.age".publicKeys = [ nixos ];
 }
 
 # ssh-keygen -t ed25519 -C "mikaelnguyen.pg@gmail.com"

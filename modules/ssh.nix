@@ -1,9 +1,11 @@
-{ pkgs, ... }: {
+{ pkgs, config, ... }: {
   programs.ssh = {
     enable = true;
-    addKeysToAgent = "yes";   # tự add key vào ssh-agent khi dùng
 
     matchBlocks = {
+      "*" = {
+        addKeysToAgent = "yes";   # tự add key vào ssh-agent khi dùng
+      };
       "github.com" = {
         hostname = "github.com";
         user     = "git";

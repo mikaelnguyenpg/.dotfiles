@@ -9,6 +9,7 @@
     ../../modules/editor.nix
     ../../modules/git.nix
     ../../modules/shell.nix
+    ../../modules/ssh.nix
     ../../modules/tools.nix
   ];
 

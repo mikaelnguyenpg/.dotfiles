@@ -12,13 +12,13 @@
     agenix.inputs.nixpkgs.follows = "nixpkgs";
   };
 
-  outputs = { nixpkgs, home-manager, nix-darwin, agenix, ... }: {
+  outputs = { nixpkgs, home-manager, nix-darwin, agenix, ... }@inputs: {
     # Ubuntu
     homeConfigurations."codevibe@codevibe" =
       home-manager.lib.homeManagerConfiguration {
         pkgs = nixpkgs.legacyPackages.x86_64-linux;
+        extraSpecialArgs = { inherit inputs; };
         modules = [
-          agenix.homeManagerModules.default
           ./hosts/ubuntu/home.nix
         ];
       };
@@ -26,9 +26,8 @@
     # NixOS
     nixosConfigurations."nixos" =
       nixpkgs.lib.nixosSystem {
-        system = "x86_64-linux";
+        specialArgs = { inherit inputs; };
         modules = [
-          agenix.homeManagerModules.default
           ./hosts/nixos/system.nix
         ];
       };
@@ -36,8 +35,8 @@
     # macOS
     darwinConfigurations."macos" =
       nix-darwin.lib.darwinSystem {
+        specialArgs = { inherit inputs; };
         modules = [
-          agenix.homeManagerModules.default
           ./hosts/macos/darwin.nix
         ];
       };
