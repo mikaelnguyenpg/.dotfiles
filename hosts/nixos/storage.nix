@@ -17,9 +17,9 @@
 
   # ─── Swap ───────────────────────────────────────────────────────────────────
 
-  swapDevices = [{
-    device = "/mnt/build_cache/swapfile";
-  }];
+  # swapDevices = [{
+  #   device = "/mnt/build_cache/swapfile";
+  # }];
 
   # ─── Ownership ──────────────────────────────────────────────────────────────
   # NixOS không có chown trực tiếp, dùng systemd tmpfiles thay thế

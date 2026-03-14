@@ -185,22 +185,22 @@ fi
 # Mount
 sudo mount -a && ok "partitions mounted"
 
-# Swap
-if [ ! -f /mnt/build_cache/swapfile ]; then
-  sudo fallocate -l 50G /mnt/build_cache/swapfile
-  sudo chmod 600 /mnt/build_cache/swapfile
-  sudo mkswap /mnt/build_cache/swapfile
-  sudo swapon /mnt/build_cache/swapfile
-  ok "swapfile created"
-else
-  skip "swapfile already exists"
-fi
+# # Swap
+# if [ ! -f /mnt/build_cache/swapfile ]; then
+#   sudo fallocate -l 50G /mnt/build_cache/swapfile
+#   sudo chmod 600 /mnt/build_cache/swapfile
+#   sudo mkswap /mnt/build_cache/swapfile
+#   sudo swapon /mnt/build_cache/swapfile
+#   ok "swapfile created"
+# else
+#   skip "swapfile already exists"
+# fi
 
-if grep -q "swapfile" /etc/fstab; then
-  skip "fstab swap already configured"
-else
-  echo "$FSTAB_SWAP" | sudo tee -a /etc/fstab && ok "fstab swap added"
-fi
+# if grep -q "swapfile" /etc/fstab; then
+#   skip "fstab swap already configured"
+# else
+#   echo "$FSTAB_SWAP" | sudo tee -a /etc/fstab && ok "fstab swap added"
+# fi
 
 # Ownership
 sudo chown -R "$USER:$USER" /data
