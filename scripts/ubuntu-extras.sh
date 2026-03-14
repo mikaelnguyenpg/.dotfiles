@@ -42,15 +42,15 @@ APT_PACKAGES=(
   slirp4netns            # Container vẫn có internet, vẫn map được port, nhưng không cần root.
   fuse-overlayfs         # Container dùng overlay filesystem để layer các image lên nhau
 
-  # Fcitx5-bamboo + Fcitx5-chewing
-  fcitx5
-  fcitx5-bamboo
-  fcitx5-chewing
-  fcitx5-frontend-gtk3
-  fcitx5-frontend-gtk4
-  fcitx5-frontend-qt5
-  fcitx5-config-qt
-  im-config
+  # Fcitx5 input method
+  fcitx5                 # core engine: nhận keystroke → xử lý → trả text
+  fcitx5-bamboo          # plugin tiếng Việt (VNI/Telex/VIQR)
+  fcitx5-chewing         # plugin tiếng Trung phồn thể
+  fcitx5-frontend-gtk4   # bridge fcitx5 ↔ GTK4 apps (Firefox, GNOME apps)
+  fcitx5-frontend-gtk3   # bridge fcitx5 ↔ GTK3 apps (apps cũ hơn)
+  fcitx5-frontend-qt5    # bridge fcitx5 ↔ Qt5 apps
+  fcitx5-config-qt       # GUI config tool: add ngôn ngữ, đổi phím tắt
+  im-config              # set fcitx5 làm default input method trên Ubuntu
 )
 
 log "Installing apt packages..."
@@ -62,10 +62,14 @@ for pkg in "${APT_PACKAGES[@]}"; do
   fi
 done
 
+# Set fcitx5 ngay sau khi install xong
+log "Setting fcitx5 as default input method..."
+im-config -n fcitx5 && ok "fcitx5 set as default"
+
 # ─── 2. KVM: thêm user vào group ─────────────────────────────────────────────
 
 log "Configuring KVM groups..."
-for group in kvm libvirt libvirt-qemu; do
+for group in kvm libvirt libvirt-qemu libvirtd; do
   if getent group "$group" &>/dev/null; then
     if groups "$USER" | grep -q "$group"; then
       skip "user in group $group"
@@ -78,6 +82,13 @@ done
 # ─── 3. Podman: rootless subuid/subgid ───────────────────────────────────────
 
 log "Configuring podman rootless..."
+
+# Enable linger — user services chạy kể cả khi chưa login
+if ! loginctl show-user "$USER" 2>/dev/null | grep -q "Linger=yes"; then
+  sudo loginctl enable-linger "$USER" && ok "linger enabled"
+else
+  skip "linger already enabled"
+fi
 
 if grep -q "^$USER:" /etc/subuid 2>/dev/null; then
   skip "subuid already configured"
@@ -97,9 +108,6 @@ if systemctl --user is-enabled podman.socket &>/dev/null; then
 else
   systemctl --user enable --now podman.socket && ok "podman.socket enabled"
 fi
-
-log "Set fcitx5 làm default input method"
-im-config -n fcitx5
 
 # ─── 4. Flatpak: thêm Flathub remote ─────────────────────────────────────────
 
