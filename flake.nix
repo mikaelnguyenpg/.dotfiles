@@ -18,7 +18,7 @@
         pkgs = nixpkgs.legacyPackages.x86_64-linux;
         extraSpecialArgs = { inherit inputs; };
         modules = [
-          nix-flatpak.homeManagerModules.nix-flatpak
+          # nix-flatpak.homeManagerModules.nix-flatpak
           ./hosts/ubuntu/home.nix
         ];
       };
@@ -28,7 +28,6 @@
       nixpkgs.lib.nixosSystem {
         specialArgs = { inherit inputs; };
         modules = [
-          nix-flatpak.nixosModules.nix-flatpak
           ./hosts/nixos/system.nix
         ];
       };
