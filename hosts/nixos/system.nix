@@ -4,6 +4,7 @@
     /etc/nixos/configuration.nix
     inputs.home-manager.nixosModules.home-manager
     ./vm.nix
+    ./flatpak.nix
   ];
 
   # nix.settings.experimental-features = [ "nix-command" "flakes" ];
