@@ -18,7 +18,6 @@
     users.codevibe = {
       imports = [ 
         ./home.nix 
-        inputs.agenix.homeManagerModules.default # Aginex cho user
       ];
     };
   };

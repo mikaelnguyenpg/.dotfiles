@@ -1,7 +1,8 @@
-{ pkgs, ... }: {
+{ pkgs, inputs, ... }: {
   home.username = "codevibe";
   home.homeDirectory = "/home/codevibe";
   home.stateVersion = "25.11";
+  home.packages = [ inputs.home-manager.packages.${pkgs.system}.default ];
 
   imports = [
     ../../modules/apps.nix

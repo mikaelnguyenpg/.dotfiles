@@ -20,7 +20,7 @@
   fonts.packages = with pkgs; [ nerd-fonts.jetbrains-mono ];
 
   # home-manager tích hợp vào nix-darwin
-  home-manager.users.yourname = import ./home.nix;
+  home-manager.users.codevibe = import ./home.nix;
 
   system.stateVersion = 4;
 }

@@ -7,12 +7,9 @@
 
     nix-darwin.url = "github:LnL7/nix-darwin";
     nix-darwin.inputs.nixpkgs.follows = "nixpkgs";
-
-    agenix.url = "github:ryantm/agenix";
-    agenix.inputs.nixpkgs.follows = "nixpkgs";
   };
 
-  outputs = { nixpkgs, home-manager, nix-darwin, agenix, ... }@inputs: {
+  outputs = { nixpkgs, home-manager, nix-darwin, ... }@inputs: {
     # Ubuntu
     homeConfigurations."codevibe@codevibe" =
       home-manager.lib.homeManagerConfiguration {
