@@ -12,7 +12,7 @@
 
   programs.virt-manager.enable = true;
 
-  users.users.michael = {
+  users.users.codevibe = {
     extraGroups = [ "libvirtd" "kvm" ];
   };
 }

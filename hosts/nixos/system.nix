@@ -1,10 +1,12 @@
 { pkgs, config, inputs, ... }: {
   imports = [ 
     # Import cấu hình cũ của hệ thống
-    # ./configuration.nix
     /etc/nixos/configuration.nix
     inputs.home-manager.nixosModules.home-manager
+    ./vm.nix
   ];
+
+  # nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
   services.openssh = {
     enable = true;
@@ -18,7 +20,6 @@
     users.codevibe = {
       imports = [ 
         ./home.nix 
-        ./vm.nix
       ];
     };
   };
@@ -45,7 +46,7 @@
         fcitx5-bamboo
         fcitx5-chewing
         fcitx5-gtk
-        fcitx5-qt
+        qt6Packages.fcitx5-qt
         qt6Packages.fcitx5-configtool
       ];
     };
