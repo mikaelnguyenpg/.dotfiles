@@ -15,5 +15,8 @@
 
   # Chỗ này là config RIÊNG của máy ubuntu-work
   # ví dụ: git email công việc khác với máy cá nhân
-  programs.git.userEmail = "you@company.com";
+  programs.git.userEmail = "mikaelnguyen.pg@work.com";
+  programs.git.userName = "mikaelnguyenpg";
+
+  programs.home-manager.enable = true;
 }

@@ -25,8 +25,6 @@
 
   # Các thiết lập "thêm vào" của bạn ở đây
   environment.systemPackages = with pkgs; [ 
-    wl-clipboard
-    xclip
   ];
 
   # Nếu configuration.nix cũ đã có users.users.codevibe, 

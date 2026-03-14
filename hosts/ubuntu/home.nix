@@ -13,13 +13,6 @@
     ../../modules/tools.nix
   ];
 
-  # Agenix decrypt key vào đúng chỗ
-  age.secrets.ssh-personal = {
-    file = ../../secrets/ssh-personal.age;
-    path = "${config.home.homeDirectory}/.ssh/id_ed25519";
-    mode = "0600";
-  };
-
   # Chỗ này là config RIÊNG của máy ubuntu-work
   # ví dụ: git email công việc khác với máy cá nhân
   programs.git.userEmail = "mikaelnguyen.pg@gmail.com";
