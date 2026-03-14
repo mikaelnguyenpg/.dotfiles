@@ -6,6 +6,7 @@
     XMODIFIERS            = "@im=fcitx";
     GTK_IM_MODULE         = "fcitx";
     QT_IM_MODULE          = "fcitx";
+    QT_IM_MODULES         = "fcitx";
     INPUT_METHOD          = "fcitx";
     IMSETTINGS_MODULE     = "fcitx";
     # Wayland-specific
@@ -13,12 +14,12 @@
     GLFW_IM_MODULE        = "ibus";  # một số app dùng GLFW cần cái này
   };
 
-  # # Autostart fcitx5 khi login (Wayland session)
-  # xdg.configFile."autostart/fcitx5.desktop".text = ''
-  #   [Desktop Entry]
-  #   Name=Fcitx5
-  #   Exec=fcitx5 --replace -d
-  #   Type=Application
-  #   X-GNOME-Autostart-enabled=true
-  # '';
+  # Autostart fcitx5 khi login (Wayland session)
+  xdg.configFile."autostart/fcitx5.desktop".text = ''
+    [Desktop Entry]
+    Name=Fcitx5
+    Exec=fcitx5 --replace -d
+    Type=Application
+    X-GNOME-Autostart-enabled=true
+  '';
 }
