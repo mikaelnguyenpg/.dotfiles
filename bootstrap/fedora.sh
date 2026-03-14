@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -e
 
-sudo apt install curl build-essential
+sudo dnf install -y curl git wget unzip gcc gcc-c++ make ca-certificates gnupg2 redhat-lsb-core
 
 # 1. Install Nix (Determinate Systems)
 if ! command -v nix &>/dev/null; then

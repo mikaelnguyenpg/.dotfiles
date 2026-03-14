@@ -24,6 +24,14 @@
 
   # Các thiết lập "thêm vào" của bạn ở đây
   environment.systemPackages = with pkgs; [ 
+    curl
+    git
+    wget
+    unzip
+    gcc
+    gnumake        # make
+    gnupg
+    cacert         # ca-certificates
   ];
 
   # Nếu configuration.nix cũ đã có users.users.codevibe, 
