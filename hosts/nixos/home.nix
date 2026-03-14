@@ -8,6 +8,7 @@
     ../../modules/apps.nix
     ../../modules/containers.nix
     ../../modules/editor.nix
+    ../../modules/flatpak.nix
     ../../modules/git.nix
     ../../modules/shell.nix
     ../../modules/ssh.nix

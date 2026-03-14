@@ -7,15 +7,18 @@
 
     nix-darwin.url = "github:LnL7/nix-darwin";
     nix-darwin.inputs.nixpkgs.follows = "nixpkgs";
+
+    nix-flatpak.url = "github:gmodena/nix-flatpak";
   };
 
-  outputs = { nixpkgs, home-manager, nix-darwin, ... }@inputs: {
+  outputs = { nixpkgs, home-manager, nix-darwin, nix-flatpak, ... }@inputs: {
     # Ubuntu
     homeConfigurations."codevibe@codevibe" =
       home-manager.lib.homeManagerConfiguration {
         pkgs = nixpkgs.legacyPackages.x86_64-linux;
         extraSpecialArgs = { inherit inputs; };
         modules = [
+          nix-flatpak.homeManagerModules.nix-flatpak
           ./hosts/ubuntu/home.nix
         ];
       };
@@ -25,6 +28,7 @@
       nixpkgs.lib.nixosSystem {
         specialArgs = { inherit inputs; };
         modules = [
+          nix-flatpak.nixosModules.nix-flatpak
           ./hosts/nixos/system.nix
         ];
       };
