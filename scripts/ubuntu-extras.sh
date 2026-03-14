@@ -157,6 +157,56 @@ else
   sudo systemctl enable --now libvirtd && ok "libvirtd enabled"
 fi
 
+# ─── 7. storage: mount points ----─────────────────────────────────────────────
+log "Configuring storage mount points..."
+
+# Tạo mount points
+sudo mkdir -p /data
+sudo mkdir -p /mnt/build_cache
+ok "mount points created"
+
+# Thêm vào fstab nếu chưa có
+FSTAB_DATA="UUID=b9ef6f32-d3c1-4356-8c0d-8e6ef137a830  /data  ext4  defaults  0  2"
+FSTAB_CACHE="UUID=0097bbe4-2b94-411c-8286-f7e29cc833a0  /mnt/build_cache  ext4  defaults  0  2"
+FSTAB_SWAP="/mnt/build_cache/swapfile  none  swap  sw  0  0"
+
+if grep -q "b9ef6f32" /etc/fstab; then
+  skip "fstab /data already configured"
+else
+  echo "$FSTAB_DATA" | sudo tee -a /etc/fstab && ok "fstab /data added"
+fi
+
+if grep -q "0097bbe4" /etc/fstab; then
+  skip "fstab /mnt/build_cache already configured"
+else
+  echo "$FSTAB_CACHE" | sudo tee -a /etc/fstab && ok "fstab /mnt/build_cache added"
+fi
+
+# Mount
+sudo mount -a && ok "partitions mounted"
+
+# Swap
+if [ ! -f /mnt/build_cache/swapfile ]; then
+  sudo fallocate -l 50G /mnt/build_cache/swapfile
+  sudo chmod 600 /mnt/build_cache/swapfile
+  sudo mkswap /mnt/build_cache/swapfile
+  sudo swapon /mnt/build_cache/swapfile
+  ok "swapfile created"
+else
+  skip "swapfile already exists"
+fi
+
+if grep -q "swapfile" /etc/fstab; then
+  skip "fstab swap already configured"
+else
+  echo "$FSTAB_SWAP" | sudo tee -a /etc/fstab && ok "fstab swap added"
+fi
+
+# Ownership
+sudo chown -R "$USER:$USER" /data
+sudo chown -R "$USER:$USER" /mnt/build_cache
+ok "ownership configured"
+
 # ─── Done ─────────────────────────────────────────────────────────────────────
 
 echo ""
