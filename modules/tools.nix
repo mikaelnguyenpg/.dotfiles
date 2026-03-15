@@ -27,9 +27,8 @@
     yt-dlp       # uncomment nếu cần
 
     # ── Screenshots ───────────────────────────────────────────────
-    flameshot
   ];
-
+  
   # ── Programs với config riêng ─────────────────────────────────
   programs = {
     cmus.enable         = true;
@@ -39,13 +38,11 @@
     ripgrep.enable      = true;
     vim.enable          = true;
     yazi.enable         = true;
-    direnv              = {
+    direnv = {
       enable            = true;
       nix-direnv.enable = true;
     };
   };
 
   # ── Services ─────────────────────────────────────────────────
-  services.flameshot.enable = true;
-
 }

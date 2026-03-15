@@ -4,17 +4,32 @@
   home.stateVersion = "25.11";
   home.packages = [ inputs.home-manager.packages.${pkgs.system}.default ];
 
-  nixpkgs.config.allowUnfree = true;
-
   imports = [
     ../../modules/containers.nix
     ../../modules/editor.nix
     ../../modules/flatpak.nix
     ../../modules/fonts.nix
     ../../modules/git.nix
+    ../../modules/nixpkgs.nix
     ../../modules/shell.nix
     ../../modules/ssh.nix
     ../../modules/tools.nix
+
+    ../../modules/eza.nix
+    # ../../modules/flatpak.nix
+    ../../modules/fzf.nix
+    ../../modules/git.nix
+    ../../modules/ghostty.nix
+    ../../modules/helix.nix
+    ../../modules/lazyvim.nix
+    # ../../modules/nixGL.nix
+    ../../modules/starship.nix
+    ../../modules/tmux.nix
+    ../../modules/vscode.nix
+    # ../../modules/ytdlp.nix
+    ../../modules/zoxide.nix
+    ../../modules/zsh.nix
+    ../../modules/zellij.nix
   ];
 
   # Chỗ này là config RIÊNG của máy ubuntu-work
