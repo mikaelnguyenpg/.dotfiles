@@ -122,22 +122,11 @@ fi
 # ─── 5. Flatpak: install GUI apps ────────────────────────────────────────────
 # Thêm/bớt app tại đây tuỳ nhu cầu
 
-FLATPAK_APPS=(
-  # Productivity
-  org.gnome.Boxes              # GUI VM manager (alternative cho virt-manager)
-
-  # Media
-  org.videolan.VLC
-
-  # Dev tools
-  com.mattjakeman.ExtensionManager   # GNOME extension manager
-
-  md.obsidian.Obsidian
-  com.google.Chrome
-  io.httpie.Httpie        # GUI version
-  com.obsproject.Studio
-  org.signal.Signal
-)
+FLATPAK_APPS="$(dirname "$0")/../flatpak-apps.txt"
+while IFS= read -r app; do
+  [[ -z "$app" || "$app" == \#* ]] && continue
+  flatpak list --app | grep -q "$app" || flatpak install -y flathub "$app"
+done < "$FLATPAK_APPS"
 
 log "Installing Flatpak apps..."
 for app in "${FLATPAK_APPS[@]}"; do

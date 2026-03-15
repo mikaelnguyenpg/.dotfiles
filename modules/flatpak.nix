@@ -20,6 +20,6 @@
       (l: l != "" && builtins.match "^#.*" l == null)
       (builtins.filter builtins.isString
         (builtins.split "\n"
-          (builtins.readFile ../../flatpak-apps.txt)));
+          (builtins.readFile ../flatpak-apps.txt)));
   };
 }
