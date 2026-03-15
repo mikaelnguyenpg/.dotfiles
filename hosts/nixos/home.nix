@@ -1,7 +1,7 @@
-{ pkgs, inputs, ... }: {
-  home.username = "michael";
-  home.homeDirectory = "/home/michael";
-  home.stateVersion = "25.11";
+{ pkgs, inputs, constants, ... }: {
+  home.username = constants.username;
+  home.homeDirectory = constants.homeDir;
+  home.stateVersion = constants.stateVersion;
   home.packages = [ inputs.home-manager.packages.${pkgs.system}.default ];
 
   imports = [
@@ -34,8 +34,8 @@
 
   # Chỗ này là config RIÊNG của máy ubuntu-work
   # ví dụ: git email công việc khác với máy cá nhân
-  programs.git.userEmail = "mikaelnguyen.pg@gmail.com";
-  programs.git.userName = "mikaelnguyenpg";
+  programs.git.userEmail = constants.gitEmail;
+  programs.git.userName = constants.gitName;
 
   programs.home-manager.enable = true;
 }

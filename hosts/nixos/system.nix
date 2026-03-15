@@ -1,4 +1,7 @@
-{ pkgs, config, inputs, ... }: {
+{ pkgs, config, inputs, ... }:
+let
+  constants = import ./constants.nix;
+in {
   imports = [ 
     # Import cấu hình cũ của hệ thống
     /etc/nixos/configuration.nix
@@ -18,8 +21,8 @@
   home-manager = {
     useGlobalPkgs = true;
     useUserPackages = true;
-    extraSpecialArgs = { inherit inputs; };
-    users."michael" = {
+    extraSpecialArgs = { inherit inputs constants; };
+    users.${constants.username} = {
       imports = [ 
         ./home.nix 
         inputs.nix-flatpak.homeManagerModules.nix-flatpak

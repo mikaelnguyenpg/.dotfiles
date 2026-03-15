@@ -1,5 +1,7 @@
-{ config, pkgs, ... }:
-
+{ config, pkgs, constants, ... }:
+let
+  constants = import ./constants.nix;
+in
 {
   virtualisation.libvirtd = {
     enable = true;
@@ -12,7 +14,7 @@
 
   programs.virt-manager.enable = true;
 
-  users.users.michael = {
+  users.users.${constants.username} = {
     extraGroups = [ "libvirtd" "kvm" ];
   };
 }
