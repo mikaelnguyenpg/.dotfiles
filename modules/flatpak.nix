@@ -16,25 +16,10 @@
       }
     ];
 
-    packages = [
-      "org.gnome.Boxes"              # GUI VM manager (alternative cho virt-manager)
-
-      # Media
-      "org.videolan.VLC"
-
-      # Dev tools
-      "com.mattjakeman.ExtensionManager"   # GNOME extension manager
-
-      "md.obsidian.Obsidian"
-      "com.google.Chrome"
-      "io.httpie.Httpie"        # GUI version
-
-      "com.github.maoschanz.drawing"
-      "com.github.dail8859.NotepadNext"
-      "com.jetbrains.WebStorm"
-      "com.obsproject.Studio"
-      "org.signal.Signal"
-      "us.zoom.Zoom"
-    ];
+    packages = builtins.filter
+      (l: l != "" && builtins.match "^#.*" l == null)
+      (builtins.filter builtins.isString
+        (builtins.split "\n"
+          (builtins.readFile ../../flatpak-apps.txt)));
   };
 }

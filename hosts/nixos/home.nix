@@ -7,7 +7,6 @@
   nixpkgs.config.allowUnfree = true;
 
   imports = [
-    ../../modules/apps.nix
     ../../modules/containers.nix
     ../../modules/editor.nix
     ../../modules/flatpak.nix

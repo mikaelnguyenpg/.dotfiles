@@ -1,0 +1,27 @@
+# ─── VM & System Tools ────────────────────────────────────────────────────────
+org.gnome.Boxes
+
+# ─── Browser ──────────────────────────────────────────────────────────────────
+com.google.Chrome
+
+# ─── Communication ────────────────────────────────────────────────────────────
+org.signal.Signal
+us.zoom.Zoom
+
+# ─── Productivity & Notes ─────────────────────────────────────────────────────
+md.obsidian.Obsidian
+com.github.dail8859.NotepadNext
+
+# ─── Media ────────────────────────────────────────────────────────────────────
+org.videolan.VLC
+com.obsproject.Studio
+
+# ─── Graphics & Drawing ───────────────────────────────────────────────────────
+com.github.maoschanz.drawing
+
+# ─── Development ──────────────────────────────────────────────────────────────
+com.jetbrains.WebStorm
+io.httpie.Httpie
+
+# ─── GNOME Extensions & Tweaks ───────────────────────────────────────────────
+com.mattjakeman.ExtensionManager
