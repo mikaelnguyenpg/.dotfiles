@@ -19,7 +19,7 @@
     useGlobalPkgs = true;
     useUserPackages = true;
     extraSpecialArgs = { inherit inputs; };
-    users.codevibe = {
+    users.michael = {
       imports = [ 
         ./home.nix 
         inputs.nix-flatpak.homeManagerModules.nix-flatpak

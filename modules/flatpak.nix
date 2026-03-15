@@ -28,8 +28,13 @@
       "md.obsidian.Obsidian"
       "com.google.Chrome"
       "io.httpie.Httpie"        # GUI version
+
+      "com.github.maoschanz.drawing"
+      "com.github.dail8859.NotepadNext"
+      "com.jetbrains.WebStorm"
       "com.obsproject.Studio"
       "org.signal.Signal"
+      "us.zoom.Zoom"
     ];
   };
 }

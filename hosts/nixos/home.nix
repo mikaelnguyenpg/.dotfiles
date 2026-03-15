@@ -1,6 +1,6 @@
 { pkgs, inputs, ... }: {
-  home.username = "codevibe";
-  home.homeDirectory = "/home/codevibe";
+  home.username = "michael";
+  home.homeDirectory = "/home/michael";
   home.stateVersion = "25.11";
   home.packages = [ inputs.home-manager.packages.${pkgs.system}.default ];
 
@@ -9,6 +9,7 @@
     ../../modules/containers.nix
     ../../modules/editor.nix
     ../../modules/flatpak.nix
+    ../../modules/fonts.nix
     ../../modules/git.nix
     ../../modules/shell.nix
     ../../modules/ssh.nix

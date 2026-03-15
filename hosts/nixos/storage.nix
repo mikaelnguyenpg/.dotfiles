@@ -24,8 +24,8 @@
   # ─── Ownership ──────────────────────────────────────────────────────────────
   # NixOS không có chown trực tiếp, dùng systemd tmpfiles thay thế
 
-  systemd.tmpfiles.rules = [
-    "d /data              0755 codevibe users -"
-    "d /mnt/build_cache   0755 codevibe users -"
-  ];
+  # systemd.tmpfiles.rules = [
+  #   "d /data              0755 codevibe users -"
+  #   "d /mnt/build_cache   0755 codevibe users -"
+  # ];
 }

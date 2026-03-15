@@ -9,6 +9,7 @@
     ../../modules/containers.nix
     ../../modules/editor.nix
     ../../modules/flatpak.nix
+    ../../modules/fonts.nix
     ../../modules/git.nix
     ../../modules/shell.nix
     ../../modules/ssh.nix
