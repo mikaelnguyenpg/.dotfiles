@@ -4,6 +4,8 @@
   home.stateVersion = "25.11";
   home.packages = [ inputs.home-manager.packages.${pkgs.system}.default ];
 
+  nixpkgs.config.allowUnfree = true;
+
   imports = [
     ../../modules/apps.nix
     ../../modules/containers.nix
