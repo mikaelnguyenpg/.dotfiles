@@ -1,9 +1,10 @@
-{ pkgs, config, inputs, ... }:
+{ pkgs, inputs, ... }:
 let
   constants = import ./constants.nix;
 in {
-  imports = [ 
-    # Import cấu hình cũ của hệ thống
+
+  # ─── Imports ────────────────────────────────────────────────────────────────
+  imports = [
     /etc/nixos/configuration.nix
     inputs.home-manager.nixosModules.home-manager
     ./vm.nix
@@ -11,43 +12,38 @@ in {
     ./storage.nix
   ];
 
-  # nix.settings.experimental-features = [ "nix-command" "flakes" ];
-
-  services.openssh = {
-    enable = true;
-  };
-
-  # Cấu hình Home Manager ngay trong system
+  # ─── Home Manager ───────────────────────────────────────────────────────────
   home-manager = {
-    useGlobalPkgs = true;
-    useUserPackages = true;
+    useGlobalPkgs    = true;
+    useUserPackages  = true;
     extraSpecialArgs = { inherit inputs constants; };
-    users.${constants.username} = {
-      imports = [ 
-        ./home.nix 
-        inputs.nix-flatpak.homeManagerModules.nix-flatpak
-      ];
-    };
+    users.${constants.username}.imports = [
+      ./home.nix
+      inputs.nix-flatpak.homeManagerModules.nix-flatpak
+    ];
   };
 
-  # Các thiết lập "thêm vào" của bạn ở đây
-  environment.systemPackages = with pkgs; [ 
+  # ─── System Packages ────────────────────────────────────────────────────────
+  environment.systemPackages = with pkgs; [
+    cacert    # ca-certificates
     curl
-    git
-    wget
-    unzip
     gcc
-    gnumake        # make
+    git
+    gnumake   # make
     gnupg
-    cacert         # ca-certificates
+    unzip
+    wget
   ];
 
-  # fcitx5 system-level — NixOS quản lý hoàn toàn
+  # ─── Services ───────────────────────────────────────────────────────────────
+  services.openssh.enable = true;
+
+  # ─── Input Method ───────────────────────────────────────────────────────────
   i18n.inputMethod = {
     enable = true;
     type   = "fcitx5";
     fcitx5 = {
-      waylandFrontend = true;   # bắt buộc cho Wayland
+      waylandFrontend = true;
       addons = with pkgs; [
         fcitx5-bamboo
         fcitx5-chewing
@@ -57,4 +53,15 @@ in {
       ];
     };
   };
+
+  # ─── Nix / Boot ─────────────────────────────────────────────────────────────
+  boot.loader.systemd-boot.configurationLimit = 5;
+
+  nix.gc = {
+    automatic = true;
+    dates     = "weekly";
+    options   = "--delete-older-than 7d";
+  };
+
+  nix.settings.auto-optimise-store = true;
 }

@@ -1,4 +1,7 @@
-{ pkgs, inputs, ... }: {
+{ pkgs, inputs, ... }:
+let
+  constants = import ./constants.nix;
+in {
   home.username = constants.username;
   home.homeDirectory = constants.homeDir;
   home.stateVersion = constants.stateVersion;

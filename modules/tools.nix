@@ -13,18 +13,18 @@
     ncdu           # disk usage interactive
 
     # ── Fun / terminal eye-candy ──────────────────────────────────
-    cmatrix
-    cowsay
-    figlet
-    fortune
-    boxes
-    btop
-    gotop
-    gtop
+    cmatrix        # matrix rain animation trên terminal
+    cowsay         # in text với hình con bò (hoặc con vật khác) nói chuyện
+    figlet         # tạo ASCII art text lớn từ string
+    fortune        # in câu trích dẫn/câu đố ngẫu nhiên
+    boxes          # vẽ khung hộp ASCII xung quanh text
+    btop           # system monitor TUI: CPU/RAM/disk/network real-time, đẹp nhất
+    gotop          # system monitor TUI viết bằng Go, nhẹ hơn btop
+    gtop           # system monitor TUI viết bằng Node.js, style khác
 
     # ── Media CLI ─────────────────────────────────────────────────
     cava           # audio visualizer
-    yt-dlp       # uncomment nếu cần
+    yt-dlp         # uncomment nếu cần
 
     # ── Screenshots ───────────────────────────────────────────────
   ];
