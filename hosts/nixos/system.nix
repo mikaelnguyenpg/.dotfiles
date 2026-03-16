@@ -10,6 +10,7 @@ in {
     ./vm.nix
     ./flatpak.nix
     ./storage.nix
+    ./fonts.nix
   ];
 
   # ─── Home Manager ───────────────────────────────────────────────────────────
@@ -65,3 +66,10 @@ in {
 
   nix.settings.auto-optimise-store = true;
 }
+
+# programs.zsh.shellAliases = {
+#   rebuild-system            = "sudo nixos-rebuild switch --flake /etc/nixos#nixos";
+#   rebuild-home-first-time   = "nix run home-manager/master -- switch --flake /etc/nixos#michael";
+#   rebuild-home              = "home-manager switch --flake /etc/nixos#michael --impure";
+#   rebuild-all               = "sudo nixos-rebuild switch --flake /etc/nixos#nixos && home-manager switch --flake /etc/nixos#michael";
+# };

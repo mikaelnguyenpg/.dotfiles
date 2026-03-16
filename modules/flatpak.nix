@@ -16,6 +16,15 @@
       }
     ];
 
+    # Override permissions
+    overrides = {
+      global = {
+        filesystems = {
+          "/nix/store" = "ro";
+        };
+      };
+    };
+
     packages = builtins.filter
       (l: l != "" && builtins.match "^#.*" l == null)
       (builtins.filter builtins.isString
