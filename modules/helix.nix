@@ -216,9 +216,9 @@
       # ────────────────────────────────────────────────────────────────
       {
         language-server.rust-analyzer = {
-          # command = "rust-analyzer";
-          command =  "rustup";
-          args = [ "run" "stable" "rust-analyzer" ];
+          command = "rust-analyzer";
+          # command =  "rustup";
+          # args = [ "run" "stable" "rust-analyzer" ];
           config = {
             # Bật diagnostics realtime (gạch đỏ khi đang gõ)
             diagnostics = {
@@ -268,10 +268,10 @@
             # Auto-format khi save bằng rustfmt
             auto-format = true;
             formatter = {
-              command = "rustup";
-              args = [ "run" "stable" "rust-fmt" "--edition" "2021" ];
-              # command = "rustfmt";
-              # args = [ "--edition" "2021" ];
+              # command = "rustup";
+              # args = [ "run" "stable" "rust-fmt" "--edition" "2021" ];
+              command = "rustfmt";
+              args = [ "--edition" "2021" ];
             };
 
             language-servers = [ "rust-analyzer" ];
