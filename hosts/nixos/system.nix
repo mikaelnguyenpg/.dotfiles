@@ -11,6 +11,7 @@ in {
     ./flatpak.nix
     ./storage.nix
     ./fonts.nix
+    ./ollama.nix
   ];
 
   # ─── Home Manager ───────────────────────────────────────────────────────────

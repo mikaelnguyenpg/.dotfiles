@@ -4,5 +4,6 @@
 
     # (Optional)
     code-cursor
+    claude-code
   ];
 }
