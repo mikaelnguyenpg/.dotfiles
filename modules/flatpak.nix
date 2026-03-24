@@ -67,7 +67,7 @@
 # flatpak run --command=fc-cache com.google.Chrome -f
 
 
-# # ── Flatpak Boxes ───────────────────────────────────────────────
+# # ── Flatpak Boxes images ─────────────────────────────────────────
 # # 1. Dừng tất cả VM trong Boxes trước
 
 # # 2. Tạo thư mục đích
