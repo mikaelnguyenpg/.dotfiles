@@ -33,7 +33,9 @@ in {
       "vim.easymotion" = true;
       "vim.handleKeys" = {
         "<C-a>" = false;
+        "<C-b>" = false;
         "<C-f>" = false;
+        "<C-k>" = false;
         "<C-p>" = false;
         "<C-w>" = false;
       };
@@ -59,6 +61,9 @@ in {
       ## Android iOS Emulator
       "emulator.emulatorPathLinux" = "~/Android/Sdk/emulator";
       # "emulator.emulatorPathMac" = "~/Library/Android/sdk/emulator";
+
+      # LLDB
+      "lldb.library" = "/nix/store/dz1lv10zfqhdnpdjqbawdacd6j1328m1-lldb-21.1.8/lib/liblldb.so";
     };
 
     # Manage keybindings

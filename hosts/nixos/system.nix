@@ -67,6 +67,10 @@ in {
   };
 
   nix.settings.auto-optimise-store = true;
+
+  # ─── Nix-ld ─────────────────────────────────────────────────────────────────
+  # to let external plugin/extension(of Cursor/VSCode/...) can run
+  programs.nix-ld.enable = true;
 }
 
 # programs.zsh.shellAliases = {
