@@ -1,106 +1,78 @@
 # =============================================================================
-# hosts/nixos/ollama.nix — Ollama configuration
+# hosts/nixos/ollama.nix — Local AI Stack (Ollama + Open WebUI)
 # =============================================================================
 { pkgs, lib, ... }: {
 
-  # === Nvidia drivers ==========================================================
+  # ─── Hardware Support (NVIDIA RTX 3070) ─────────────────────────────────────
   hardware.graphics.enable      = true;
   services.xserver.videoDrivers = [ "nvidia" ];
   nixpkgs.config.allowUnfree    = true;
 
   hardware.nvidia = {
-    open                   = false;        # dùng proprietary driver, không phải open kernel module
-    modesetting.enable     = true;         # cần cho Wayland
-    powerManagement.enable = true;         # quan trọng cho laptop ASUS
+    open                   = false; # Proprietary drivers for better CUDA stability
+    modesetting.enable     = true;
+    powerManagement.enable = true; # Critical for ASUS laptop sleep/wake
     nvidiaSettings         = true;
   };
 
-  # === Ollama service ===========================================================
-  # ─── 1. Định nghĩa User tĩnh (Bắt buộc để ổn định quyền) ──────────────────
+  # ─── Storage & User Infrastructure ──────────────────────────────────────────
+  # Redirect /var/lib/ollama to /mnt/build_cache to save Root partition space
   users.users.ollama = {
     isSystemUser = true;
-    group = "ollama";
-    home = "/var/lib/ollama";
+    group        = "ollama";
+    home         = "/var/lib/ollama";
   };
   users.groups.ollama = {};
 
-  # ─── 2. Cấu hình Bind Mount (Ánh xạ ổ đĩa) ────────────────────────────────
-  # Cách này giúp lừa Systemd Sandbox, không cần nới lỏng ProtectHome quá nhiều
   fileSystems."/var/lib/ollama" = {
-    device = "/mnt/build_cache/ollama";
+    device  = "/mnt/build_cache/ollama";
     options = [ "bind" ];
-    depends = [ "/mnt/build_cache" ]; # Đảm bảo ổ cache đã mount trước
+    depends = [ "/mnt/build_cache" ];
   };
 
-  # ─── 3. Tạo thư mục đích trên ổ cứng ─────────────────────────────────────
   systemd.tmpfiles.rules = [
     "d /mnt/build_cache/ollama 0750 ollama ollama -"
   ];
 
+  # ─── Ollama Service ─────────────────────────────────────────────────────────
   services.ollama = {
-    enable       = true;
-    package      = pkgs.ollama-cuda;           # RTX 3070 dùng CUDA
-
-    # RTX 3070 = SM86, có trong default cudaArches của nixpkgs
-    # Không cần override cudaArches
-
-    # ─── Load cac Model thong dung ───────────────────────────────────────
-    loadModels = [
-      # Models phù hợp với 8GB VRAM + 32GB RAM
-      "llama3.2:3b"              # 2GB VRAM — nhanh, đủ dùng hàng ngày
-      # "llama3.1:8b"            # 4.9GB VRAM — nhanh, đủ dùng hàng ngày
-      "gemma2:9b"                # 4.9GB VRAM — nhanh, đủ dùng hàng ngày
-      "mistral:7b"               # 4.4GB VRAM — nhanh, đủ dùng hàng ngày
-      # "mistral-nemo:12b"       # 7.1GB VRAM — nhanh, đủ dùng hàng ngày
-      # "phi4:14b"               # 9.1GB VRAM — nhanh, đủ dùng hàng ngày
+    enable      = true;
+    package     = pkgs.ollama-cuda;
+    loadModels  = [
+      "llama3.2:3b"      # [2.0GB] Ultralight, extremely fast for daily tasks
+      "gemma2:9b"        # [5.4GB] Google's best-in-class reasoning for 8GB VRAM
+      "mistral:7b"       # [4.1GB] Reliable European model, great versatility
+      # "mistral-nemo"   # [7.1GB] Mistral+NVIDIA collab, high-tier 12B model
+      # "phi4"           # [9.1GB] Microsoft's logic powerhouse (spills to RAM)
     ];
-
-    # Delay để chờ GPU online — fix bug GPU không được detect sau reboot
-    # https://github.com/NixOS/nixpkgs/issues/487054
-    # (thêm nếu gặp vấn đề GPU chỉ chạy trên CPU sau reboot)
   };
 
-  # ─── Mở khóa quyền ghi cho Systemd ──────────────────────────────────────────
-  # 2. Cấu hình Systemd để vượt qua lỗi NAMESPACE (Status 226)
+  # ─── Systemd Service Tuning ─────────────────────────────────────────────────
   systemd.services.ollama = {
-    # Chỉ chạy sau khi ổ đĩa đã mount
-    after = [ "mnt-build_cache.mount" "nvidia-persistenced.service" ];
+    # Ensure hardware and storage are ready before starting
+    after    = [ "mnt-build_cache.mount" "nvidia-persistenced.service" ];
     requires = [ "mnt-build_cache.mount" ];
 
     serviceConfig = {
-      DynamicUser = lib.mkForce false; # Tắt ID ngẫu nhiên
-      User = "ollama";
-      Group = "ollama";
+      DynamicUser   = lib.mkForce false; # Using static user for consistent file ownership
+      User          = "ollama";
+      Group         = "ollama";
+      ProtectHome   = lib.mkForce false; # Allow access to bind-mounted storage
+      # ReadWritePaths = [ "/mnt/build_cache/ollama" ]; # Optional with bind-mount
     };
   };
 
-  # === Open WebUI — giao diện chat như ChatGPT ==================================
+  # ─── Open WebUI (Local ChatGPT Interface) ───────────────────────────────────
   services.open-webui = {
     enable       = true;
-    host         = "127.0.0.1";      # chỉ local, không expose ra ngoài
+    host         = "127.0.0.1";
     port         = 8080;
     openFirewall = false;
   };
 
-  # === Fix: ollama khởi động trước GPU online ===================================
-  # Uncomment nếu gặp bug GPU chạy trên CPU sau reboot
-  # systemd.services.ollama = {
-  #   after   = [ "nvidia-persistenced.service" ];
-  #   requires = [ "nvidia-persistenced.service" ];
-  # };
-
+  # ─── System Environment ─────────────────────────────────────────────────────
   environment.systemPackages = with pkgs; [
-    nvtopPackages.nvidia   # monitor GPU usage real-time
-    ollama                 # CLI: ollama run, ollama list...
+    nvtopPackages.nvidia # Real-time GPU monitoring (Essential for AI)
+    ollama               # CLI for manual model management
   ];
 }
-
-# # 1. Tạo folder (nếu chưa có)
-# sudo mkdir -p /mnt/build_cache/ollama
-
-# # 2. Chuyển dữ liệu (nếu có)
-# sudo cp -ra /var/lib/ollama/. /mnt/build_cache/ollama/
-
-# # 3. GÁN QUYỀN (Lần này sẽ không lỗi nữa)
-# sudo chown -R ollama:ollama /mnt/build_cache/ollama
-# sudo chmod -R 750 /mnt/build_cache/ollama
