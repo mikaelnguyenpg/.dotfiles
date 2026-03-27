@@ -8,7 +8,7 @@ let
 
   # --- CẤU HÌNH TIER Ở ĐÂY ---
   # Chọn: "minimal", "standard", hoặc "full"
-  tier = "standard";
+  tier = "full";
 
   # 1. Nhóm module cơ bản (Luôn cài)
   baseModules = [
@@ -26,8 +26,6 @@ let
   workModules = [
     ../../modules/containers.nix
     ../../modules/fonts.nix
-    # ../../modules/ide.nix
-    ../../modules/ghostty.nix
     ../../modules/helix.nix
     ../../modules/lazyvim.nix
     ../../modules/nixpkgs.nix
@@ -37,10 +35,10 @@ let
 
   # 3. Nhóm module đầy đủ (Chỉ Full)
   fullModules = [
-    # ../../modules/flatpak.nix
-    # ../../modules/office.nix
+    ../../modules/ghostty.nix
+    ../../modules/ide.nix
+    ../../modules/nixGL.nix
     ../../modules/vscode.nix
-    # ../../modules/nixGL.nix
     # ../../modules/ytdlp.nix
   ];
 in {

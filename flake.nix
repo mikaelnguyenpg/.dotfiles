@@ -8,10 +8,15 @@
     nix-darwin.url = "github:LnL7/nix-darwin";
     nix-darwin.inputs.nixpkgs.follows = "nixpkgs";
 
+    nixgl = {
+      url = "github:nix-community/nixGL";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     # nix-flatpak.url = "github:gmodena/nix-flatpak";
   };
 
-  outputs = { nixpkgs, home-manager, nix-darwin, ... }@inputs:
+  outputs = { nixpkgs, home-manager, nix-darwin, nixgl, ... }@inputs:
   let
     # 1. Load constants của Ubuntu ở đây
     constants = import ./hosts/ubuntu/constants.nix;
@@ -20,7 +25,7 @@
     homeConfigurations."${constants.username}@${constants.hostname}" =
       home-manager.lib.homeManagerConfiguration {
         pkgs = nixpkgs.legacyPackages.x86_64-linux;
-        extraSpecialArgs = { inherit inputs; };
+        extraSpecialArgs = { inherit inputs nixgl; };
         modules = [
           ./hosts/ubuntu/home.nix
         ];

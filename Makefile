@@ -6,7 +6,7 @@ detect:
 	@uname | grep -q Linux && make ubuntu || true
 
 ubuntu:
-	nix run nixpkgs#home-manager -- switch --flake .#$(USER)@$(HOSTNAME)
+	nix run nixpkgs#home-manager -- switch --flake . # #$(USER)@$(HOSTNAME)
 	bash scripts/ubuntu-extras.sh   # apt + flatpak ngoài Nix
 
 macos:
