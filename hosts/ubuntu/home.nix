@@ -1,3 +1,6 @@
+# =============================================================================
+# home.nix — Home-manager system configuration
+# =============================================================================
 { pkgs, inputs, ... }:
 let
   constants = import ./constants.nix;
@@ -9,14 +12,14 @@ in {
 
   imports = [
     ../../modules/containers.nix
-    ../../modules/editor.nix
+    ../../modules/ide.nix
     ../../modules/flatpak.nix
     ../../modules/fonts.nix
     ../../modules/git.nix
     ../../modules/nixpkgs.nix
     ../../modules/shell.nix
     ../../modules/ssh.nix
-    ../../modules/tools.nix
+    ../../modules/shell.nix
 
     ../../modules/eza.nix
     # ../../modules/flatpak.nix

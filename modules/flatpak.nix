@@ -89,3 +89,12 @@
 # # 6. Và cho phép Boxes Flatpak access path đó:
 # flatpak override --user org.gnome.Boxes \
 #   --filesystem=/mnt/build_cache/gnome-boxes:create
+
+# # Bước 1: Gỡ bỏ các App và Runtimes (Lệnh CLI)
+# flatpak uninstall --all
+# flatpak uninstall --unused
+# rm -rf ~/.local/share/flatpak
+# sudo rm -rf /var/lib/flatpak
+# # Bước 2: Xóa bỏ dữ liệu ứng dụng (Dọn rác trong $HOME)
+# rm -rf ~/.var/app/*
+

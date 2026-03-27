@@ -64,7 +64,8 @@ in {
 
       # LLDB
       # "lldb.library" = "/nix/store/dz1lv10zfqhdnpdjqbawdacd6j1328m1-lldb-21.1.8/lib/liblldb.so";
-      "lldb.library" = "${pkgs.lldb.lib}/lib/liblldb.so";
+      # "lldb.library" = "${pkgs.lldb.lib}/lib/liblldb.so";
+      "lldb.library" = "${pkgs.lldb}/lib/liblldb.so";
       "lldb.consoleMode" = "commands";
       "lldb.displayFormat" = "auto";
       "lldb.dereferencePointers" = true;
