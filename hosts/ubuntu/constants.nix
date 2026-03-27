@@ -1,8 +1,8 @@
-# hosts/nixos/constants.nix
+# hosts/ubuntu/constants.nix
 {
-  username    = "codevibe";
-  homeDir     = "/home/codevibe";
-  hostname    = "codevibe";
+  username    = "michael";
+  homeDir     = "/home/michael";
+  hostname    = "michael";
   gitEmail    = "mikaelnguyen.pg@gmail.com";
   gitName     = "mikaelnguyenpg";
   stateVersion = "25.11";
