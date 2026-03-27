@@ -1,4 +1,7 @@
-{ config, pkgs, constants, ... }:
+# =============================================================================
+# hosts/nixos/vm.nix — Local AI Stack (Ollama + Open WebUI)
+# =============================================================================
+{ pkgs, constants, ... }:
 let
   constants = import ./constants.nix;
 in

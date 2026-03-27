@@ -1,7 +1,6 @@
 { config, pkgs, lib, nixGL, ... }:
 
 {
-  # Zoxide: The smarter 'cd'
   programs.ghostty = {
     enable = true;
     enableZshIntegration = true;

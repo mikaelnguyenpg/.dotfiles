@@ -22,7 +22,6 @@ in {
     extraSpecialArgs = { inherit inputs constants; };
     users.${constants.username}.imports = [
       ./home.nix
-      inputs.nix-flatpak.homeManagerModules.nix-flatpak
     ];
   };
 
@@ -80,3 +79,5 @@ in {
 #   rebuild-home              = "home-manager switch --flake /etc/nixos#michael --impure";
 #   rebuild-all               = "sudo nixos-rebuild switch --flake /etc/nixos#nixos && home-manager switch --flake /etc/nixos#michael";
 # };
+#
+# sudo nix-collect-garbage -d
