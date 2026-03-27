@@ -46,9 +46,9 @@ APT_PACKAGES=(
   fcitx5                 # core engine: nhận keystroke → xử lý → trả text
   fcitx5-bamboo          # plugin tiếng Việt (VNI/Telex/VIQR)
   fcitx5-chewing         # plugin tiếng Trung phồn thể
-  fcitx5-frontend-gtk4   # bridge fcitx5 ↔ GTK4 apps (Firefox, GNOME apps)
-  fcitx5-frontend-gtk3   # bridge fcitx5 ↔ GTK3 apps (apps cũ hơn)
-  fcitx5-frontend-qt5    # bridge fcitx5 ↔ Qt5 apps
+  # fcitx5-frontend-gtk4   # bridge fcitx5 ↔ GTK4 apps (Firefox, GNOME apps)
+  # fcitx5-frontend-gtk3   # bridge fcitx5 ↔ GTK3 apps (apps cũ hơn)
+  # fcitx5-frontend-qt5    # bridge fcitx5 ↔ Qt5 apps
   fcitx5-config-qt       # GUI config tool: add ngôn ngữ, đổi phím tắt
   im-config              # set fcitx5 làm default input method trên Ubuntu
 )

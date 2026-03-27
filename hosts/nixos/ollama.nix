@@ -30,10 +30,6 @@
     depends = [ "/mnt/build_cache" ];
   };
 
-  systemd.tmpfiles.rules = [
-    "d /mnt/build_cache/ollama 0750 ollama ollama -"
-  ];
-
   # ─── Ollama Service ─────────────────────────────────────────────────────────
   services.ollama = {
     enable      = true;
@@ -50,15 +46,14 @@
   # ─── Systemd Service Tuning ─────────────────────────────────────────────────
   systemd.services.ollama = {
     # Ensure hardware and storage are ready before starting
-    after    = [ "mnt-build_cache.mount" "nvidia-persistenced.service" ];
-    requires = [ "mnt-build_cache.mount" ];
+    after    = [ "local-fs.target" "nvidia-persistenced.service" ];
 
     serviceConfig = {
       DynamicUser   = lib.mkForce false; # Using static user for consistent file ownership
       User          = "ollama";
       Group         = "ollama";
       ProtectHome   = lib.mkForce false; # Allow access to bind-mounted storage
-      # ReadWritePaths = [ "/mnt/build_cache/ollama" ]; # Optional with bind-mount
+      ProtectSystem = lib.mkForce "full";
     };
   };
 
@@ -67,7 +62,6 @@
     enable       = true;
     host         = "127.0.0.1";
     port         = 8080;
-    openFirewall = false;
   };
 
   # ─── System Environment ─────────────────────────────────────────────────────

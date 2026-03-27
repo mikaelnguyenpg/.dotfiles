@@ -10,8 +10,9 @@ in {
   imports = [
     /etc/nixos/configuration.nix
     inputs.home-manager.nixosModules.home-manager
-    ./vm.nix
     ./mount.nix
+    ./vm.nix
+    ./keyboard.nix
     ./ollama.nix
   ];
 
@@ -39,23 +40,6 @@ in {
 
   # ─── Services ───────────────────────────────────────────────────────────────
   services.openssh.enable = true;
-
-  # ─── Input Method ───────────────────────────────────────────────────────────
-  i18n.inputMethod = {
-    enable = true;
-    type   = "fcitx5";
-    fcitx5 = {
-      waylandFrontend = true;
-      addons = with pkgs; [
-        fcitx5-bamboo                     # bamboo
-        fcitx5-chewing                    # chewing
-        qt6Packages.fcitx5-chinese-addons # pinyin
-        fcitx5-gtk
-        qt6Packages.fcitx5-qt
-        qt6Packages.fcitx5-configtool
-      ];
-    };
-  };
 
   # ─── Nix / Boot ─────────────────────────────────────────────────────────────
   boot.loader.systemd-boot.configurationLimit = 5;
