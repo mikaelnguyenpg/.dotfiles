@@ -22,6 +22,7 @@ let
   # 2. Nhóm module làm việc (Standard + Full)
   workModules = [
     ../../modules/containers.nix
+    ../../modules/fonts.nix
     ../../modules/ide.nix
     ../../modules/ghostty.nix
     ../../modules/helix.nix
@@ -32,9 +33,8 @@ let
 
   # 3. Nhóm module đầy đủ (Chỉ Full)
   fullModules = [
-    ../../modules/flatpak.nix
-    ../../modules/fonts.nix # Nếu bạn muốn tiết kiệm dung lượng font
-    # ../../modules/office.nix
+    # ../../modules/flatpak.nix
+    ../../modules/office.nix
     ../../modules/vscode.nix
     # ../../modules/nixGL.nix
     # ../../modules/ytdlp.nix
@@ -49,28 +49,6 @@ in {
   imports = baseModules
     ++ (lib.optionals (tier == "standard" || tier == "full") workModules)
     ++ (lib.optionals (tier == "full") fullModules);
-  # imports = [
-  #   ../../modules/containers.nix
-  #   ../../modules/ide.nix
-  #   ../../modules/flatpak.nix
-  #   ../../modules/fonts.nix
-  #   ../../modules/git.nix
-  #   ../../modules/ssh.nix
-  #   ../../modules/shell.nix
-
-  #   ../../modules/eza.nix
-  #   ../../modules/fzf.nix
-  #   ../../modules/git.nix
-  #   ../../modules/ghostty.nix
-  #   ../../modules/helix.nix
-  #   ../../modules/lazyvim.nix
-  #   ../../modules/starship.nix
-  #   ../../modules/tmux.nix
-  #   ../../modules/vscode.nix
-  #   ../../modules/zoxide.nix
-  #   ../../modules/zsh.nix
-  #   ../../modules/zellij.nix
-  # ];
 
   # Truyền biến tier xuống các module con (như shell.nix) nếu cần lọc sâu hơn
   # Chúng ta dùng "specialArgs" hoặc gán trực tiếp vào config

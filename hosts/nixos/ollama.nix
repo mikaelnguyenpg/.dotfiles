@@ -24,7 +24,9 @@
     loadModels = [
       # Models phù hợp với 4GB VRAM + 32GB RAM
       "llama3.2:3b"       # 2GB VRAM — nhanh, đủ dùng hàng ngày
-      # "qwen2.5-coder:7b"  # 4GB VRAM — code assistant tốt
+      # "llama3.1:8b"       # 4.9GB VRAM — nhanh, đủ dùng hàng ngày
+      "gemma2:9b"       # 4.9GB VRAM — nhanh, đủ dùng hàng ngày
+      "mistral:7b"       # 4.4GB VRAM — nhanh, đủ dùng hàng ngày
     ];
 
     # Delay để chờ GPU online — fix bug GPU không được detect sau reboot

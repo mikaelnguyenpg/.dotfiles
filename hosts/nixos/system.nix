@@ -11,9 +11,7 @@ in {
     /etc/nixos/configuration.nix
     inputs.home-manager.nixosModules.home-manager
     ./vm.nix
-    ./flatpak.nix
-    ./storage.nix
-    ./fonts.nix
+    ./mount.nix
     ./ollama.nix
   ];
 
