@@ -14,9 +14,9 @@ GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
 RESET='\033[0m'
 
-log()  { echo -e "${BOLD}==>${RESET} $1"; }
-ok()   { echo -e "${GREEN}  ✓${RESET} $1"; }
-skip() { echo -e "${YELLOW}  ~${RESET} $1 (already done)"; }
+log()  { echo -e "${BOLD}==>${RESET} $*"; }
+ok()   { echo -e "${GREEN}  ✓${RESET} $*"; }
+skip() { echo -e "${YELLOW}  ~${RESET} $* (already done)"; }
 
 # ─── 1. APT: system-level dependencies ───────────────────────────────────────
 
@@ -38,6 +38,8 @@ APT_PACKAGES=(
   xdg-desktop-portal-gtk # quyết định file dialog trông như thế nào, theme có khớp với desktop không
 
   # Podman rootless support
+  podman
+  dbus-user-session      # Đảm bảo systemctl --user hoạt động ổn định
   uidmap
   slirp4netns            # Container vẫn có internet, vẫn map được port, nhưng không cần root.
   fuse-overlayfs         # Container dùng overlay filesystem để layer các image lên nhau
@@ -112,28 +114,41 @@ fi
 # ─── 4. Flatpak: thêm Flathub remote ─────────────────────────────────────────
 
 log "Configuring Flatpak..."
-if flatpak remote-list | grep -q "flathub"; then
+if flatpak --user remote-list | grep -q "flathub"; then
   skip "flathub remote already added"
 else
-  flatpak remote-add --if-not-exists flathub \
+  flatpak remote-add --user --if-not-exists flathub \
     https://flathub.org/repo/flathub.flatpakrepo && ok "flathub added"
 fi
 
 # ─── 5. Flatpak: install GUI apps ────────────────────────────────────────────
-# Thêm/bớt app tại đây tuỳ nhu cầu
+log "Installing Flatpak apps (User Mode)..."
 
 FLATPAK_APPS="$(dirname "$0")/../flatpak-apps.txt"
-while IFS= read -r app; do
-  [[ -z "$app" || "$app" == \#* ]] && continue
-  flatpak list --app | grep -q "$app" || flatpak install -y flathub "$app"
-done < "$FLATPAK_APPS"
 
-log "Installing Flatpak apps..."
-for app in "${FLATPAK_APPS[@]}"; do
-  if flatpak list --app | grep -q "$app"; then
+# --- PHASE 1: Lấy danh sách app hợp lệ từ file ---
+if [ -f "$FLATPAK_APPS" ]; then
+  # Dùng grep để lọc bỏ comment (#) và dòng trống, sau đó nạp vào mảng (array)
+  # mapfile -t VALID_APPS < <(grep -vE '^\s*#|^\s*$' "$FLATPAK_APPS" | xargs)
+  mapfile -t VALID_APPS < <(grep -vE '^\s*#|^\s*$' "$FLATPAK_APPS" | tr -d '\r' | sed 's/^[[:space:]]*//;s/[[:space:]]*$//')
+else
+  log "${YELLOW}Warning:${RESET} flatpak-apps.txt not found."
+  VALID_APPS=()
+fi
+
+log ${VALID_APPS[@]}
+declare -p VALID_APPS
+
+# --- PHASE 2: Thực thi cài đặt ---
+for app in "${VALID_APPS[@]}"; do
+  skip
+  # Kiểm tra xem app đã có ở cấp USER chưa (flag --user cực kỳ quan trọng)
+  if flatpak list --user --app | grep -q "$app"; then
     skip "$app"
   else
-    flatpak install -y flathub "$app" && ok "$app"
+    log "Installing $app..."
+    # Ép sử dụng --user và --non-interactive để tránh hỏi "System hay User"
+    flatpak install --user -y flathub "$app" && ok "$app"
   fi
 done
 
@@ -195,6 +210,32 @@ sudo mount -a && ok "partitions mounted"
 sudo chown -R "$USER:$USER" /data
 sudo chown -R "$USER:$USER" /mnt/build_cache
 ok "ownership configured"
+
+# ─── 8. NVidia Driver ─────────────────────────────────────────────────────────
+
+log "Configuring NVIDIA drivers..."
+
+# Kiểm tra xem nvidia-smi có tồn tại không (dấu hiệu driver đã chạy)
+# Hoặc kiểm tra xem có gói nvidia-driver nào đã được cài chưa
+if command -v nvidia-smi &>/dev/null || dpkg -l | grep -q "nvidia-driver-"; then
+  skip "NVIDIA driver already installed"
+else
+  log "NVIDIA driver not found. Starting installation..."
+  
+  # Thêm PPA để lấy bản driver mới và ổn định nhất (khuyên dùng cho AI/Ollama)
+  # log "Adding graphics-drivers PPA..."
+  # sudo add-apt-repository ppa:graphics-drivers/ppa -y
+  # sudo apt-get update -qq
+
+  # Liệt kê các driver để log (optional)
+  ubuntu-drivers devices
+  
+  log "Installing the recommended NVIDIA driver..."
+  # Cài đặt bản driver được khuyến nghị tự động
+  sudo ubuntu-drivers install && ok "NVIDIA driver installed"
+  
+  log "${YELLOW}IMPORTANT:${RESET} Please reboot your system to load the NVIDIA kernel modules."
+fi
 
 # ─── Done ─────────────────────────────────────────────────────────────────────
 
