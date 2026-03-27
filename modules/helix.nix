@@ -23,24 +23,6 @@
     enable = true;
     defaultEditor = true;
 
-    # settings = {
-    #   editor = {
-    #     # auto-pairs = true;           # already default in recent Helix
-    #     auto-format = true;            # format on :w (if formatter exists)
-    #     auto-info = true;
-    #     completion-replace = true;
-    #     cursorline = true;
-    #     # mouse = false;
-    #     # rulers = [ 100 ];
-    #   };
-
-    #   keys.normal.space = {
-    #     # optional convenience keymaps
-    #     a = ":code-action";
-    #     r = ":rename-symbol";
-    #   };
-    # };
-
     settings = {
       theme = "tokyo-night-storm";
       # --- Editor Settings ---
@@ -101,7 +83,7 @@
           "C-g" = [ ":new" ":insert-output lazygit" ":buffer-close!" ":redraw" ":reload-all" ];
           
           # Git Blame cho dòng hiện tại (Space + B)
-          # "space.B" = ":echo %sh{git show --no-patch --format='%h (%an: %ar): %s' $(git blame -p %{buffer_name} -L%{cursor_line},+1 | head -1 | cut -d' ' -f1)}";
+          space."B" = [ ":echo %sh{git blame -L %{cursor_line},+1 %{buffer_name}}" ];
         };
 
         select = {
@@ -275,6 +257,34 @@
             };
 
             language-servers = [ "rust-analyzer" ];
+
+            debugger = {
+              name = "codelldb";
+              command = "/home/michael/.cursor/extensions/vadimcn.vscode-lldb-1.12.1/adapter/codelldb";
+              transport = "tcp";
+              port-arg = "--port {}";
+            };
+
+            debugger.templates = [
+              {
+                name = "binary";
+                request = "launch";
+                completion = [ { name = "binary"; completion = "filename"; } ];
+                args = {
+                  program = "{0}";
+                  # stopOnEntry = true;
+                  # runInTerminal = true;
+                  # !Note: per project
+                  # cwd = "/data/20_Workspace/10_Active/rust-tutorial/advance_1/backend";
+                  # sourceMap = {
+                  #   "/data/20_Workspace/10_Active/rust-tutorial" = "/home/michael/20_Workspace/10_Active/rust-tutorial";
+                  # };
+                  # initCommands = [
+                  #   "settings set target.source-map /data/20_Workspace/10_Active/rust-tutorial /home/michael/20_Workspace/10_Active/rust-tutorial"
+                  # ];
+                };
+              }
+            ];
           }
         ];
       }
