@@ -23,8 +23,6 @@ let
   workModules = [
     ../../modules/containers.nix
     ../../modules/fonts.nix
-    ../../modules/ide.nix
-    ../../modules/ghostty.nix
     ../../modules/helix.nix
     ../../modules/lazyvim.nix
     ../../modules/tmux.nix
@@ -33,10 +31,10 @@ let
 
   # 3. Nhóm module đầy đủ (Chỉ Full)
   fullModules = [
-    # ../../modules/flatpak.nix
+    ../../modules/ghostty.nix
+    ../../modules/ide.nix
     ../../modules/office.nix
     ../../modules/vscode.nix
-    # ../../modules/nixGL.nix
     # ../../modules/ytdlp.nix
   ];
 in {
