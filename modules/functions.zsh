@@ -509,20 +509,24 @@ docker-mac() {
 
 distro-create() {
   local name=$1
-  distrobox create --name "$name" \
+
+  distrobox create \
+    --name "$name" \
     --image ubuntu:25.10 \
-    --additional-flags "-v /nix:/nix:ro" \
-    --volume /data:/data \
-    --home ~/40_Programs/distrobox/$name
+    --volume /data:/data:rw \
+    --init-hooks "ln -sf /data/20_Workspaces \$HOME/20_Workspaces"
+    # --additional-flags "-v /nix:/nix:ro" \
 }
 
 distro-clone() {
   local name=$1
   local source=$2
-  distrobox create --name "$name" --clone "$source" \
-    --additional-flags "-v /nix:/nix:ro" \
+  distrobox create \
+    --name "$name" \
+    --clone "$source" \
     --volume /data:/data \
-    --home ~/40_Programs/distrobox/$name
+    # --init-hooks "ln -sf /data/20_Workspaces \$HOME/20_Workspaces"
+    # --additional-flags "-v /nix:/nix:ro" \
 }
 # distrobox create --name tauri-dev --image ubuntu:22.04 --volume /data:/data
 # distrobox create --name tauri-dev --image ubuntu:22.04 --volume /data:/data --home ~/20_Workspace
