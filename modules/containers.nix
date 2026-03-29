@@ -1,5 +1,6 @@
 { pkgs, config, ... }: {
   home.packages = with pkgs; [
+    lima
     podman-compose
     distrobox        # Linux only, macOS sẽ ignore nếu không có
     lazydocker

@@ -1,0 +1,66 @@
+# ~/.dotfiles/lima/ubuntu-node.yaml
+# =============================================================================
+# Lima - Ubuntu 25.10 Configuration
+# =============================================================================
+# ─── OS image ────────────────────────────────────────────────────────────────
+images:
+  - location: "https://cloud-images.ubuntu.com/releases/25.10/release/ubuntu-25.10-server-cloudimg-amd64.img"
+    arch: "x86_64"
+
+# ─── Username ────────────────────────────────────────────────────────────────
+# Ép user bên trong VM luôn là michael để đồng bộ với Host
+user:
+  name: "michael"
+
+# ─── VM specs ────────────────────────────────────────────────────────────────
+cpus: 2
+memory: "4GiB"
+disk: "30GiB"
+
+# ─── Mounts ──────────────────────────────────────────────────────────────────
+mounts:
+  - location: "~"
+    writable: true
+  - location: "/data"      # Mount toàn bộ partition data
+    mountPoint: "/data"    # Vào đúng vị trí /data bên trong VM
+    writable: true
+
+# ─── Network ─────────────────────────────────────────────────────────────────
+# networks:
+#   - lima: shared
+
+# ─── Provision: install Rust toolchain ───────────────────────────────────────
+provision:
+  - mode: user
+    script: |
+      # 1. Update & Cài đặt thư viện hệ thống cần cho Rust build (OpenSSL, v.v.)
+      # sudo apt-get update && sudo apt-get install -y build-essential pkg-config libssl-dev curl git
+      sudo apt-get update && sudo apt-get install -y curl unzip git
+
+      # 2. Cài đặt Mise
+      if ! command -v mise &> /dev/null; then
+        curl https://mise.run/bash | sh
+      fi
+
+      # # 2.A Cài đặt rustup (nếu chưa có)
+      # if ! command -v rustc &> /dev/null; then
+      #   curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --default-toolchain stable
+      #   echo 'source $HOME/.cargo/env' >> $HOME/.bashrc
+      # fi
+      # # 3.B Cài đặt các thành phần bổ trợ cho LSP (Helix/Neovim)
+      # source $HOME/.cargo/env
+      # rustup component add rust-analyzer rust-src rustfmt clippy
+      # cargo install cargo-watch sqlx-cli cargo-audit
+
+      # 3. Quan trọng: Kích hoạt Mise và Màu sắc cho Bash
+      if ! grep -q "mise activate" "$HOME/.bashrc"; then
+        echo 'export PATH="$HOME/.local/bin:$PATH"' >> $HOME/.bashrc
+        echo 'eval "$($HOME/.local/bin/mise activate bash)"' >> $HOME/.bashrc
+        # Bật màu cho terminal
+        sed -i 's/#force_color_prompt=yes/force_color_prompt=yes/' $HOME/.bashrc
+        # # (Tùy chọn) Cài Starship prompt - cực nhanh và đẹp cho Staff Engineer
+        # curl -sS https://starship.rs/install.sh | sh -s -- -y
+        # echo 'eval "$(starship init bash)"' >> $HOME/.bashrc
+      fi
+
+      echo "✓ Mise $(mise --version) ready"
