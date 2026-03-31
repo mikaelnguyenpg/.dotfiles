@@ -18,7 +18,7 @@
     wl-clipboard   # clipboard CLI for Wayland
     duf            # disk usage đẹp hơn df
     ncdu           # disk usage interactive
-    mise
+    # mise
     devbox
 
     # ── Fun / terminal eye-candy ──────────────────────────────────

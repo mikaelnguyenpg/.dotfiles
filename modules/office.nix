@@ -36,7 +36,6 @@
 
     # ─── Development ──────────────────────────────────────────────────────────────
 
-    jetbrains.webstorm
     httpie-desktop
   ];
 }

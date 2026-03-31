@@ -34,7 +34,7 @@ let
     ../../modules/ghostty.nix
     ../../modules/ide.nix
     ../../modules/office.nix
-    ../../modules/vscode.nix
+    # ../../modules/vscode.nix
     # ../../modules/ytdlp.nix
   ];
 in {

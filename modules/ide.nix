@@ -1,9 +1,11 @@
 { pkgs, ... }: {
   home.packages = with pkgs; [
-    vimPlugins.LazyVim
+    # vimPlugins.LazyVim
 
     # (Optional)
-    code-cursor
-    claude-code
+    # code-cursor
+    # claude-code
+    # zed-editor
+    # jetbrains.webstorm
   ];
 }
