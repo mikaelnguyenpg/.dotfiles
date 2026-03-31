@@ -19,8 +19,10 @@
       default_layout = "compact";     # hoặc "default", "strider",...
 
       keybinds = {
+        "unbind \"Ctrl g\"" = {};
+
         locked = {
-          "bind \"Ctrl g\"" = { SwitchToMode = "Normal"; };
+          "bind \"Ctrl Shift g\"" = { SwitchToMode = "Normal"; };
 
           "bind \"Ctrl h\"" = { MoveFocusOrTab = "Left"; };
           "bind \"Ctrl l\"" = { MoveFocusOrTab = "Right"; };
@@ -34,6 +36,8 @@
         };
 
         normal = {
+          "bind \"Ctrl Shift g\"" = { SwitchToMode = "Locked"; };
+
           "bind \"Ctrl h\"" = { MoveFocusOrTab = "Left"; };
           "bind \"Ctrl l\"" = { MoveFocusOrTab = "Right"; };
           "bind \"Ctrl k\"" = { MoveFocus = "Up"; };
