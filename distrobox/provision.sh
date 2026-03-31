@@ -1,0 +1,64 @@
+#!/usr/bin/env bash
+# ~/.dotfiles/distrobox/provision.sh
+set -e
+
+# ─── 1. System packages ─────────────────────────────────────────────────────
+sudo apt-get update -qq
+sudo apt-get install -y \
+  vim nano curl wget git zsh \
+  build-essential pkg-config \
+  ca-certificates unzip libssl-dev \
+  lldb
+
+# ─── PATH ───────────────────────────────────────────────────────────────────
+# export PATH="$HOME/.local/bin:$PATH"
+
+# ─── Patch .zshrc — append thay vì overwrite ────────────────────────────────
+# Tạo .zshrc mặc định của zsh nếu chưa có
+if [ ! -f ~/.zshrc ]; then
+  zsh -c 'exit'   # zsh tự tạo .zshrc mặc định khi chạy lần đầu
+fi
+
+# ─── Mise ───────────────────────────────────────────────────────────────────
+if [ ! -f "$HOME/.local/bin/mise" ]; then
+  curl https://mise.run | sh
+fi
+
+# ─── Append Mise to zsh ─────────────────────────────────────────────────────
+# Chỉ append nếu chưa có
+if ! grep -q "mise activate" ~/.zshrc; then
+  cat >> ~/.zshrc << 'EOF'
+
+export PATH="$HOME/.local/bin:$PATH"
+
+if [[ -x "$HOME/.local/bin/mise" ]]; then
+  eval "$($HOME/.local/bin/mise activate zsh)"
+fi
+EOF
+fi
+
+# ─── Trust mise configs trong /data ──────────────────────────────────────────
+mkdir -p ~/.config/mise
+cat > ~/.config/mise/config.toml << 'MISE'
+[settings]
+trusted_config_paths = ["/data"]
+MISE
+
+# ─── Install IDE ─────────────────────────────────────────────────────────────
+# --- VSCode
+if ! command -v code &> /dev/null; then
+  sudo apt-get install -y gpg apt-transport-https
+  wget -qO- https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > packages.microsoft.gpg
+  sudo install -D -o root -g root -m 644 packages.microsoft.gpg /etc/apt/keyrings/packages.microsoft.gpg
+  sudo sh -c 'echo "deb [arch=amd64,arm64,armhf signed-by=/etc/apt/keyrings/packages.microsoft.gpg] https://packages.microsoft.com/repos/code stable main" > /etc/apt/sources.list.d/vscode.list'
+  rm -f packages.microsoft.gpg
+  sudo apt-get update -qq
+  sudo apt-get install -y code
+fi
+
+# --- Zed
+if [ ! -f "$HOME/.local/bin/zed" ]; then
+    curl -f https://zed.dev/install.sh | sh
+fi
+
+echo "✓ Provision complete"

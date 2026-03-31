@@ -513,6 +513,7 @@ distro-create() {
   distrobox create \
     --name "$name" \
     --image ubuntu:25.10 \
+    --home ~/.distrobox/"$name" \
     --volume /data:/data:rw \
     --init-hooks "ln -sf /data/20_Workspaces \$HOME/20_Workspaces"
     # --additional-flags "-v /nix:/nix:ro" \

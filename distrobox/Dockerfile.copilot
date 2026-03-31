@@ -1,0 +1,44 @@
+# docker build -t dev-env:latest .
+# distrobox create --name dev-box --image dev-env:latest
+# distrobox enter dev-box
+
+FROM ubuntu:25.10
+
+# avoid interactive apt
+ENV DEBIAN_FRONTEND=noninteractive
+
+# update & install essentials
+RUN apt-get update && apt-get upgrade -y && \
+    apt-get install -y \
+      curl wget git zsh \
+      build-essential pkg-config \
+      ca-certificates unzip libssl-dev \
+      lldb \
+      software-properties-common \
+      apt-transport-https \
+      gnupg
+
+# set zsh as default shell
+RUN chsh -s /usr/bin/zsh
+
+# install vscode (.deb)
+RUN wget -qO vscode.deb https://update.code.visualstudio.com/latest/linux-deb-x64/stable && \
+    apt-get install -y ./vscode.deb && rm vscode.deb
+
+# install zed (.deb)
+RUN curl -f https://zed.dev/install.sh | sh
+
+# install google-chrome (.deb)
+RUN wget -qO chrome.deb https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb && \
+    apt-get install -y ./chrome.deb && rm chrome.deb
+
+# install mise (toolchain manager)
+# RUN curl https://mise.jdx.dev/install.sh | sh
+RUN curl https://mise.run | sh
+ENV PATH="/root/.local/bin:${PATH}"
+
+# mise toolchains (rust, python)
+RUN mise install rust && mise install python && mise install node && mise install helix && mise install neovim
+
+# default workdir
+WORKDIR /workspace

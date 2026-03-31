@@ -1,0 +1,90 @@
+FROM ubuntu:25.10
+
+ENV DEBIAN_FRONTEND=noninteractive
+
+# -------------------------
+# 1. Essential packages
+# -------------------------
+RUN apt update && apt upgrade -y && apt install -y \
+    curl wget git zsh \
+    build-essential pkg-config \
+    ca-certificates unzip libssl-dev \
+    lldb \
+    software-properties-common \
+    gnupg
+
+# -------------------------
+# 2. Create user (quan trọng cho distrobox)
+# -------------------------
+ARG USERNAME=michael
+ARG USER_UID=1000
+ARG USER_GID=1000
+
+RUN groupadd --gid $USER_GID $USERNAME \
+  && useradd --uid $USER_UID --gid $USER_GID -m $USERNAME \
+  && apt install -y sudo \
+  && echo "$USERNAME ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
+
+USER $USERNAME
+WORKDIR /home/$USERNAME
+
+# -------------------------
+# 3. PATH
+# -------------------------
+ENV PATH="/home/$USERNAME/.local/bin:$PATH"
+
+# -------------------------
+# 4. Install mise
+# -------------------------
+RUN curl https://mise.run | sh
+
+# add mise to shell
+RUN echo 'eval "$(~/.local/bin/mise activate zsh)"' >> ~/.zshrc
+
+# -------------------------
+# 5. Install runtimes via mise
+# -------------------------
+RUN ~/.local/bin/mise use -g \
+    rust@latest \
+    python@3.12 \
+    node@20
+
+# -------------------------
+# 6. Install CLI tools
+# -------------------------
+RUN ~/.local/bin/mise exec -- \
+    bash -c "cargo install helix"
+
+# Neovim (apt version or newer via tar)
+RUN sudo apt install -y neovim
+
+# -------------------------
+# 7. Install VSCode
+# -------------------------
+USER root
+RUN curl -fsSL https://packages.microsoft.com/keys/microsoft.asc \
+  | gpg --dearmor -o /usr/share/keyrings/ms.gpg && \
+  echo "deb [arch=amd64 signed-by=/usr/share/keyrings/ms.gpg] https://packages.microsoft.com/repos/code stable main" \
+  > /etc/apt/sources.list.d/vscode.list
+
+RUN apt update && apt install -y code
+
+# -------------------------
+# 8. Install Chrome
+# -------------------------
+RUN wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb \
+  && apt install -y ./google-chrome-stable_current_amd64.deb \
+  && rm *.deb
+
+# -------------------------
+# 9. Install Zed
+# -------------------------
+USER $USERNAME
+RUN curl -L https://zed.dev/install.sh | sh
+
+# -------------------------
+# 10. Default shell
+# -------------------------
+RUN chsh -s $(which zsh)
+
+CMD ["zsh"]
