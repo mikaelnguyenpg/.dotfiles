@@ -2,8 +2,8 @@
 { pkgs, ... }: {
   home.packages = with pkgs; [
     # ── Clipboard ─────────────────────────────────────────────────
-    xclip # Copy to clipboard for X11
-    wl-clipboard # Copy to clipboard for Wayland
+    xclip          # clipboard CLI for X11
+    wl-clipboard   # clipboard CLI for Wayland
 
     # ── Editor ────────────────────────────────────────────────────
     helix
@@ -14,8 +14,6 @@
     httpie         # curl thân thiện
     tldr           # hướng dẫn lệnh ngắn gọn
     lsd            # ls đẹp hơn
-    xclip          # clipboard CLI for X11
-    wl-clipboard   # clipboard CLI for Wayland
     duf            # disk usage đẹp hơn df
     ncdu           # disk usage interactive
     # mise
