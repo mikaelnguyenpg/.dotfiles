@@ -5,6 +5,7 @@
 
   # ─── Hardware Support (NVIDIA RTX 3070) ─────────────────────────────────────
   hardware.graphics.enable      = true;
+  services.xserver.enable = true;
   services.xserver.videoDrivers = [ "nvidia" ];
   nixpkgs.config.allowUnfree    = true;
 

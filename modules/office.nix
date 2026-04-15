@@ -10,6 +10,7 @@
 
     google-chrome
     # chromium
+    tor-browser
 
     # ─── Communication ────────────────────────────────────────────────────────────
 
@@ -32,10 +33,16 @@
 
     # ─── Graphics & Drawing ───────────────────────────────────────────────────────
 
-    drawing
+    kdePackages.kolourpaint
 
     # ─── Development ──────────────────────────────────────────────────────────────
 
     httpie-desktop
+
+    # ─── VPN ──────────────────────────────────────────────────────────────────────
+    protonvpn-gui
+
+    # Tmp
+    super-productivity
   ];
 }

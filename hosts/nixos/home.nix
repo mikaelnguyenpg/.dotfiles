@@ -25,6 +25,7 @@ let
     ../../modules/fonts.nix
     ../../modules/helix.nix
     ../../modules/lazyvim.nix
+    ../../modules/nixpkgs.nix
     ../../modules/tmux.nix
     ../../modules/zellij.nix
   ];

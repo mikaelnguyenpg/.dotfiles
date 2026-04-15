@@ -28,26 +28,35 @@ in {
 
   # ─── System Packages ────────────────────────────────────────────────────────
   environment.systemPackages = with pkgs; [
-    cacert    # ca-certificates
+    cacert            # ca-certificates
     curl
     gcc
     git
-    gnumake   # make
+    gnumake           # make
     gnupg
     unzip
     wget
+    flameshot         # Screenshot + annotate
+    crow-translate    # GUI translate (Google/Yandex), tray icon
+    # goldendict-ng   # Popup: copy → auto dịch (StarDict)
   ];
 
   # ─── Services ───────────────────────────────────────────────────────────────
+  services.dbus.enable = true;
   services.openssh.enable = true;
+  programs.dconf.enable = true;
+  xdg.portal = {
+    enable = true;
+    extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
+  };
 
   # ─── Nix / Boot ─────────────────────────────────────────────────────────────
-  boot.loader.systemd-boot.configurationLimit = 5;
+  boot.loader.systemd-boot.configurationLimit = 3;
 
   nix.gc = {
     automatic = true;
     dates     = "weekly";
-    options   = "--delete-older-than 7d";
+    options   = "--delete-older-than 3d";
   };
 
   nix.settings.auto-optimise-store = true;

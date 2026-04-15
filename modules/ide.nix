@@ -7,5 +7,10 @@
     # claude-code
     # zed-editor
     # jetbrains.webstorm
+    windsurf
+    geany
+    # kdePackages.kate
+    # lite-xl
+    # lapce
   ];
 }

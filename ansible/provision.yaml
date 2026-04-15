@@ -1,0 +1,183 @@
+---
+# provision.yml
+# Usage: ansible-playbook provision.yml -K
+# -K: prompt for sudo password
+
+- name: Setup dev environment
+  hosts: localhost
+  connection: local
+  become: false
+
+  vars:
+    mise_bin: "{{ ansible_env.HOME }}/.local/bin/mise"
+    mise_global_tools:
+      - helix
+      - neovim
+      - ripgrep
+      - fd
+      - yazi
+      - lazygit
+      - python
+      - rust
+      - node
+
+  tasks:
+
+    # ─── System packages ────────────────────────────────────────────────────
+
+    - name: Update apt cache
+      become: true
+      apt:
+        update_cache: true
+        upgrade: dist
+
+    - name: Install system packages
+      become: true
+      apt:
+        name:
+          - curl
+          - wget
+          - git
+          - zsh
+          - build-essential
+          - pkg-config
+          - ca-certificates
+          - unzip
+          - libssl-dev
+          - xclip
+          - lldb
+        state: present
+
+    # ─── Mise ───────────────────────────────────────────────────────────────
+
+    - name: Install mise
+      shell: curl https://mise.run | sh
+      args:
+        creates: "{{ mise_bin }}"  # skip nếu đã tồn tại
+
+    - name: Add mise activation vào .zshrc
+      blockinfile:
+        path: "{{ ansible_env.HOME }}/.zshrc"
+        create: true
+        marker: "# {mark} ANSIBLE MANAGED — mise"
+        block: |
+          export PATH="$HOME/.local/bin:$PATH"
+
+          if [[ -x "$HOME/.local/bin/mise" ]]; then
+            eval "$($HOME/.local/bin/mise activate zsh)"
+          fi
+
+    - name: Tạo mise config directory
+      file:
+        path: "{{ ansible_env.HOME }}/.config/mise"
+        state: directory
+        mode: "0755"
+
+    - name: Ghi mise config
+      copy:
+        dest: "{{ ansible_env.HOME }}/.config/mise/config.toml"
+        content: |
+          [settings]
+          trusted_config_paths = ["/data"]
+
+    - name: Install global tools qua mise
+      shell: "{{ mise_bin }} use --global {{ item }}"
+      loop: "{{ mise_global_tools }}"
+      changed_when: false  # mise tự handle idempotency
+
+    - name: Add rust-analyzer và rust-src
+      shell: "{{ mise_bin }} exec -- rustup component add rust-analyzer rust-src"
+      changed_when: false
+
+    - name: Install cargo tools
+      shell: "{{ mise_bin }} exec -- cargo install --locked {{ item }}"
+      loop:
+        - cargo-watch
+        - cargo-edit
+      changed_when: false
+
+    # ─── Devbox ─────────────────────────────────────────────────────────────
+
+    - name: Install devbox
+      become: true
+      shell: curl -fsSL https://get.jetify.com/devbox | bash -s -- -f
+      args:
+        creates: /usr/local/bin/devbox
+
+    # ─── Google Chrome ──────────────────────────────────────────────────────
+
+    - name: Check chrome đã installed chưa
+      command: which google-chrome
+      register: chrome_check
+      failed_when: false
+      changed_when: false
+
+    - name: Download chrome
+      get_url:
+        url: https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+        dest: /tmp/chrome.deb
+      when: chrome_check.rc != 0
+
+    - name: Install Chrome dependencies
+      become: true
+      apt:
+        name:
+          - libasound2t64    # Ubuntu 24.04+ dùng tên mới này
+          - libatk-bridge2.0-0
+          - libgtk-3-0
+          - libxss1
+          - libgbm1
+        state: present
+      when: chrome_check.rc != 0
+
+    - name: Install chrome
+      become: true
+      apt:
+        deb: /tmp/chrome.deb
+        allow_unauthenticated: true   # bỏ qua dependency check nếu vẫn lỗi
+      when: chrome_check.rc != 0
+
+    - name: Xóa chrome installer
+      file:
+        path: /tmp/chrome.deb
+        state: absent
+      when: chrome_check.rc != 0
+
+    # ─── VSCode ─────────────────────────────────────────────────────────────
+
+    - name: Check VSCode đã installed chưa
+      command: which code
+      register: vscode_check
+      failed_when: false
+      changed_when: false
+
+    - name: Download VSCode
+      get_url:
+        url: https://update.code.visualstudio.com/latest/linux-deb-x64/stable
+        dest: /tmp/vscode.deb
+      when: vscode_check.rc != 0
+
+    - name: Install VSCode
+      become: true
+      apt:
+        deb: /tmp/vscode.deb
+      when: vscode_check.rc != 0
+
+    - name: Xóa VSCode installer
+      file:
+        path: /tmp/vscode.deb
+        state: absent
+      when: vscode_check.rc != 0
+
+    # ─── Zed editor ─────────────────────────────────────────────────────────
+
+    - name: Install Zed
+      shell: curl -f https://zed.dev/install.sh | sh
+      args:
+        creates: "{{ ansible_env.HOME }}/.local/bin/zed"
+
+    # ─── Done ────────────────────────────────────────────────────────────────
+
+    - name: Done
+      debug:
+        msg: "✓ Provision complete"

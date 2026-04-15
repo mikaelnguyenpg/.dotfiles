@@ -88,6 +88,9 @@
       # Đảm bảo biến SHELL luôn đúng trong mọi phiên làm việc zsh
       export SHELL=$(which zsh)
 
+      # # Cho phép lazydocker dùng podman thay vì docker
+      # export DOCKER_HOST="unix://$XDG_RUNTIME_DIR/podman/podman.sock"
+
       # export NVM_DIR="$HOME/.nvm"
       # [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
       # [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion

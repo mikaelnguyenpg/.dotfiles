@@ -19,6 +19,17 @@ in
   virtualisation.podman = {
     enable = true;
     dockerCompat = true; # Muốn dùng lệnh 'docker' thay cho 'podman'
+
+    # QUAN TRỌNG: Tạo symlink từ podman.sock sang /var/run/docker.sock
+    dockerSocket.enable = true;
+
+    # # Tùy chọn: Nếu muốn dùng default network giống docker
+    # defaultNetwork.settings.dns_enabled = true;
+  };
+
+  # QUAN TRỌNG: Tạo symlink từ podman.sock sang /var/run/docker.sock
+  environment.sessionVariables = {
+    DOCKER_HOST = "unix://\${XDG_RUNTIME_DIR}/podman/podman.sock";
   };
 
   programs.virt-manager.enable = true;
