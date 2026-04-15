@@ -1,6 +1,6 @@
 ---
 # provision.yml
-# Usage: ansible-playbook provision.yml -K
+# Usage: ansible-playbook provision.yaml -K
 # -K: prompt for sudo password
 
 - name: Setup dev environment

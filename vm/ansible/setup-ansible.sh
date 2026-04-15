@@ -13,7 +13,7 @@ export LC_ALL=en_US.UTF-8
 # 4. Verify
 ansible --version
 
-cat >> ~/.distrobox/box-01/.zshrc << 'EOF'
+cat >> ~/.zshrc << 'EOF'
 
 # --- Locale fix ---
 export LANG=en_US.UTF-8
