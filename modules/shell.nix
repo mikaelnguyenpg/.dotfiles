@@ -18,6 +18,7 @@
     ncdu           # disk usage interactive
     # mise
     devbox
+    lsof
 
     # ── Fun / terminal eye-candy ──────────────────────────────────
     cmatrix        # matrix rain animation trên terminal

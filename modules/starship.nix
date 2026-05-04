@@ -4,7 +4,7 @@ let
   # 1. Tải file preset từ GitHub của Starship
   nerdFontSymbols = builtins.fromTOML (builtins.readFile (pkgs.fetchurl {
     url = "https://raw.githubusercontent.com/starship/starship/master/docs/public/presets/toml/nerd-font-symbols.toml";
-    sha256 = "sha256-MuszO59YVeqvtkabVSeHEGurky9a4bnGqa+Q4vBsn7s="; # Bạn sẽ cần chạy lệnh để lấy mã hash đúng
+    sha256 = "sha256-uEgo0X18vjxhTAteue5ROnNAmLExsP5y5EkV94tqjOw="; # Bạn sẽ cần chạy lệnh để lấy mã hash đúng
   }));
 
   # 2. Định nghĩa danh sách đen (Blacklist) và danh sách trắng (Whitelist)
