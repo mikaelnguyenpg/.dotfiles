@@ -40,7 +40,8 @@
     httpie-desktop
 
     # ─── VPN ──────────────────────────────────────────────────────────────────────
-    protonvpn-gui
+    # protonvpn-gui
+    proton-vpn
 
     # Tmp
     super-productivity

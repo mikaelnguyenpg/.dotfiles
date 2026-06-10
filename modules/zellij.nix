@@ -42,6 +42,10 @@
           "bind \"Ctrl l\"" = { MoveFocusOrTab = "Right"; };
           "bind \"Ctrl k\"" = { MoveFocus = "Up"; };
           "bind \"Ctrl j\"" = { MoveFocus = "Down"; };
+
+          "bind \"Alt f\"" = { ToggleFloatingPanes = []; };
+
+          "bind \"Alt z\"" = { ToggleFocusFullscreen = []; };
         };
       };
     };

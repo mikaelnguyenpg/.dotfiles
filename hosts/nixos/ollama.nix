@@ -27,6 +27,7 @@
 
   fileSystems."/var/lib/ollama" = {
     device  = "/mnt/build_cache/ollama";
+    fsType  = "ext4";
     options = [ "bind" ];
     depends = [ "/mnt/build_cache" ];
   };

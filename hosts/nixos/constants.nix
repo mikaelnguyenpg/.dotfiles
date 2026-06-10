@@ -5,5 +5,5 @@
   hostname    = "nixos";
   gitEmail    = "mikaelnguyen.pg@gmail.com";
   gitName     = "mikaelnguyenpg";
-  stateVersion = "25.11";
+  stateVersion = "26.05";
 }

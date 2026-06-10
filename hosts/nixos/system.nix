@@ -24,6 +24,7 @@ in {
     users.${constants.username}.imports = [
       ./home.nix
     ];
+    backupFileExtension = "backup";
   };
 
   # ─── System Packages ────────────────────────────────────────────────────────

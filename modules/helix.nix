@@ -6,7 +6,7 @@
     typescript-language-server
     vscode-langservers-extracted # Cho HTML/CSS/JSON
     emmet-ls
-    nodePackages.prettier
+    prettier
     tailwindcss-language-server
 
     # Rust
