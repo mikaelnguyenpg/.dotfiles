@@ -14,6 +14,7 @@ in {
     ./vm.nix
     ./keyboard.nix
     ./ollama.nix
+    ./pritunl.nix
   ];
 
   # ─── Home Manager ───────────────────────────────────────────────────────────

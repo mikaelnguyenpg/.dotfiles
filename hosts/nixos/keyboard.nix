@@ -15,4 +15,13 @@
       ];
     };
   };
+
+  # BỔ SUNG ĐOẠN NÀY: Ép hệ thống nhận diện bộ gõ toàn cục
+  environment.variables = {
+    GTK_IM_MODULE = "fcitx";
+    QT_IM_MODULE = "fcitx";
+    XMODIFIERS = "@im=fcitx";
+    # Sửa lỗi riêng cho các app Electron / Chromium chạy dưới Wayland
+    NIXOS_OZONE_WL = "1"; 
+  };
 }

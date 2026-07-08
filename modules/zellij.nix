@@ -33,6 +33,12 @@
 
           "bind \"Alt z\"" = { ToggleFocusFullscreen = []; };
           "bind \"Alt w\"" = { NewPane = []; };
+
+          # =========================================================
+          # Cho phép Ctrl + s chuyển sang Scroll Mode ngay cả khi đang Lock
+          # Bấm: Ctrl + s -> e
+          # =========================================================
+          "bind \"Ctrl s\"" = { SwitchToMode = "Scroll"; };
         };
 
         normal = {

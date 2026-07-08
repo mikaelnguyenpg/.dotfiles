@@ -38,8 +38,11 @@
     # ─── Development ──────────────────────────────────────────────────────────────
 
     httpie-desktop
+    bruno
+    apidog
 
     # ─── VPN ──────────────────────────────────────────────────────────────────────
+    # pritunl-client
     # protonvpn-gui
     proton-vpn
 

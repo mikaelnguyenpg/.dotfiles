@@ -76,6 +76,7 @@
           "{" = [ "goto_prev_paragraph" ];
           "}" = [ "goto_next_paragraph" ];
           "^" = [ "goto_first_nonwhitespace" ];
+          "$" = [ "goto_line_end" ];
           "G" = [ "goto_last_line" ];
           
           # Tích hợp Yazi (File Manager) và Lazygit

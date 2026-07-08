@@ -1,6 +1,8 @@
 { pkgs, ... }: {
   home.packages = with pkgs; [
     # vimPlugins.LazyVim
+    antigravity
+    android-studio
 
     # (Optional)
     # code-cursor

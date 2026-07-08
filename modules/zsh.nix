@@ -65,8 +65,8 @@
       dk-nuclear = "docker system prune -a --volumes -f";
 
       # --- IDE ---
-      code = "distrobox enter box-01 -- code";
-      zed = "distrobox enter box-01 -- zed";
+      # code = "distrobox enter box-01 -- code";
+      # zed = "distrobox enter box-01 -- zed";
     };
 
     # 3. Cấu hình History
