@@ -1,8 +1,9 @@
 { pkgs, config, ... }: {
   programs.ssh = {
     enable = true;
+    enableDefaultConfig = true;
 
-    matchBlocks = {
+    settings = {
       "*" = {
         addKeysToAgent = "yes";   # tự add key vào ssh-agent khi dùng
       };

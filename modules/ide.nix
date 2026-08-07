@@ -1,7 +1,7 @@
 { pkgs, ... }: {
   home.packages = with pkgs; [
     # vimPlugins.LazyVim
-    antigravity
+    antigravity-ide
     android-studio
 
     # (Optional)
@@ -9,7 +9,7 @@
     # claude-code
     # zed-editor
     # jetbrains.webstorm
-    windsurf
+    devin-desktop
     geany
     # kdePackages.kate
     # lite-xl

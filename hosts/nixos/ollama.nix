@@ -1,9 +1,17 @@
 # =============================================================================
 # hosts/nixos/ollama.nix — Local AI Stack (Ollama + Open WebUI)
 # =============================================================================
-{ pkgs, lib, ... }: {
+{ pkgs, lib, ... }:
+let
+  # Tắt cái này = false khi muốn skip build/download nặng của Ollama
+  # (ollama-cuda + open-webui + models). Driver Nvidia phía dưới KHÔNG bị ảnh
+  # hưởng, vẫn build bình thường vì màn hình phụ thuộc vào nó.
+  ollamaStackEnable = false;
+in {
 
   # ─── Hardware Support (NVIDIA RTX 3070) ─────────────────────────────────────
+  # Phần này LUÔN bật, không gộp vào toggle ở trên vì đây là driver màn hình
+  # dùng chung cho cả hệ thống, tắt nhầm có thể mất hình khi reboot.
   hardware.graphics.enable      = true;
   services.xserver.enable = true;
   services.xserver.videoDrivers = [ "nvidia" ];
@@ -18,14 +26,14 @@
 
   # ─── Storage & User Infrastructure ──────────────────────────────────────────
   # Redirect /var/lib/ollama to /mnt/build_cache to save Root partition space
-  users.users.ollama = {
+  users.users.ollama = lib.mkIf ollamaStackEnable {
     isSystemUser = true;
     group        = "ollama";
     home         = "/var/lib/ollama";
   };
-  users.groups.ollama = {};
+  users.groups.ollama = lib.mkIf ollamaStackEnable {};
 
-  fileSystems."/var/lib/ollama" = {
+  fileSystems."/var/lib/ollama" = lib.mkIf ollamaStackEnable {
     device  = "/mnt/build_cache/ollama";
     fsType  = "ext4";
     options = [ "bind" ];
@@ -34,7 +42,7 @@
 
   # ─── Ollama Service ─────────────────────────────────────────────────────────
   services.ollama = {
-    enable      = true;
+    enable      = ollamaStackEnable;
     package     = pkgs.ollama-cuda;
     loadModels  = [
       "llama3.2:3b"      # [2.0GB] Ultralight, extremely fast for daily tasks
@@ -46,7 +54,7 @@
   };
 
   # ─── Systemd Service Tuning ─────────────────────────────────────────────────
-  systemd.services.ollama = {
+  systemd.services.ollama = lib.mkIf ollamaStackEnable {
     # Ensure hardware and storage are ready before starting
     after    = [ "local-fs.target" "nvidia-persistenced.service" ];
 
@@ -61,15 +69,14 @@
 
   # ─── Open WebUI (Local ChatGPT Interface) ───────────────────────────────────
   services.open-webui = {
-    enable       = true;
+    enable       = ollamaStackEnable;
     host         = "127.0.0.1";
     # port         = 8080;
     port         = 8181;
   };
 
   # ─── System Environment ─────────────────────────────────────────────────────
-  environment.systemPackages = with pkgs; [
-    nvtopPackages.nvidia # Real-time GPU monitoring (Essential for AI)
-    ollama               # CLI for manual model management
-  ];
+  environment.systemPackages = with pkgs;
+    [ nvtopPackages.nvidia ] # Real-time GPU monitoring — giữ lại vì đi cùng driver Nvidia
+    ++ lib.optionals ollamaStackEnable [ ollama ]; # CLI quản lý model, chỉ cần khi stack bật
 }

@@ -25,7 +25,7 @@ let
     ../../modules/fonts.nix
     ../../modules/helix.nix
     ../../modules/lazyvim.nix
-    ../../modules/nixpkgs.nix
+    # ../../modules/nixpkgs.nix
     ../../modules/tmux.nix
     ../../modules/zellij.nix
   ];
@@ -42,7 +42,7 @@ in {
   home.username = constants.username;
   home.homeDirectory = constants.homeDir;
   home.stateVersion = constants.stateVersion;
-  home.packages = [ inputs.home-manager.packages.${pkgs.system}.default ];
+  home.packages = [ inputs.home-manager.packages.${pkgs.stdenv.hostPlatform.system}.default ];
 
   # Hợp nhất các module dựa trên Tier
   imports = baseModules
@@ -56,8 +56,8 @@ in {
 
   # Chỗ này là config RIÊNG của máy ubuntu-work
   # ví dụ: git email công việc khác với máy cá nhân
-  programs.git.userEmail = constants.gitEmail;
-  programs.git.userName = constants.gitName;
+  programs.git.settings.user.email = constants.gitEmail;
+  programs.git.settings.user.name = constants.gitName;
 
   programs.home-manager.enable = true;
 }

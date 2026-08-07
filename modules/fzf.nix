@@ -24,21 +24,25 @@
 
     # 1. Tìm kiếm file (Ctrl + T) có Preview
     defaultCommand = "fd --type f --strip-cwd-prefix --hidden --exclude .git";
-    fileWidgetCommand = "fd --type f --strip-cwd-prefix --hidden --exclude .git";
-    fileWidgetOptions = [
-      "--preview 'bat --color=always --style=numbers --line-range=:500 {}'"
-    ];
+    fileWidget = {
+      command = "fd --type f --strip-cwd-prefix --hidden --exclude .git";
+      options = [
+        "--preview 'bat --color=always --style=numbers --line-range=:500 {}'"
+      ];
+    };
 
     # 2. Tìm kiếm lịch sử lệnh (Ctrl + R) - Hiện lệnh đầy đủ trong cửa sổ nhỏ
-    historyWidgetOptions = [
+    historyWidget.options = [
       "--sort"
       "--exact"
     ];
 
     # 3. Di chuyển thư mục nhanh (Alt + C) có Preview dạng cây (tree)
-    changeDirWidgetCommand = "fd --type d --strip-cwd-prefix --hidden --exclude .git";
-    changeDirWidgetOptions = [
-      "--preview 'eza --icons --tree --color=always {} | head -200'"
-    ];
+    changeDirWidget = {
+      command = "fd --type d --strip-cwd-prefix --hidden --exclude .git";
+      options = [
+        "--preview 'eza --icons --tree --color=always {} | head -200'"
+      ];
+    };
   };
 }

@@ -1,7 +1,7 @@
 # =============================================================================
 # system.nix — NixOS system configuration
 # =============================================================================
-{ pkgs, inputs, ... }:
+{ pkgs, inputs, lib, ... }:
 let
   constants = import ./constants.nix;
 in {
@@ -54,6 +54,17 @@ in {
 
   # ─── Nix / Boot ─────────────────────────────────────────────────────────────
   boot.loader.systemd-boot.configurationLimit = 3;
+
+  # Ghi đè giá trị `true` mặc định trong /etc/nixos/configuration.nix (installer
+  # tự sinh lúc cài NixOS). Lý do tắt: firmware ASUS bị bug ghi NVRAM (ENOSPC khi
+  # switch qua version systemd-boot mới). Boot0000 "Linux Boot Manager" đã có sẵn
+  # và đúng, tắt option này an toàn — NixOS vẫn update file /boot bình thường,
+  # chỉ ngừng cố ghi/sửa EFI boot variable trong NVRAM mỗi lần rebuild.
+  boot.loader.efi.canTouchEfiVariables = lib.mkForce false;
+
+  nixpkgs.config.permittedInsecurePackages = [
+    "qtwebengine-5.15.19"
+  ];
 
   nix.gc = {
     automatic = true;
