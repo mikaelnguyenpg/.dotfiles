@@ -39,7 +39,6 @@
       ll     = "eza -l --icons --git";
       lla    = "eza -la --icons --git";
       lt     = "eza --tree --level=2 --icons --git -I 'node_modules|.git'";
-      up     = "cd ..";
 
       # --- TUI Tools & Terminal Productivity ---
       lzd    = "lazydocker";

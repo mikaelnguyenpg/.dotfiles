@@ -420,6 +420,17 @@ chpwd() {
   eza --icons --group-directories-first
 }
 
+up() {
+  local levels=${1:-1}
+  local _target=""
+    local i
+    for ((i=0; i<levels; i++)); do
+      path+="../"
+      _target+="../"
+    done
+  cd "$_target" || return
+}
+
 # Function giúp khởi động macOS Docker
 #     docker run -it \
 #       --name "$container_name" \

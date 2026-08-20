@@ -22,7 +22,9 @@
        cursor-style-blink = true;
   
        # --- Cửa sổ ---
-       window-decoration = true;
+       window-decoration = false;
+       window-height = 40;
+       window-width = 120;
        window-padding-x = 10;
        window-padding-y = 10;
        copy-on-select = true;
