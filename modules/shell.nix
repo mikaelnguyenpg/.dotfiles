@@ -12,7 +12,7 @@
     delta          # diff đẹp hơn
     jq             # xử lý JSON
     httpie         # curl thân thiện
-    tldr           # hướng dẫn lệnh ngắn gọn
+    tealdeer       # hướng dẫn lệnh ngắn gọn(=tldr)
     lsd            # ls đẹp hơn
     duf            # disk usage đẹp hơn df
     ncdu           # disk usage interactive
