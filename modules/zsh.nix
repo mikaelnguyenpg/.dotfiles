@@ -51,6 +51,8 @@
       mx     = "cmatrix";
       yz     = "yazi";
       zj     = "zellij";
+      spf    = "superfile";
+      ddg    = "BROWSER=w3m ddgr";
 
       ## Try nix-shell
       try-ytdlp = "nix-shell -p yt-dlp";

@@ -48,5 +48,17 @@
 
     # Tmp
     super-productivity
+
+    superfile
+
+    # # GPT tools
+    aichat
+    # mods
+    # tgpt
+
+    # # Browser tools
+    ddgr
+    w3m
+    # browsh
   ];
 }

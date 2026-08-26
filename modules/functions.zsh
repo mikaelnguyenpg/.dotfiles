@@ -389,6 +389,7 @@ mbsl() {
 }
 mcharles() { charles > /dev/null >2&1 &; }
 mpritunl() { sudo systemctl restart pritunl-client.service && sudo systemctl status pritunl-client.service && pritunl-client-electron > /dev/null >2&1 &; }
+mw3m() { w3m -o user_agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36" google.com > /dev/null >2&1 &; }
 
 # Function to set local Git user email and name
 # Usage: git_set_user <email> <name>
