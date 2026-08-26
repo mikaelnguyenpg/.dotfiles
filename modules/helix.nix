@@ -9,6 +9,9 @@
     prettier
     tailwindcss-language-server
 
+    # Thêm scls làm engine gợi ý snippet
+    simple-completion-language-server
+
     # Rust
 
     # Python
@@ -18,6 +21,64 @@
     # Dart (Thường cài qua Flutter SDK ngoài Nix hoặc qua pkgs.dart)
     # dart
   ];
+
+  home.file.".config/helix/snippets/snippets.toml".text = ''
+  [[snippets]]
+  prefix = "slg"
+  scope = [ "typescript", "javascript", "typescriptreact", "javascriptreact" ]
+  body = "console.log('[' + new Date().toISOString() + '] [''${1:SSR:Page|CLIENT:Comp|ACTION:ServerAction|API:Route|MIDDLEWARE}] [''${2:ModuleName}] 🚀⚙️✅❌ [''${3:1/3 START|VALIDATE|FETCH|SUCCESS|ERROR}] ''${4:Message}:', ''${5:data});''$0"
+  description = "Structured console.log cho data-flow tracing"
+  [[snippets]]
+  prefix = "sle"
+  scope = [ "typescript", "javascript", "typescriptreact", "javascriptreact" ]
+  body = "console.error('[' + new Date().toISOString() + '] [''${1:SSR:Page|CLIENT:Comp|ACTION:ServerAction|API:Route|MIDDLEWARE}] [''${2:ModuleName}] ❌ [ERROR] ''${3:Message}:', ''${4:error});''$0"
+  description = "Structured console.error"
+  [[snippets]]
+  prefix = "slt"
+  scope = [ "typescript", "javascript", "typescriptreact", "javascriptreact" ]
+  body = "try {\n  ''${1:const result = await someAsyncCall();}\n} catch (error) {\n  console.error('[' + new Date().toISOString() + '] [''${2:ModuleName}] ❌ [ERROR] ''${3:Operation failed}:', error);\n  ''${4:throw error;}\n}''$0"
+  description = "Async try/catch co structured error log"
+  [[snippets]]
+  prefix = "stc"
+  scope = [ "typescript", "javascript", "typescriptreact", "javascriptreact" ]
+  body = "it(`''${1:should do something}`, () => {\n  // Arrange\n  ''${2}\n\n  // Act\n  ''${3}\n\n  // Assert\n  expect(''${4}).toBe(''${5});\n});\n''$0"
+  description = "Test case theo pattern Arrange-Act-Assert"
+  [[snippets]]
+  prefix = "srfc"
+  scope = [ "typescriptreact" ]
+  body = "interface ''${1:ComponentName}Props {\n  ''${2:propName}: ''${3:string};\n}\n\nexport function ''${1:ComponentName}({ ''${2:propName} }: ''${1:ComponentName}Props) {\n  return (\n    <div>''${4}</div>\n  );\n}\n''$0"
+  description = "React Functional Component voi typed props"
+  [[snippets]]
+  prefix = "srfc"
+  scope = [ "javascriptreact" ]
+  body = "export function ''${1:ComponentName}({ ''${2:propName} }) {\n  return (\n    <div>''${3}</div>\n  );\n}\n''$0"
+  description = "React Functional Component"
+  [[snippets]]
+  prefix = "srue"
+  scope = [ "typescriptreact", "javascriptreact" ]
+  body = "useEffect(() => {\n  ''${1:// effect logic}\n\n  return () => {\n    ''${2:// cleanup}\n  };\n}, [''${3:dependencies}]);''$0"
+  description = "useEffect voi cleanup function"
+  [[snippets]]
+  prefix = "sact"
+  scope = [ "typescript", "typescriptreact" ]
+  body = "'use server';\n\nexport async function ''${1:actionName}(''${2:formData: FormData}) {\n  try {\n    ''${3:// validate + process}\n    console.log('[' + new Date().toISOString() + '] [ACTION:ServerAction] [''${1:actionName}] ✅ [SUCCESS] ''${4:Done}');\n  } catch (error) {\n    console.error('[' + new Date().toISOString() + '] [ACTION:ServerAction] [''${1:actionName}] ❌ [ERROR] Failed:', error);\n    throw error;\n  }\n}\n''$0"
+  description = "Next.js Server Action skeleton (TS)"
+  [[snippets]]
+  prefix = "sact"
+  scope = [ "javascript", "javascriptreact" ]
+  body = "'use server';\n\nexport async function ''${1:actionName}(''${2:formData}) {\n  try {\n    ''${3:// validate + process}\n    console.log('[' + new Date().toISOString() + '] [ACTION:ServerAction] [''${1:actionName}] ✅ [SUCCESS] ''${4:Done}');\n  } catch (error) {\n    console.error('[' + new Date().toISOString() + '] [ACTION:ServerAction] [''${1:actionName}] ❌ [ERROR] Failed:', error);\n    throw error;\n  }\n}\n''$0"
+  description = "Next.js Server Action skeleton (JS)"
+  [[snippets]]
+  prefix = "sroute"
+  scope = [ "typescript", "typescriptreact" ]
+  body = "export async function ''${1:GET|POST|PUT|DELETE}(request: Request) {\n  try {\n    ''${2:const body = await request.json();}\n    return Response.json({ ''${3:data} });\n  } catch (error) {\n    console.error('[' + new Date().toISOString() + '] [API:Route] ❌ [ERROR] Request failed:', error);\n    return Response.json({ error: 'Internal error' }, { status: 500 });\n  }\n}\n''$0"
+  description = "Next.js Route Handler skeleton (TS)"
+  [[snippets]]
+  prefix = "sroute"
+  scope = [ "javascript", "javascriptreact" ]
+  body = "export async function ''${1:GET|POST|PUT|DELETE}(request) {\n  try {\n    ''${2:const body = await request.json();}\n    return Response.json({ ''${3:data} });\n  } catch (error) {\n    console.error('[' + new Date().toISOString() + '] [API:Route] ❌ [ERROR] Request failed:', error);\n    return Response.json({ error: 'Internal error' }, { status: 500 });\n  }\n}\n''$0"
+  description = "Next.js Route Handler skeleton (JS)"
+'';
 
   programs.helix = {
     enable        = true;
@@ -29,7 +90,7 @@
       editor = {
         bufferline              = "multiple";
         cursorline              = true;
-        display-inlay-hint      = false;
+        # display-inlay-hint      = false;
         end-of-line-diagnostics = "hint";
         line-number             = "relative";
         rulers                  = [ 100 ];
@@ -137,6 +198,19 @@
       # JavaScript / TypeScript / JSX / TSX
       # ────────────────────────────────────────────────────────────────
       {
+        language-server.scls = {
+          command = "simple-completion-language-server";
+          environment = {
+            RUST_LOG = "info,simple_completion_language_server=info";
+            LOG_FILE = "/tmp/completion.log";
+          };
+          config = {
+            feature_snippets = true;   # Bật tính năng snippet
+            snippets_first = true;     # Ưu tiên đưa snippet lên đầu danh sách gợi ý
+            feature_words = false;     # Tắt gợi ý từ thuần túy (tránh làm loãng menu auto-complete)
+          };
+        };
+
         language-server.typescript-language-server = {
           command = "typescript-language-server";
           args = [ "--stdio" ];
@@ -169,12 +243,12 @@
         language = [
           { name = "javascript";
             formatter = { command = "prettier"; args = [ "--parser" "typescript" ]; };
-            language-servers = [ "typescript-language-server" "emmet-ls" ];
+            language-servers = [ "typescript-language-server" "emmet-ls" "scls" ];
             auto-format = true;
           }
           { name = "typescript";
             formatter = { command = "prettier"; args = [ "--parser" "typescript" ]; };
-            language-servers = [ "typescript-language-server" "emmet-ls" ];
+            language-servers = [ "typescript-language-server" "emmet-ls" "scls" ];
             auto-format = true;
             scope = "source.ts";
             injection-regex = "(ts|typescript)";
@@ -184,12 +258,12 @@
           }
           { name = "jsx";
             formatter = { command = "prettier"; args = [ "--parser" "typescript" ]; };
-            language-servers = [ "typescript-language-server" "emmet-ls" ];
+            language-servers = [ "typescript-language-server" "emmet-ls" "scls" ];
             auto-format = true;
           }
           { name = "tsx";
             formatter = { command = "prettier"; args = [ "--parser" "typescript" ]; };
-            language-servers = [ "typescript-language-server" "emmet-ls" ];
+            language-servers = [ "typescript-language-server" "emmet-ls" "scls" ];
             auto-format = true;
           }
         ];
