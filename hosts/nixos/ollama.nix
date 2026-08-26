@@ -73,6 +73,9 @@ in {
     host         = "127.0.0.1";
     # port         = 8080;
     port         = 8181;
+    environment = {
+      ENABLE_SIGNUP = "True";
+    };
   };
 
   # ─── System Environment ─────────────────────────────────────────────────────
