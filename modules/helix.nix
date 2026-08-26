@@ -20,19 +20,20 @@
   ];
 
   programs.helix = {
-    enable = true;
+    enable        = true;
     defaultEditor = true;
 
     settings = {
       theme = "tokyo-night-storm";
       # --- Editor Settings ---
       editor = {
-        bufferline = "multiple";
-        cursorline = true;
+        bufferline              = "multiple";
+        cursorline              = true;
+        display-inlay-hint      = false;
         end-of-line-diagnostics = "hint";
-        line-number = "relative";
-        rulers = [ 100 ];
-        true-color = true;
+        line-number             = "relative";
+        rulers                  = [ 100 ];
+        true-color              = true;
 
         cursor-shape = {
           insert = "bar";
@@ -46,7 +47,7 @@
 
         indent-guides = {
           character = "╎";
-          render = true;
+          render    = true;
         };
 
         inline-diagnostics = {
@@ -56,7 +57,7 @@
 
         lsp = {
           auto-signature-help = false;
-          display-messages = true;
+          display-messages    = true;
           display-inlay-hints = true;
         };
 
@@ -72,16 +73,16 @@
         };
 
         normal = {
-          esc = [ "collapse_selection" "keep_primary_selection" "normal_mode" ];
-          "{" = [ "goto_prev_paragraph" ];
-          "}" = [ "goto_next_paragraph" ];
-          "^" = [ "goto_first_nonwhitespace" ];
-          "$" = [ "goto_line_end" ];
-          "G" = [ "goto_last_line" ];
+          esc       = [ "collapse_selection" "keep_primary_selection" "normal_mode" ];
+          "{"       = [ "goto_prev_paragraph" ];
+          "}"       = [ "goto_next_paragraph" ];
+          "^"       = [ "goto_first_nonwhitespace" ];
+          "$"       = [ "goto_line_end" ];
+          "G"       = [ "goto_last_line" ];
           
           # Tích hợp Yazi (File Manager) và Lazygit
-          "C-e" = [ ":new" ":insert-output yazi" ":buffer-close!" ":redraw" ":reload-all" ];
-          "C-g" = [ ":new" ":insert-output lazygit" ":buffer-close!" ":redraw" ":reload-all" ];
+          "C-e"     = [ ":new" ":insert-output yazi" ":buffer-close!" ":redraw" ":reload-all" ];
+          "C-g"     = [ ":new" ":insert-output lazygit" ":buffer-close!" ":redraw" ":reload-all" ];
           
           # Git Blame cho dòng hiện tại (Space + B)
           space."B" = [ ":echo %sh{git blame -L %{cursor_line},+1 %{buffer_name}}" ];
@@ -101,15 +102,15 @@
       {
         language-server.emmet-ls = {
           command = "emmet-ls";
-          args = [ "--stdio" ];
+          args    = [ "--stdio" ];
         };
         language-server.vscode-html-language-server = {
           command = "vscode-html-language-server";
-          args = [ "--stdio" ];
+          args    = [ "--stdio" ];
         };
         language-server.vscode-css-language-server = {
           command = "vscode-css-language-server";
-          args = [ "--stdio" ];
+          args    = [ "--stdio" ];
         };
 
         language = [
