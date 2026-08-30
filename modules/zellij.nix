@@ -23,6 +23,7 @@
 
         locked = {
           "bind \"Ctrl Shift g\"" = { SwitchToMode = "Normal"; };
+          "bind \"Alt o\"" = { SwitchToMode = "Session"; };
 
           "bind \"Ctrl h\"" = { MoveFocusOrTab = "Left"; };
           "bind \"Ctrl l\"" = { MoveFocusOrTab = "Right"; };

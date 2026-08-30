@@ -35,9 +35,7 @@
        # --- Phím tắt ---
        keybind = [
          "ctrl+shift+t=new_tab"
-         "ctrl+shift+w=close_tab"
-         "ctrl+alt+left=goto_split:left"
-         "ctrl+alt+right=goto_split:right"
+         "ctrl+shift+w=close_surface"
       ];
     };
   };
