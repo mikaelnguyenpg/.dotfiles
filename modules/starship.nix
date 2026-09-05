@@ -13,6 +13,7 @@ let
     "fortran" 
     "maven" 
     "xmake" 
+    "jj_bookmark"
   ];
 
   # Danh sách các OS mà Starship thực sự hỗ trợ (dựa trên lỗi bạn nhận được)

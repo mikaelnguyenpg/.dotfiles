@@ -17,4 +17,5 @@ nixos:
 	sudo nixos-rebuild switch --flake .#$(HOSTNAME) --impure
 
 update:
-	nix flake update && make detect
+	# nix flake update && make detect
+	sudo nix flake update

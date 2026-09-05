@@ -1,7 +1,7 @@
 { pkgs, config, ... }: {
   programs.ssh = {
     enable = true;
-    enableDefaultConfig = true;
+    enableDefaultConfig = false;
 
     settings = {
       "*" = {
