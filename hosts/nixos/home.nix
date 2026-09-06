@@ -38,6 +38,15 @@ let
     ../../modules/vscode.nix
     # ../../modules/ytdlp.nix
   ];
+
+  # 4. Nhóm module Hyprland desktop (chỉ máy có GUI, độc lập với tier CLI)
+  hyprModules = [
+    ../../modules/hyprland.nix
+    ../../modules/waybar.nix
+    ../../modules/rofi.nix
+    ../../modules/mako.nix
+    ../../modules/hypr-daemons.nix
+  ];
 in {
   home.username = constants.username;
   home.homeDirectory = constants.homeDir;
@@ -47,7 +56,8 @@ in {
   # Hợp nhất các module dựa trên Tier
   imports = baseModules
     ++ (lib.optionals (tier == "standard" || tier == "full") workModules)
-    ++ (lib.optionals (tier == "full") fullModules);
+    ++ (lib.optionals (tier == "full") fullModules)
+    ++ hyprModules;
 
   # Truyền biến tier xuống các module con (như shell.nix) nếu cần lọc sâu hơn
   # Chúng ta dùng "specialArgs" hoặc gán trực tiếp vào config

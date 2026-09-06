@@ -15,6 +15,7 @@ in {
     ./keyboard.nix
     ./ollama.nix
     ./pritunl.nix
+    ./hyprland.nix
   ];
 
   # ─── Home Manager ───────────────────────────────────────────────────────────
@@ -30,6 +31,7 @@ in {
 
   # ─── System Packages ────────────────────────────────────────────────────────
   environment.systemPackages = with pkgs; [
+    adwaita-icon-theme
     cacert            # ca-certificates
     curl
     gcc
@@ -47,13 +49,22 @@ in {
   services.dbus.enable = true;
   services.openssh.enable = true;
   programs.dconf.enable = true;
+
+  environment.sessionVariables = {
+   XCURSOR_THEME = "Adwaita";
+   XCURSOR_SIZE = "24";
+  };
+
   xdg.portal = {
     enable = true;
-    extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
+    extraPortals = [ pkgs.xdg-desktop-portal-gtk pkgs.xdg-desktop-portal-hyprland ];
   };
+
+  security.polkit.enable = true;
 
   # ─── Nix / Boot ─────────────────────────────────────────────────────────────
   boot.loader.systemd-boot.configurationLimit = 3;
+  boot.kernelParams = [ "nvidia_drm.fbdev=1" ];
 
   # Ghi đè giá trị `true` mặc định trong /etc/nixos/configuration.nix (installer
   # tự sinh lúc cài NixOS). Lý do tắt: firmware ASUS bị bug ghi NVRAM (ENOSPC khi
