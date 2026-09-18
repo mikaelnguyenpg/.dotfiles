@@ -60,5 +60,7 @@
     ddgr
     w3m
     # browsh
+
+    figma-linux
   ];
 }
