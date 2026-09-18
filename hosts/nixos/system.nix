@@ -9,13 +9,14 @@ in {
   # ─── Imports ────────────────────────────────────────────────────────────────
   imports = [
     /etc/nixos/configuration.nix
+    # ./base.nix
     inputs.home-manager.nixosModules.home-manager
     ./mount.nix
     ./vm.nix
     ./keyboard.nix
     ./ollama.nix
     ./pritunl.nix
-    ./hyprland.nix
+    # ./hyprland.nix
   ];
 
   # ─── Home Manager ───────────────────────────────────────────────────────────
@@ -31,7 +32,6 @@ in {
 
   # ─── System Packages ────────────────────────────────────────────────────────
   environment.systemPackages = with pkgs; [
-    adwaita-icon-theme
     cacert            # ca-certificates
     curl
     gcc
@@ -43,6 +43,7 @@ in {
     flameshot         # Screenshot + annotate
     crow-translate    # GUI translate (Google/Yandex), tray icon
     # goldendict-ng   # Popup: copy → auto dịch (StarDict)
+    adwaita-icon-theme
   ];
 
   # ─── Services ───────────────────────────────────────────────────────────────

@@ -59,8 +59,8 @@ in {
 
   # Chỗ này là config RIÊNG của máy ubuntu-work
   # ví dụ: git email công việc khác với máy cá nhân
-  programs.git.userEmail = constants.gitEmail;
-  programs.git.userName = constants.gitName;
+  programs.git.settings.user.email = constants.gitEmail;
+  programs.git.settings.user.name = constants.gitName;
 
   programs.home-manager.enable = true;
 }

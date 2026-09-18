@@ -6,7 +6,7 @@ let
   # Tắt cái này = false khi muốn skip build/download nặng của Ollama
   # (ollama-cuda + open-webui + models). Driver Nvidia phía dưới KHÔNG bị ảnh
   # hưởng, vẫn build bình thường vì màn hình phụ thuộc vào nó.
-  ollamaStackEnable = true;
+  ollamaStackEnable = false;
 in {
 
   # ─── Hardware Support (NVIDIA RTX 3070) ─────────────────────────────────────

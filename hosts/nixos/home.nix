@@ -7,30 +7,7 @@ let
   # Chọn: "minimal", "standard", hoặc "full"
   tier = "full";
 
-  # 1. Nhóm module cơ bản (Luôn cài)
-  baseModules = [
-    ../../modules/eza.nix
-    ../../modules/fzf.nix
-    ../../modules/git.nix
-    ../../modules/ssh.nix
-    ../../modules/starship.nix
-    ../../modules/shell.nix # File này sẽ tự lọc package bên trong
-    ../../modules/zoxide.nix
-    ../../modules/zsh.nix
-  ];
-  
-  # 2. Nhóm module làm việc (Standard + Full)
-  workModules = [
-    ../../modules/containers.nix
-    ../../modules/fonts.nix
-    ../../modules/helix.nix
-    ../../modules/lazyvim.nix
-    # ../../modules/nixpkgs.nix
-    ../../modules/tmux.nix
-    ../../modules/zellij.nix
-  ];
-
-  # 3. Nhóm module đầy đủ (Chỉ Full)
+  # Host-specific modules that are enabled only for the full tier.
   fullModules = [
     ../../modules/ghostty.nix
     ../../modules/ide.nix
@@ -39,7 +16,7 @@ let
     # ../../modules/ytdlp.nix
   ];
 
-  # 4. Nhóm module Hyprland desktop (chỉ máy có GUI, độc lập với tier CLI)
+  # Desktop modules are independent from the CLI tier.
   hyprModules = [
     ../../modules/hyprland.nix
     ../../modules/waybar.nix
@@ -54,8 +31,8 @@ in {
   home.packages = [ inputs.home-manager.packages.${pkgs.stdenv.hostPlatform.system}.default ];
 
   # Hợp nhất các module dựa trên Tier
-  imports = baseModules
-    ++ (lib.optionals (tier == "standard" || tier == "full") workModules)
+  imports = [ ../../modules/home/base.nix ]
+    ++ (lib.optionals (tier == "standard" || tier == "full") [ ../../modules/home/work.nix ])
     ++ (lib.optionals (tier == "full") fullModules)
     ++ hyprModules;
 

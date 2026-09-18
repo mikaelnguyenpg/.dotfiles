@@ -45,6 +45,7 @@
       nix-darwin.lib.darwinSystem {
         specialArgs = { inherit inputs; };
         modules = [
+          home-manager.darwinModules.home-manager
           ./hosts/macos/darwin.nix
         ];
       };
