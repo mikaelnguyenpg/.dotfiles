@@ -15,5 +15,6 @@
     pavucontrol
     networkmanagerapplet
     blueman
+    gnome-control-center
   ];
 }

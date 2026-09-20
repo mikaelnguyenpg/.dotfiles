@@ -16,7 +16,7 @@ in {
     ./keyboard.nix
     ./ollama.nix
     ./pritunl.nix
-    # ./hyprland.nix
+    ./hyprland.nix
   ];
 
   # ─── Home Manager ───────────────────────────────────────────────────────────

@@ -19,7 +19,7 @@ let
   # Desktop modules are independent from the CLI tier.
   hyprModules = [
     ../../modules/hyprland.nix
-    ../../modules/waybar.nix
+    ../../modules/wayle.nix
     ../../modules/rofi.nix
     ../../modules/mako.nix
     ../../modules/hypr-daemons.nix
@@ -47,4 +47,8 @@ in {
   programs.git.settings.user.name = constants.gitName;
 
   programs.home-manager.enable = true;
+
+  # Tự restart các systemd --user service bị đổi sau khi switch, khỏi cần
+  # logout/login lại (áp dụng cho wayle, hypridle, hyprpaper, ...)
+  systemd.user.startServices = "sd-switch";
 }
