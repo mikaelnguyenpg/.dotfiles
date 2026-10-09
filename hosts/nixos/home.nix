@@ -9,6 +9,7 @@ let
 
   # Host-specific modules that are enabled only for the full tier.
   fullModules = [
+    ../../modules/carbonyl.nix
     ../../modules/ghostty.nix
     ../../modules/ide.nix
     ../../modules/office.nix
