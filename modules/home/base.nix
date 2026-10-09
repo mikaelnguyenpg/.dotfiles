@@ -1,5 +1,7 @@
 { ... }: {
   imports = [
+    ./user.nix
+
     ../cli/eza.nix
     ../cli/fzf.nix
     ../cli/git.nix

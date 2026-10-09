@@ -25,7 +25,7 @@
     homeConfigurations."${constants.username}@${constants.hostname}" =
       home-manager.lib.homeManagerConfiguration {
         pkgs = nixpkgs.legacyPackages.x86_64-linux;
-        extraSpecialArgs = { inherit inputs nixgl; };
+        extraSpecialArgs = { inherit inputs nixgl constants; };
         modules = [
           ./hosts/ubuntu/home.nix
         ];
