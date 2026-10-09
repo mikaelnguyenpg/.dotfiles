@@ -6,7 +6,7 @@
 
     # (Optional)
     # code-cursor
-    # claude-code
+    claude-code
     # zed-editor
     # jetbrains.webstorm
     devin-desktop
@@ -14,5 +14,7 @@
     # kdePackages.kate
     # lite-xl
     # lapce
+
+    figma-linux
   ];
 }

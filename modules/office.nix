@@ -80,6 +80,9 @@
     w3m
     # browsh
 
-    figma-linux
+    fastfetch
+
+    tuios
+    herdr
   ];
 }

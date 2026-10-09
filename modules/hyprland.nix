@@ -40,13 +40,13 @@
       blur = true
     }
 
-    # Safety net: wayle/hypridle/hyprpaper (home-manager services) chỉ tự start
-    # khi Hyprland được launch qua UWSM (activate graphical-session.target).
-    # Nếu GDM lỡ chọn nhầm entry "Hyprland" thường (không phải "Hyprland
-    # (uwsm-managed)"), target đó không active và 3 service này sẽ không chạy.
+    # Safety net: wayle/hypridle (home-manager services) chỉ tự start khi
+    # Hyprland được launch qua UWSM (activate graphical-session.target). Nếu
+    # GDM lỡ chọn nhầm entry "Hyprland" thường (không phải "Hyprland
+    # (uwsm-managed)"), target đó không active và 2 service này sẽ không chạy.
     # Start thẳng từng service (không đụng target, vì graphical-session.target
     # tự chặn start thủ công) để luôn hoạt động bất kể chọn session nào.
-    exec-once = systemctl --user start wayle.service hypridle.service hyprpaper.service
+    exec-once = systemctl --user start wayle.service hypridle.service
     exec-once = mako
     exec-once = wl-paste --watch cliphist store
     exec-once = hyprpolkitagent
@@ -58,6 +58,9 @@
     bind = $mod, Q, killactive
     bind = $mod, R, exec, rofi -show drun
     bind = $mod, V, exec, cliphist list | rofi -dmenu | cliphist decode | wl-copy
+    bind = $mod SHIFT, T, exec, wayle panel settings
+    bind = $mod SHIFT, N, exec, wayle wallpaper next
+    bind = $mod SHIFT, P, exec, wayle wallpaper previous
     bind = $mod SHIFT, L, exec, hyprlock
     # Lock màn hình trước rồi mới suspend, tránh lộ màn hình vài giây lúc chờ ngủ
     bind = $mod SHIFT, S, exec, hyprlock & sleep 1 && systemctl suspend
