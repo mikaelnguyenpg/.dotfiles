@@ -42,7 +42,7 @@ in {
   # Nhưng đơn giản nhất là dùng _module.args
   _module.args = { inherit tier; };
 
-  # Chỗ này là config RIÊNG của máy ubuntu-work
+  # Config RIÊNG của máy NixOS này
   # ví dụ: git email công việc khác với máy cá nhân
   programs.git.settings.user.email = constants.gitEmail;
   programs.git.settings.user.name = constants.gitName;

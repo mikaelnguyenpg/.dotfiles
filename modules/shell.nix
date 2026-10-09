@@ -1,4 +1,4 @@
-# modules/tools.nix
+# modules/shell.nix
 { pkgs, ... }: {
   home.packages = with pkgs; [
     # ── Clipboard ─────────────────────────────────────────────────
@@ -6,6 +6,8 @@
     wl-clipboard   # clipboard CLI for Wayland
 
     # ── Editor ────────────────────────────────────────────────────
+    # Bản helix "trần" cho tier base (minimal, macOS); tier work có thêm
+    # config + LSP qua helix.nix (cùng package nên không bị cài trùng)
     helix
     
     # ── Core CLI ──────────────────────────────────────────────────
