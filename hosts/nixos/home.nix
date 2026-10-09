@@ -9,21 +9,21 @@ let
 
   # Host-specific modules that are enabled only for the full tier.
   fullModules = [
-    ../../modules/carbonyl.nix
-    ../../modules/ghostty.nix
-    ../../modules/ide.nix
-    ../../modules/office.nix
-    ../../modules/vscode.nix
-    # ../../modules/ytdlp.nix
+    ../../modules/cli/carbonyl.nix
+    ../../modules/apps/ghostty.nix
+    ../../modules/dev/ide.nix
+    ../../modules/apps/office.nix
+    ../../modules/dev/vscode.nix
+    # ../../modules/cli/ytdlp.nix
   ];
 
   # Desktop modules are independent from the CLI tier.
   hyprModules = [
-    ../../modules/hyprland.nix
-    ../../modules/wayle.nix
-    ../../modules/rofi.nix
-    ../../modules/mako.nix
-    ../../modules/hypr-daemons.nix
+    ../../modules/desktop/hyprland.nix
+    ../../modules/desktop/wayle.nix
+    ../../modules/desktop/rofi.nix
+    ../../modules/desktop/mako.nix
+    ../../modules/desktop/hypr-daemons.nix
   ];
 in {
   home.username = constants.username;

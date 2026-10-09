@@ -1,4 +1,4 @@
-# modules/shell.nix
+# modules/cli/shell.nix
 { pkgs, ... }: {
   home.packages = with pkgs; [
     # ── Clipboard ─────────────────────────────────────────────────

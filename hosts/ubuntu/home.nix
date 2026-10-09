@@ -12,35 +12,35 @@ let
 
   # 1. Nhóm module cơ bản (Luôn cài)
   baseModules = [
-    ../../modules/eza.nix
-    ../../modules/fzf.nix
-    ../../modules/git.nix
-    ../../modules/ssh.nix
-    ../../modules/starship.nix
-    ../../modules/shell.nix # File này sẽ tự lọc package bên trong
-    ../../modules/zoxide.nix
-    ../../modules/zsh.nix
+    ../../modules/cli/eza.nix
+    ../../modules/cli/fzf.nix
+    ../../modules/cli/git.nix
+    ../../modules/cli/ssh.nix
+    ../../modules/cli/starship.nix
+    ../../modules/cli/shell.nix # File này sẽ tự lọc package bên trong
+    ../../modules/cli/zoxide.nix
+    ../../modules/cli/zsh.nix
   ];
   
   # 2. Nhóm module làm việc (Standard + Full)
   workModules = [
-    ../../modules/containers.nix
-    ../../modules/fonts.nix
-    ../../modules/helix.nix
-    ../../modules/lazyvim.nix
-    ../../modules/nixpkgs.nix
-    ../../modules/tmux.nix
-    ../../modules/zellij.nix
+    ../../modules/dev/containers.nix
+    ../../modules/core/fonts.nix
+    ../../modules/dev/helix.nix
+    ../../modules/dev/lazyvim.nix
+    ../../modules/core/nixpkgs.nix
+    ../../modules/cli/tmux.nix
+    ../../modules/cli/zellij.nix
   ];
 
   # 3. Nhóm module đầy đủ (Chỉ Full)
   fullModules = [
-    ../../modules/carbonyl.nix
-    ../../modules/ghostty.nix
-    ../../modules/ide.nix
-    ../../modules/nixGL.nix
-    ../../modules/vscode.nix
-    # ../../modules/ytdlp.nix
+    ../../modules/cli/carbonyl.nix
+    ../../modules/apps/ghostty.nix
+    ../../modules/dev/ide.nix
+    ../../modules/core/nixGL.nix
+    ../../modules/dev/vscode.nix
+    # ../../modules/cli/ytdlp.nix
   ];
 in {
   home.username = constants.username;

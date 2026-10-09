@@ -1,4 +1,4 @@
-# modules/containers.nix
+# modules/dev/containers.nix
 { pkgs, config, ... }:
 
 let

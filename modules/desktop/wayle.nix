@@ -1,4 +1,4 @@
-# modules/wayle.nix
+# modules/desktop/wayle.nix
 # HyprPanel is archived (2026-04-27); upstream migrated to Wayle
 # (https://wayle.app). Wayle's `services.wayle` home-manager module manages
 # its own systemd user service, so no exec-once needed in hyprland.conf.

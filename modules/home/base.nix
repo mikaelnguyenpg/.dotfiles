@@ -1,12 +1,12 @@
 { ... }: {
   imports = [
-    ../eza.nix
-    ../fzf.nix
-    ../git.nix
-    ../ssh.nix
-    ../starship.nix
-    ../shell.nix
-    ../zoxide.nix
-    ../zsh.nix
+    ../cli/eza.nix
+    ../cli/fzf.nix
+    ../cli/git.nix
+    ../cli/ssh.nix
+    ../cli/starship.nix
+    ../cli/shell.nix
+    ../cli/zoxide.nix
+    ../cli/zsh.nix
   ];
 }

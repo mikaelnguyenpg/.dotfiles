@@ -1,4 +1,4 @@
-# modules/hypr-daemons.nix
+# modules/desktop/hypr-daemons.nix
 { pkgs, ... }: {
   services.hypridle.enable = true;
   programs.hyprlock.enable = true;

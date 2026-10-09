@@ -1,4 +1,4 @@
-# modules/nixGL.nix
+# modules/core/nixGL.nix
 { config, pkgs, nixgl, ... }:
 
 {

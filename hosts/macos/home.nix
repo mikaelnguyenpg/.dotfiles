@@ -7,15 +7,15 @@
   nixpkgs.config.allowUnfree = true;
 
   imports = [
-    ../../modules/containers.nix
-    ../../modules/eza.nix
-    ../../modules/fzf.nix
-    ../../modules/git.nix
-    ../../modules/shell.nix
-    ../../modules/ssh.nix
-    ../../modules/starship.nix
-    ../../modules/zoxide.nix
-    ../../modules/zsh.nix
+    ../../modules/dev/containers.nix
+    ../../modules/cli/eza.nix
+    ../../modules/cli/fzf.nix
+    ../../modules/cli/git.nix
+    ../../modules/cli/shell.nix
+    ../../modules/cli/ssh.nix
+    ../../modules/cli/starship.nix
+    ../../modules/cli/zoxide.nix
+    ../../modules/cli/zsh.nix
   ];
 
   # Chỗ này là config RIÊNG của máy ubuntu-work

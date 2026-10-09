@@ -1,4 +1,4 @@
-# modules/nixpkgs.nix
+# modules/core/nixpkgs.nix
 { ... }: {
   nixpkgs.config = {
     # Tôi biết đây là phần mềm đóng, nhưng tôi vẫn muốn dùng nó

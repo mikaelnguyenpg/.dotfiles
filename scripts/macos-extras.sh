@@ -75,7 +75,7 @@ fi
 
 # ─── 4. Podman machine ───────────────────────────────────────────────────────
 # macOS không có Linux kernel → podman cần VM nhẹ để chạy container
-# podman binary được quản lý bởi home-manager (modules/containers.nix)
+# podman binary được quản lý bởi home-manager (modules/dev/containers.nix)
 # nhưng 'podman machine' cần khởi tạo một lần
 
 log "Checking podman machine..."
