@@ -36,7 +36,9 @@ let
   # 3. Nhóm module đầy đủ (Chỉ Full)
   fullModules = [
     ../../modules/cli/carbonyl.nix
+    ../../modules/apps/design.nix
     ../../modules/apps/ghostty.nix
+    ../../modules/dev/ai.nix
     ../../modules/dev/ide.nix
     ../../modules/core/nixGL.nix
     ../../modules/dev/vscode.nix

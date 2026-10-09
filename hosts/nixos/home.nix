@@ -9,12 +9,25 @@ let
 
   # Host-specific modules that are enabled only for the full tier.
   fullModules = [
+    # CLI
     ../../modules/cli/carbonyl.nix
-    ../../modules/apps/ghostty.nix
-    ../../modules/dev/ide.nix
-    ../../modules/apps/office.nix
-    ../../modules/dev/vscode.nix
+    ../../modules/cli/extras.nix
     # ../../modules/cli/ytdlp.nix
+
+    # Dev
+    ../../modules/dev/ai.nix
+    ../../modules/dev/api-tools.nix
+    ../../modules/dev/ide.nix
+    ../../modules/dev/vscode.nix
+
+    # Apps (GUI)
+    ../../modules/apps/browsers.nix
+    ../../modules/apps/communication.nix
+    ../../modules/apps/design.nix
+    ../../modules/apps/ghostty.nix
+    ../../modules/apps/media.nix
+    ../../modules/apps/productivity.nix
+    ../../modules/apps/system.nix
   ];
 
   # Desktop modules are independent from the CLI tier.
