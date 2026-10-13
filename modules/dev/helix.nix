@@ -1,5 +1,23 @@
 { config, pkgs, lib, ... }:
 
+let
+  # TẠM THỜI (2026-10): nixpkgs nixos-unstable @ 7fd4004 khai báo sai hash pnpmDeps
+  # của typescript-language-server 6.0.2 -> "hash mismatch in fixed-output derivation".
+  # master đã sửa đúng hash bên dưới. Chỉ override khi còn hash lỗi, nên khi
+  # nixos-unstable có bản sửa thì đoạn này tự thành no-op -> xoá được.
+  typescript-language-server =
+    let
+      pkg = pkgs.typescript-language-server;
+      brokenHash = "sha256-MUSxDMlbG21KSesGdEvqa2kEpuVfLlXRUX1qV/FGsSo=";
+    in
+    if pkg.pnpmDeps.outputHash == brokenHash then
+      pkg.overrideAttrs (old: {
+        pnpmDeps = old.pnpmDeps.overrideAttrs {
+          outputHash = "sha256-xR/EF60lVBsITKgH7wCM2wHM46PFQevD51KfCENSUH4=";
+        };
+      })
+    else pkg;
+in
 {
   home.packages = with pkgs; [
     # Node.js LSPs & Formatters
