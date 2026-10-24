@@ -17,6 +17,7 @@ in {
     ./ollama.nix
     ./pritunl.nix
     ./hyprland.nix
+    ./power.nix
   ];
 
   # ─── Home Manager ───────────────────────────────────────────────────────────

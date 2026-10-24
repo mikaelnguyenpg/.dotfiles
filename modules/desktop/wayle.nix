@@ -31,7 +31,9 @@ in {
         {
           left = [ "hyprland-workspaces" ];
           center = [ "clock" ];
-          right = [ "media" "microphone" "volume" "network" "bluetooth" "battery" "dashboard" ];
+          # systray: hiện icon của app chạy nền (nm-applet -> menu VPN/WireGuard,
+          # fcitx, blueman, signal, pritunl, ...)
+          right = [ "media" "microphone" "volume" "network" "bluetooth" "battery" "systray" "dashboard" ];
         }
       ];
       # Auto-retheme: đổi wallpaper (qua `wayle wallpaper set ...`) là màu bar/
