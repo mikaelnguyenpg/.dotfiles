@@ -1,6 +1,19 @@
 # modules/desktop/hypr-daemons.nix
 { pkgs, ... }: {
-  services.hypridle.enable = true;
+  # Không có settings thì home-manager không ghi hypridle.conf -> hypridle
+  # crash rồi restart mỗi 10s.
+  services.hypridle = {
+    enable = true;
+    settings = {
+      general = {
+        lock_cmd = "pidof hyprlock || hyprlock";
+        before_sleep_cmd = "loginctl lock-session";
+      };
+      listener = [
+        { timeout = 600; on-timeout = "loginctl lock-session"; } # 10 phút -> khoá
+      ];
+    };
+  };
   programs.hyprlock.enable = true;
 
   # Hyprland không tự báo pin yếu (GNOME/KDE mới có) -> batsignal gửi thông

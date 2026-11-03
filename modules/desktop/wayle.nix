@@ -1,7 +1,7 @@
 # modules/desktop/wayle.nix
 # HyprPanel is archived (2026-04-27); upstream migrated to Wayle
 # (https://wayle.app). Wayle's `services.wayle` home-manager module manages
-# its own systemd user service, so no exec-once needed in hyprland.conf.
+# its own systemd user service, so no autostart needed in hyprland.lua.
 { pkgs, config, ... }:
 let
   wallpaperDir = "${config.home.homeDirectory}/Pictures/Wallpapers";
@@ -57,11 +57,12 @@ in {
         # Default (loginctl lock-session / terminate-session) cần 1 trình lắng
         # nghe D-Bus signal từ logind mà Hyprland không có sẵn (GNOME thì có
         # gnome-shell làm việc này) nên bấm không có tác dụng. Đổi sang đúng
-        # lệnh mà keybind $mod+SHIFT+L / $mod+SHIFT+E trong hyprland.conf đang
+        # lệnh mà keybind $mod+SHIFT+L / $mod+SHIFT+E trong hyprland.lua đang
         # dùng và đã biết chắc hoạt động.
         dashboard = {
           dropdown-lock-command = "hyprlock";
-          dropdown-logout-command = "hyprctl dispatch exit";
+          # Hyprland >= 0.57: dispatcher là biểu thức Lua
+          dropdown-logout-command = "hyprctl dispatch 'hl.dsp.exit()'";
         };
       };
     };
