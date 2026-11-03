@@ -5,6 +5,7 @@
     ../cli/carbonyl.nix
     ../dev/ai.nix
     ../dev/ide.nix
+    ../dev/packagemanager.nix
     ../dev/vscode.nix
     ../apps/design.nix
     ../apps/ghostty.nix
