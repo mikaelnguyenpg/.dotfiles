@@ -2,9 +2,18 @@
 # HyprPanel is archived (2026-04-27); upstream migrated to Wayle
 # (https://wayle.app). Wayle's `services.wayle` home-manager module manages
 # its own systemd user service, so no autostart needed in hyprland.lua.
-{ pkgs, config, ... }:
+{ pkgs, config, lib, ... }:
 let
   wallpaperDir = "${config.home.homeDirectory}/Pictures/Wallpapers";
+
+  # TẠM THỜI (2026-11): nixpkgs @ f4a03c0 link wayle với sqlite của hệ thống
+  # nhưng package quên khai báo sqlite -> "ld: cannot find -lsqlite3".
+  # Chỉ thêm khi còn thiếu, nixpkgs sửa rồi thì tự thành no-op -> xoá được.
+  wayle =
+    if lib.elem pkgs.sqlite (pkgs.wayle.buildInputs or [ ]) then pkgs.wayle
+    else pkgs.wayle.overrideAttrs (old: {
+      buildInputs = (old.buildInputs or [ ]) ++ [ pkgs.sqlite ];
+    });
 in {
   # Gom vài wallpaper vào 1 thư mục để wayle list/cycle được (giữ luôn 3 hình
   # mặc định của Hyprland — wall0/1/2.png, trong đó có hình "cô gái ngồi" —
@@ -23,6 +32,7 @@ in {
 
   services.wayle = {
     enable = true;
+    package = wayle;
     autoInstallDependencies = true;
     settings = {
       # bar.layout phải là MẢNG các layout theo từng monitor (schema: BarLayout[]),
