@@ -6,7 +6,10 @@ let
   # Tắt cái này = false khi muốn skip build/download nặng của Ollama
   # (ollama-cuda + open-webui + models). Driver Nvidia phía dưới KHÔNG bị ảnh
   # hưởng, vẫn build bình thường vì màn hình phụ thuộc vào nó.
-  ollamaStackEnable = false;
+  ollamaStackEnable = true;
+  # TẠM THỜI (2026-11): nixpkgs @ f4a03c0 build lỗi primp (thiếu pkg-config +
+  # zstd) -> kéo theo ddgs -> open-webui. Bật lại khi nixpkgs sửa xong.
+  openWebuiEnable = false;
 in {
 
   # ─── Hardware Support (NVIDIA RTX 3070) ─────────────────────────────────────
@@ -69,7 +72,7 @@ in {
 
   # ─── Open WebUI (Local ChatGPT Interface) ───────────────────────────────────
   services.open-webui = {
-    enable       = ollamaStackEnable;
+    enable       = ollamaStackEnable && openWebuiEnable;
     host         = "127.0.0.1";
     # port         = 8080;
     port         = 8181;
