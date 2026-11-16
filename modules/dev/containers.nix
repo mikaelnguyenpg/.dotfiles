@@ -1,5 +1,5 @@
 # modules/dev/containers.nix
-{ pkgs, config, ... }:
+{ pkgs, config, lib, ... }:
 
 let
   # docker → podman compat symlinks
@@ -67,6 +67,22 @@ in {
     '';
 
   services.podman.enable = true;
+
+  # ─── Tự dọn hằng tuần (xem docs/maintenance.md) ─────────────────────────────
+  # Chỉ xoá image <none> (dangling) — an toàn, không đụng image đang được
+  # container/distrobox dùng, không đụng volume. Dọn sâu hơn: `make clean`.
+  systemd.user.services.podman-prune-dangling = lib.mkIf pkgs.stdenv.hostPlatform.isLinux {
+    Unit.Description = "Xoá image podman <none> không dùng";
+    Service = {
+      Type = "oneshot";
+      ExecStart = "${pkgs.podman}/bin/podman image prune -f";
+    };
+  };
+  systemd.user.timers.podman-prune-dangling = lib.mkIf pkgs.stdenv.hostPlatform.isLinux {
+    Unit.Description = "Dọn image podman hằng tuần";
+    Timer = { OnCalendar = "weekly"; Persistent = true; RandomizedDelaySec = "1h"; };
+    Install.WantedBy = [ "timers.target" ];
+  };
 }
 
 # # ── Podman images ────────────────────────────────

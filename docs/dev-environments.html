@@ -1,0 +1,291 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Môi trường dev</title>
+<style>
+:root{
+  --bg:#fbfaf7; --surface:#ffffff; --surface-2:#f2f0ea; --text:#1f2328; --muted:#5d6470;
+  --border:#e1ddd3; --accent:#3b5bdb; --accent-soft:#e7ecff;
+  --a:#7048e8; --b:#0c8599; --c:#e8590c; --warn:#c92a2a; --ok:#2b8a3e;
+  --code-bg:#f2f0ea;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#15171c; --surface:#1c1f26; --surface-2:#232731; --text:#e6e8ec; --muted:#9aa3b2;
+    --border:#2f3440; --accent:#91a7ff; --accent-soft:#232a45;
+    --a:#b197fc; --b:#66d9e8; --c:#ffa94d; --warn:#ff8787; --ok:#8ce99a;
+    --code-bg:#232731;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#15171c; --surface:#1c1f26; --surface-2:#232731; --text:#e6e8ec; --muted:#9aa3b2;
+  --border:#2f3440; --accent:#91a7ff; --accent-soft:#232a45;
+  --a:#b197fc; --b:#66d9e8; --c:#ffa94d; --warn:#ff8787; --ok:#8ce99a;
+  --code-bg:#232731;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--text);
+  font:16px/1.65 system-ui,-apple-system,"Segoe UI",Roboto,"Noto Sans",sans-serif}
+.wrap{max-width:1040px;margin:0 auto;padding:32px 16px 80px;display:grid;grid-template-columns:220px 1fr;gap:40px}
+nav.toc{position:sticky;top:24px;align-self:start;font-size:14px}
+nav.toc b{display:block;color:var(--muted);text-transform:uppercase;font-size:12px;letter-spacing:.06em;margin-bottom:8px}
+nav.toc a{display:block;color:var(--muted);text-decoration:none;padding:4px 0 4px 10px;border-left:2px solid var(--border)}
+nav.toc a:hover{color:var(--accent);border-left-color:var(--accent)}
+main{min-width:0}
+h1{font-size:2rem;line-height:1.2;margin:0 0 8px}
+h2{font-size:1.4rem;margin:48px 0 14px;padding-top:8px;border-top:1px solid var(--border)}
+h3{font-size:1.1rem;margin:28px 0 8px}
+p,li{color:var(--text)}
+.sub{color:var(--muted);margin:0 0 24px}
+code{font-family:ui-monospace,"JetBrains Mono",Menlo,Consolas,monospace;font-size:.88em;background:var(--code-bg);padding:1px 5px;border-radius:4px}
+pre{background:var(--code-bg);border:1px solid var(--border);border-radius:8px;padding:14px 16px;overflow-x:auto;line-height:1.45}
+pre code{background:none;padding:0;font-size:13px}
+.tldr{background:var(--accent-soft);border:1px solid var(--border);border-left:4px solid var(--accent);border-radius:8px;padding:16px 18px;font-size:1.05rem}
+.table-wrap{overflow-x:auto;border:1px solid var(--border);border-radius:8px;margin:12px 0}
+table{border-collapse:collapse;width:100%;font-size:14px;background:var(--surface)}
+th,td{text-align:left;padding:8px 12px;border-bottom:1px solid var(--border);vertical-align:top}
+th{background:var(--surface-2);font-weight:600;white-space:nowrap}
+tr:last-child td{border-bottom:none}
+.tag{display:inline-block;font-size:12px;font-weight:600;padding:1px 8px;border-radius:999px;border:1px solid currentColor;margin-left:6px;vertical-align:middle}
+.ta{color:var(--a)}.tb{color:var(--b)}.tc{color:var(--c)}
+.layers{display:grid;gap:12px;margin:16px 0}
+.layer{background:var(--surface);border:1px solid var(--border);border-left:5px solid;border-radius:8px;padding:12px 16px}
+.layer.a{border-left-color:var(--a)}.layer.b{border-left-color:var(--b)}.layer.c{border-left-color:var(--c)}
+.layer h4{margin:0 0 4px;font-size:15px}
+.layer p{margin:0;color:var(--muted);font-size:14px}
+.scale{margin:16px 0}
+.scale .bar{height:10px;border-radius:999px;background:linear-gradient(90deg,var(--ok),var(--accent),var(--warn))}
+.scale .steps{display:grid;grid-template-columns:repeat(6,1fr);gap:6px;margin-top:8px;font-size:13px}
+.scale .steps div{text-align:center}
+.scale .steps small{display:block;color:var(--muted);font-size:11.5px;line-height:1.3}
+.scale .ends{display:flex;justify-content:space-between;color:var(--muted);font-size:12px;margin-top:6px}
+.cards{display:grid;gap:14px}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:16px 18px}
+.card h3{margin:0 0 8px}
+.card dl{margin:0;display:grid;grid-template-columns:auto 1fr;gap:4px 14px;font-size:14.5px}
+.card dt{font-weight:600;color:var(--muted)}
+.card dd{margin:0}
+.note{font-size:13.5px;color:var(--muted);margin-top:8px}
+.warn{color:var(--warn);font-weight:600}
+.myths li{margin:6px 0}
+footer{margin-top:56px;color:var(--muted);font-size:13px}
+@media (max-width:820px){
+  .wrap{grid-template-columns:1fr;gap:0;padding-top:20px}
+  nav.toc{position:static;margin-bottom:8px;display:flex;flex-wrap:wrap;gap:6px}
+  nav.toc b{width:100%}
+  nav.toc a{border:1px solid var(--border);border-radius:999px;padding:3px 10px}
+  .scale .steps{grid-template-columns:repeat(3,1fr)}
+  .card dl{grid-template-columns:1fr}
+  .card dt{margin-top:6px}
+  h1{font-size:1.6rem}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+<nav class="toc">
+  <b>Mục lục</b>
+  <a href="#tldr">1. Tóm gọn</a>
+  <a href="#layers">2. Ba tầng</a>
+  <a href="#scale">3. Thang cô lập</a>
+  <a href="#tools">4. Từng công cụ</a>
+  <a href="#compare">5. So sánh tổng</a>
+  <a href="#decide">6. Cây quyết định</a>
+  <a href="#workflow">7. Workflow</a>
+  <a href="#cleanup">8. Dọn dẹp</a>
+  <a href="#myths">9. Hiểu lầm</a>
+</nav>
+<main>
+<h1>Môi trường dev: chọn công cụ nào, khi nào?</h1>
+<p class="sub">devbox · Nix devShell · podman · compose · distrobox · lima · dev container · ansible · .sh. Cập nhật 2026-11-16. Bản markdown: <code>docs/dev-environments.md</code></p>
+
+<h2 id="tldr">1. Tóm gọn trong 1 câu</h2>
+<div class="tldr"><b>Nix/home-manager</b> cho cả máy · <b>devbox</b> cho công cụ của dự án · <b>podman</b> cho dịch vụ · <b>distrobox</b> khi bí · <b>dev container</b> khi làm theo team · <b>ansible</b> cho server · <b>.sh</b> chỉ để mồi (bootstrap) · <b>lima</b> gần như không cần trên Linux.</div>
+
+<h2 id="layers">2. Bức tranh tổng quan: 3 tầng</h2>
+<p>Các công cụ này <b>không thay thế nhau</b>. Chúng giải quyết những tầng khác nhau:</p>
+<div class="layers">
+  <div class="layer a"><h4>A. Cả máy <span class="tag ta">NixOS + home-manager · ansible · .sh</span></h4><p>Máy (hoặc server) cài gì, cấu hình ra sao?</p></div>
+  <div class="layer b"><h4>B. Từng dự án <span class="tag tb">devbox · nix develop · dev container</span></h4><p>Dự án X cần node/python/go phiên bản nào?</p></div>
+  <div class="layer c"><h4>C. Cô lập / dịch vụ <span class="tag tc">podman + compose · distrobox · lima / VM</span></h4><p>Chạy Postgres, Redis, phần mềm "lạ", OS khác ở đâu?</p></div>
+</div>
+<p>Một dự án thực tế thường dùng <b>cả 3 tầng cùng lúc</b>: NixOS (máy) → devbox (node 20 cho dự án) → podman compose (Postgres).</p>
+
+<h2 id="scale">3. Thang cô lập (nhẹ → nặng)</h2>
+<div class="scale">
+  <div class="bar"></div>
+  <div class="steps">
+    <div><b>.sh / ansible</b><small>cài thẳng vào máy</small></div>
+    <div><b>devbox / nix</b><small>đổi PATH, không cô lập</small></div>
+    <div><b>distrobox</b><small>container, chung $HOME, GPU</small></div>
+    <div><b>dev container</b><small>container + IDE bên trong</small></div>
+    <div><b>podman</b><small>container cô lập</small></div>
+    <div><b>lima / VM</b><small>máy ảo, kernel riêng</small></div>
+  </div>
+  <div class="ends"><span>nhẹ, nhanh, ít cô lập</span><span>nặng, chậm, cô lập mạnh</span></div>
+</div>
+<ul>
+  <li><b>Càng sang phải</b>: càng an toàn, càng giống production, nhưng càng tốn ổ, RAM và thời gian khởi động.</li>
+  <li><b>Càng sang trái</b>: càng nhanh, dùng thẳng tài nguyên máy, nhưng dễ "lây" sang hệ thống.</li>
+</ul>
+
+<h2 id="tools">4. Từng công cụ</h2>
+<div class="cards">
+
+<div class="card"><h3>Nix / NixOS + home-manager <span class="tag ta">A · cả máy</span></h3><dl>
+<dt>Là gì</dt><dd>Mô tả <b>toàn bộ máy</b> bằng code (<code>~/.dotfiles</code>). Chạy <code>make nixos</code> thì máy khớp đúng với config.</dd>
+<dt>Mạnh</dt><dd>Khai báo đầy đủ (bỏ dòng nào thì gói đó bị gỡ), rollback bằng generation, tái tạo máy y hệt.</dd>
+<dt>Yếu</dt><dd>Học khó; binary tải về từ ngoài thường không chạy thẳng được (cần nix-ld / distrobox).</dd>
+<dt>Dùng khi</dt><dd>Mọi thứ thuộc về <b>máy của bạn</b>: app, font, Hyprland, service hệ thống.</dd>
+</dl></div>
+
+<div class="card"><h3>Ansible <span class="tag ta">A · nhiều máy / server</span></h3><dl>
+<dt>Là gì</dt><dd>Viết <b>playbook YAML</b> mô tả trạng thái mong muốn, rồi Ansible <b>SSH vào máy</b> (không cần cài agent) để cài và cấu hình.</dd>
+<dt>Mạnh</dt><dd>Quản lý <b>nhiều server cùng lúc</b>, idempotent (chạy lại nhiều lần vẫn ra cùng kết quả), nhiều module (apt, systemd, user, file…), dùng được cho Ubuntu/Debian/RHEL.</dd>
+<dt>Yếu</dt><dd>Không khai báo trọn vẹn: xoá một task khỏi playbook <b>không</b> gỡ thứ nó đã cài. Kết quả còn phụ thuộc trạng thái sẵn có của máy. Chậm hơn một script.</dd>
+<dt>Dùng khi</dt><dd>Dựng hoặc cấu hình <b>VPS/server không chạy NixOS</b>, nhiều máy giống nhau, staging/prod, provisioning VM.</dd>
+<dt>Không cần</dt><dd>Khi máy đã là NixOS (Nix làm việc này tốt hơn).</dd>
+</dl><p class="note">Trong repo: <code>vm/ansible/provision.yaml</code></p></div>
+
+<div class="card"><h3>Shell script <code>.sh</code> <span class="tag ta">A · mồi ban đầu</span></h3><dl>
+<dt>Là gì</dt><dd>Một chuỗi lệnh <code>apt install …</code>, <code>curl … | sh</code>, <code>ln -s …</code>.</dd>
+<dt>Mạnh</dt><dd>Không cần gì ngoài bash; nhanh để viết; chạy ở đâu cũng được.</dd>
+<dt>Yếu</dt><dd><b>Không idempotent</b> (chạy 2 lần dễ lỗi hoặc trùng), dễ lệch theo thời gian, khó gỡ, phụ thuộc distro.</dd>
+<dt>Dùng khi</dt><dd><b>Bootstrap</b> (cài Nix/ansible lần đầu), tác vụ nhỏ một lần, glue giữa các công cụ, CI đơn giản.</dd>
+<dt>Tránh khi</dt><dd>Muốn quản lý lâu dài cả một máy. Khi đó chuyển sang Nix hoặc ansible.</dd>
+</dl><p class="note">Trong repo: <code>bootstrap/{ubuntu,fedora,macos}.sh</code>, <code>scripts/*.sh</code></p></div>
+
+<div class="card"><h3>devbox <span class="tag tb">B · công cụ dự án</span></h3><dl>
+<dt>Là gì</dt><dd>File <code>devbox.json</code> liệt kê gói, lấy từ <b>Nix</b>. Chạy <code>devbox shell</code> (hoặc dùng direnv) để có đúng phiên bản. <b>Không có container</b>, chỉ đổi <code>PATH</code>.</dd>
+<dt>Mạnh</dt><dd>Siêu nhẹ, khởi động tức thì, chạy native nên nhanh; có <code>devbox services</code> (Postgres, Redis… chạy native không cần container); dễ hơn viết flake.</dd>
+<dt>Yếu</dt><dd>Không cô lập (tiến trình chạy trên máy thật); chỉ dùng được gói có trong nixpkgs.</dd>
+<dt>Dùng khi</dt><dd><b>Lựa chọn đầu tiên</b> cho toolchain dự án trên NixOS và macOS.</dd>
+</dl><pre><code>devbox init
+devbox add nodejs@20 postgresql
+devbox shell
+devbox services up</code></pre></div>
+
+<div class="card"><h3>Nix devShell <code>nix develop</code> <span class="tag tb">B · giống devbox</span></h3><dl>
+<dt>Là gì</dt><dd>devbox nhưng viết bằng Nix thuần (<code>flake.nix</code>).</dd>
+<dt>Mạnh</dt><dd>Linh hoạt tối đa (overlay, patch, build package riêng), không cần thêm công cụ.</dd>
+<dt>Yếu</dt><dd>Phải biết ngôn ngữ Nix; team không quen Nix sẽ khó đọc.</dd>
+<dt>Dùng khi</dt><dd>Cần tuỳ biến mà devbox không làm được, hoặc repo vốn đã là flake.</dd>
+</dl></div>
+
+<div class="card"><h3>podman (+ <code>podman compose</code>) <span class="tag tc">C · dịch vụ</span></h3><dl>
+<dt>Là gì</dt><dd>Chạy <b>container OCI</b> (giống Docker, không cần daemon, rootless). Trên máy này <code>docker</code> = podman (symlink trong <code>modules/dev/containers.nix</code>).</dd>
+<dt>Mạnh</dt><dd>Cô lập tiến trình, mạng và ổ đĩa; chạy đúng image production; <code>compose.yaml</code> dựng nhiều dịch vụ một lúc.</dd>
+<dt>Yếu</dt><dd>Tốn ổ (image, volume), cần dọn định kỳ; mạng và quyền rootless đôi khi rắc rối.</dd>
+<dt>Dùng khi</dt><dd>Chạy <b>dịch vụ</b> (Postgres, Redis, MinIO, Kafka…), test Dockerfile, giống prod.</dd>
+</dl><pre><code>podman compose up -d
+podman ps -a
+podman system df</code></pre></div>
+
+<div class="card"><h3>distrobox <span class="tag tc">C · distro khác trong terminal</span></h3><dl>
+<dt>Là gì</dt><dd>Lớp bọc trên podman. Tạo container Ubuntu/Arch/Fedora nhưng <b>dùng chung <code>$HOME</code>, màn hình, GPU, âm thanh</b> với máy thật.</dd>
+<dt>Mạnh</dt><dd>Chạy được <code>.deb</code>, AUR, binary FHS, installer độc quyền; export app ra menu (<code>distrobox-export</code>).</dd>
+<dt>Yếu</dt><dd><b>Ít cô lập</b> (chung <code>$HOME</code>, nên phần mềm trong box có thể ghi đè dotfiles); dễ quên rồi tích rác (từng chiếm 18G trên máy này).</dd>
+<dt>Dùng khi</dt><dd>Phần mềm <b>không chịu chạy trên NixOS</b> và cần nhanh. Dùng xong thì <code>distrobox rm</code>.</dd>
+</dl><p class="note">Trong repo: <code>vm/distrobox/</code></p></div>
+
+<div class="card"><h3>Dev container <code>.devcontainer/devcontainer.json</code> <span class="tag tb">B</span><span class="tag tc">C · chuẩn cho team</span></h3><dl>
+<dt>Là gì</dt><dd>Một <b>chuẩn mở</b> (containers.dev) mô tả container dev cho dự án, gồm image hoặc Dockerfile, "features", extension VS Code, port, <code>postCreateCommand</code>. <b>IDE chạy bên trong container</b>. Cần podman/docker ở dưới.</dd>
+<dt>Mạnh</dt><dd>Cả team (Windows/macOS/Linux) có <b>môi trường giống hệt nhau</b>; người mới clone repo là chạy được; hợp với GitHub Codespaces và DevPod.</dd>
+<dt>Yếu</dt><dd>Nặng (mỗi dự án một image, kèm volume <code>node_modules</code>…); build chậm; <b>để lại rác</b> (image <code>&lt;none&gt;</code>, buildah working-container, volume, tất cả từng gặp trên máy này); file watcher và hiệu năng ổ đĩa đôi khi kém.</dd>
+<dt>Dùng khi</dt><dd><b>Dự án team đã có sẵn <code>.devcontainer</code></b>, hoặc cần onboarding nhanh cho người không dùng Nix.</dd>
+<dt>NixOS</dt><dd>VS Code cần <code>"dev.containers.dockerPath": "podman"</code>.</dd>
+</dl></div>
+
+<div class="card"><h3>lima / VM (Boxes, virt-manager) <span class="tag tc">C · máy ảo</span></h3><dl>
+<dt>Là gì</dt><dd><b>Máy ảo</b> thật (qemu), có kernel riêng. lima là CLI cho VM Linux; Boxes và virt-manager có giao diện.</dd>
+<dt>Mạnh</dt><dd>Cô lập mạnh nhất; kernel riêng; systemd đầy đủ; chạy được OS khác (Windows).</dd>
+<dt>Yếu</dt><dd>Nặng nhất (RAM, ổ 10–30G mỗi VM), khởi động chậm.</dd>
+<dt>Dùng khi</dt><dd>Test kernel module hoặc systemd thật, mô phỏng server đầy đủ (kết hợp ansible), chạy Windows. <b>lima chủ yếu dành cho macOS</b>; trên Linux hiếm khi cần.</dd>
+</dl><p class="note">Trong repo: <code>vm/lima/ubuntu.yaml</code></p></div>
+</div>
+
+<h2 id="compare">5. Bảng so sánh tổng</h2>
+<div class="table-wrap"><table>
+<tr><th></th><th>Tầng</th><th>Cô lập</th><th>Tốc độ</th><th>Tốn ổ</th><th>Khai báo / tái tạo</th><th>Cho team</th><th>Cho server</th></tr>
+<tr><td><b>NixOS / home-manager</b></td><td>A</td><td>–</td><td>⚡⚡⚡</td><td>trung bình</td><td>✅✅✅</td><td>khó</td><td>NixOS only</td></tr>
+<tr><td><b>ansible</b></td><td>A</td><td>–</td><td>⚡</td><td>–</td><td>✅✅</td><td>✅</td><td>✅✅✅</td></tr>
+<tr><td><b>.sh</b></td><td>A</td><td>–</td><td>⚡⚡⚡</td><td>–</td><td>❌</td><td>✅ (đơn giản)</td><td>⚠️</td></tr>
+<tr><td><b>devbox</b></td><td>B</td><td>❌</td><td>⚡⚡⚡</td><td>thấp</td><td>✅✅✅</td><td>✅✅</td><td>–</td></tr>
+<tr><td><b>Nix devShell</b></td><td>B</td><td>❌</td><td>⚡⚡⚡</td><td>thấp</td><td>✅✅✅</td><td>✅ (nếu biết Nix)</td><td>–</td></tr>
+<tr><td><b>dev container</b></td><td>B+C</td><td>✅✅</td><td>⚡</td><td>cao</td><td>✅✅</td><td>✅✅✅</td><td>–</td></tr>
+<tr><td><b>podman / compose</b></td><td>C</td><td>✅✅</td><td>⚡⚡</td><td>trung bình–cao</td><td>✅✅</td><td>✅✅✅</td><td>✅✅</td></tr>
+<tr><td><b>distrobox</b></td><td>C</td><td>✅ (chung $HOME)</td><td>⚡⚡</td><td>trung bình</td><td>⚠️</td><td>❌</td><td>❌</td></tr>
+<tr><td><b>lima / VM</b></td><td>C</td><td>✅✅✅</td><td>⚡</td><td>rất cao</td><td>✅</td><td>⚠️</td><td>test</td></tr>
+</table></div>
+
+<h2 id="decide">6. Cây quyết định</h2>
+<pre><code>Cần cài/cấu hình cho...
+│
+├─ CẢ MÁY của mình (NixOS)          → Nix / home-manager (~/.dotfiles)
+├─ SERVER / VPS không phải NixOS    → ansible   (lần đầu cài ansible bằng .sh)
+├─ Máy mới, chỉ cần chạy 1 lần      → .sh (bootstrap)
+│
+├─ Một DỰ ÁN cần toolchain (node, python, go...)
+│     ├─ Repo đã có .devcontainer &amp; làm theo team?  → dev container
+│     ├─ Cần tuỳ biến Nix sâu?                       → nix develop (flake)
+│     └─ Còn lại                                     → devbox  ⭐
+│
+├─ Cần DỊCH VỤ (Postgres, Redis, ...)
+│     ├─ Dự án cá nhân, muốn nhẹ                     → devbox services
+│     └─ Giống prod / nhiều service / team          → podman compose ⭐
+│
+├─ Phần mềm KHÔNG CHẠY trên NixOS (.deb, AUR, binary lạ)
+│     ├─ Có trong nixpkgs không? → có thì cài bằng Nix
+│     ├─ Binary đơn lẻ?          → thử nix-ld (đã bật) / steam-run
+│     └─ Vẫn không được          → distrobox (dùng xong rm)
+│
+└─ Cần KERNEL riêng / OS khác / mô phỏng server thật
+      ├─ Windows, app có GUI     → Boxes / virt-manager
+      └─ Linux server + ansible  → lima hoặc VM</code></pre>
+
+<h2 id="workflow">7. Workflow gợi ý cho máy này</h2>
+<h3>7.1 Dự án cá nhân (vd <code>tastelife_02</code>, <code>feed-clone</code>)</h3>
+<pre><code>repo/
+├─ devbox.json      # node, pnpm, psql CLI...
+├─ .envrc           # "eval $(devbox generate direnv --print-envrc)" → cd vào là có môi trường
+└─ compose.yaml     # postgres, redis  →  podman compose up -d</code></pre>
+<ol>
+  <li><code>cd repo</code>: direnv tự kích hoạt devbox.</li>
+  <li><code>podman compose up -d</code>: bật DB.</li>
+  <li>Code bằng helix hoặc VS Code <b>chạy native</b> (nhanh, không qua container).</li>
+  <li>Xong việc: <code>podman compose down</code>. Dự án bỏ hẳn: <code>podman compose down -v</code> (xoá luôn volume).</li>
+</ol>
+<h3>7.2 Dự án team có sẵn <code>.devcontainer</code></h3>
+<ul>
+  <li>Mở bằng VS Code, chọn "Reopen in Container" (backend podman).</li>
+  <li>Hoặc <b>đọc</b> <code>devcontainer.json</code> rồi dựng lại bằng devbox + compose để chạy native (nhanh hơn, ít rác hơn).</li>
+  <li>Định kỳ dọn rác devcontainer (xem mục 8).</li>
+</ul>
+<h3>7.3 Server / VPS</h3>
+<ul>
+  <li>Lần đầu: <code>.sh</code> cài ansible → <code>ansible-playbook -i host, vm/ansible/provision.yaml</code>.</li>
+  <li>Muốn thử playbook trước: dựng VM lima hoặc Boxes, chạy playbook vào VM.</li>
+</ul>
+<h3>7.4 Gặp phần mềm "khó" trên NixOS</h3>
+<ul><li>nixpkgs → nix-ld → distrobox (theo thứ tự). Dùng xong distrobox thì <code>distrobox rm &lt;box&gt;</code> và xoá <code>~/.distrobox/&lt;box&gt;</code>.</li></ul>
+
+<h2 id="cleanup">8. Dọn dẹp</h2>
+<p>Đã tách sang tài liệu riêng: <a href="maintenance.html"><b>Bảo trì &amp; dọn dẹp hệ thống</b></a> (<code>docs/maintenance.md</code>): lịch bảo trì, <code>make health</code> / <code>make clean</code>, những gì đã tự động hoá, những gì cần tự quyết, các bẫy đã gặp.</p>
+
+<h2 id="myths">9. Hiểu lầm hay gặp</h2>
+<ul class="myths">
+  <li><b>"distrobox an toàn như container"</b>: sai. Nó chung <code>$HOME</code> với máy thật.</li>
+  <li><b>"dev container = Docker"</b>: dev container là <b>một chuẩn mô tả</b>; Docker/podman chỉ là thứ chạy bên dưới.</li>
+  <li><b>"ansible thay được Nix"</b>: chỉ một phần. Ansible không gỡ thứ đã bỏ khỏi playbook và không rollback được.</li>
+  <li><b>"devbox là container"</b>: không. Nó chỉ đổi <code>PATH</code> sang gói Nix.</li>
+  <li><b>"<code>docker</code> trên máy này là Docker"</b>: không, đó là podman qua symlink.</li>
+  <li><b>"<code>podman volume prune</code> xoá hết volume"</b>: podman bản mới (6.x trên máy này) mặc định chỉ xoá volume vô danh; cần <code>--all</code>.</li>
+</ul>
+<footer>~/.dotfiles/docs/dev-environments.html · nội dung đồng bộ với dev-environments.md</footer>
+</main>
+</div>
+</body>
+</html>

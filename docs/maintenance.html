@@ -1,0 +1,209 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bảo trì hệ thống</title>
+<style>
+:root{
+  --bg:#fbfaf7; --surface:#ffffff; --surface-2:#f2f0ea; --text:#1f2328; --muted:#5d6470;
+  --border:#e1ddd3; --accent:#3b5bdb; --accent-soft:#e7ecff;
+  --warn:#c92a2a; --ok:#2b8a3e; --amber:#e67700; --code-bg:#f2f0ea;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#15171c; --surface:#1c1f26; --surface-2:#232731; --text:#e6e8ec; --muted:#9aa3b2;
+    --border:#2f3440; --accent:#91a7ff; --accent-soft:#232a45;
+    --warn:#ff8787; --ok:#8ce99a; --amber:#ffc078; --code-bg:#232731;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#15171c; --surface:#1c1f26; --surface-2:#232731; --text:#e6e8ec; --muted:#9aa3b2;
+  --border:#2f3440; --accent:#91a7ff; --accent-soft:#232a45;
+  --warn:#ff8787; --ok:#8ce99a; --amber:#ffc078; --code-bg:#232731;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--text);
+  font:16px/1.65 system-ui,-apple-system,"Segoe UI",Roboto,"Noto Sans",sans-serif}
+.wrap{max-width:1040px;margin:0 auto;padding:32px 16px 80px;display:grid;grid-template-columns:220px 1fr;gap:40px}
+nav.toc{position:sticky;top:24px;align-self:start;font-size:14px}
+nav.toc b{display:block;color:var(--muted);text-transform:uppercase;font-size:12px;letter-spacing:.06em;margin-bottom:8px}
+nav.toc a{display:block;color:var(--muted);text-decoration:none;padding:4px 0 4px 10px;border-left:2px solid var(--border)}
+nav.toc a:hover{color:var(--accent);border-left-color:var(--accent)}
+main{min-width:0}
+h1{font-size:2rem;line-height:1.2;margin:0 0 8px}
+h2{font-size:1.4rem;margin:48px 0 14px;padding-top:8px;border-top:1px solid var(--border)}
+.sub{color:var(--muted);margin:0 0 24px}
+a{color:var(--accent)}
+code{font-family:ui-monospace,"JetBrains Mono",Menlo,Consolas,monospace;font-size:.88em;background:var(--code-bg);padding:1px 5px;border-radius:4px}
+pre{background:var(--code-bg);border:1px solid var(--border);border-radius:8px;padding:14px 16px;overflow-x:auto;line-height:1.45}
+pre code{background:none;padding:0;font-size:13px}
+.tldr{background:var(--accent-soft);border:1px solid var(--border);border-left:4px solid var(--accent);border-radius:8px;padding:14px 18px}
+.tldr ul{margin:0;padding-left:20px}
+.callout{background:var(--surface);border:1px solid var(--border);border-left:4px solid var(--amber);border-radius:8px;padding:12px 16px;font-size:14.5px}
+.table-wrap{overflow-x:auto;border:1px solid var(--border);border-radius:8px;margin:12px 0}
+table{border-collapse:collapse;width:100%;font-size:14px;background:var(--surface)}
+th,td{text-align:left;padding:8px 12px;border-bottom:1px solid var(--border);vertical-align:top}
+th{background:var(--surface-2);font-weight:600;white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr.hi td{background:var(--accent-soft)}
+.timeline{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:16px 0}
+.tl{background:var(--surface);border:1px solid var(--border);border-top:4px solid var(--muted);border-radius:8px;padding:12px 14px;font-size:14px}
+.tl b{display:block;font-size:15px;margin-bottom:4px}
+.tl .who{font-size:12px;color:var(--muted);margin-top:6px}
+.tl.auto{border-top-color:var(--ok)}.tl.me{border-top-color:var(--accent)}.tl.data{border-top-color:var(--amber)}
+.steps{counter-reset:s;list-style:none;padding:0}
+.steps li{counter-increment:s;position:relative;padding:4px 0 4px 38px;margin:6px 0}
+.steps li::before{content:counter(s);position:absolute;left:0;top:4px;width:26px;height:26px;border-radius:50%;background:var(--accent);color:var(--bg);font-weight:700;font-size:13px;display:grid;place-items:center}
+.warn{color:var(--warn);font-weight:600}
+footer{margin-top:56px;color:var(--muted);font-size:13px}
+@media (max-width:820px){
+  .wrap{grid-template-columns:1fr;gap:0;padding-top:20px}
+  nav.toc{position:static;margin-bottom:8px;display:flex;flex-wrap:wrap;gap:6px}
+  nav.toc b{width:100%}
+  nav.toc a{border:1px solid var(--border);border-radius:999px;padding:3px 10px}
+  .timeline{grid-template-columns:1fr 1fr}
+  h1{font-size:1.6rem}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+<nav class="toc">
+  <b>Mục lục</b>
+  <a href="#tldr">1. Tóm gọn</a>
+  <a href="#principles">2. Nguyên tắc</a>
+  <a href="#disks">3. Bản đồ ổ đĩa</a>
+  <a href="#auto">4. Đã tự động</a>
+  <a href="#schedule">5. Lịch</a>
+  <a href="#monthly">6. Hằng tháng</a>
+  <a href="#manual">7. Tự quyết</a>
+  <a href="#cmds">8. Lệnh xem nhanh</a>
+  <a href="#traps">9. Bẫy đã gặp</a>
+  <a href="#log">10. Nhật ký</a>
+</nav>
+<main>
+<h1>Bảo trì &amp; dọn dẹp hệ thống</h1>
+<p class="sub">Cập nhật 2026-11-16 · Bản markdown: <code>docs/maintenance.md</code> · Liên quan: <a href="dev-environments.html">Môi trường dev</a></p>
+
+<h2 id="tldr">1. Tóm gọn</h2>
+<div class="tldr"><ul>
+  <li><b>Hằng ngày / hằng tuần</b>: không phải làm gì. Máy tự dọn và tự báo khi ổ sắp đầy.</li>
+  <li><b>Mỗi tháng ~5 phút</b>: <code>make health</code> → <code>make clean</code> → xem mục "cần tự quyết".</li>
+  <li><b>Khi xong một dự án / mỗi quý</b>: dọn những thứ có dữ liệu (DB, VM, distrobox, đồ cũ).</li>
+  <li><b>Khi nhận thông báo "Ổ … đã dùng 85%"</b>: làm ngay bước hằng tháng.</li>
+</ul></div>
+
+<h2 id="principles">2. Nguyên tắc</h2>
+<ol>
+  <li><b>Chặn từ gốc</b>: giới hạn dung lượng ngay trong config để rác không phình.</li>
+  <li><b>Máy tự dọn phần an toàn</b>: cache, log, image thừa (xoá không mất dữ liệu).</li>
+  <li><b>Người tự quyết phần có dữ liệu</b>: volume DB, VM, distrobox, dự án cũ. Không để máy tự xoá.</li>
+  <li><b>Theo ngưỡng, không chỉ theo lịch</b>: ổ vượt 85% thì máy báo.</li>
+  <li><b>Lưu trữ thay vì xoá</b> khi còn lấn cấn: chuyển sang <code>/data/archive</code> (ổ 1TB, còn rộng).</li>
+</ol>
+
+<h2 id="disks">3. Bản đồ ổ đĩa</h2>
+<div class="table-wrap"><table>
+<tr><th>Phân vùng</th><th>Gắn vào</th><th>Chứa gì</th><th>Ai hay làm đầy</th></tr>
+<tr><td><code>nvme1n1p3</code> 238G</td><td><code>/</code></td><td>NixOS, <code>/nix/store</code>, <code>/home</code></td><td><code>~/.cache</code>, <code>~/.config</code> (Chrome, VS Code), <code>/nix/store</code>, VM Boxes, distrobox</td></tr>
+<tr><td><code>nvme0n1p2</code> 186G</td><td><code>/mnt/build_cache</code>, <code>/var/lib/ollama</code></td><td><b>Podman</b> (image, container, volume), model ollama</td><td>Podman, model AI</td></tr>
+<tr><td><code>nvme0n1p1</code> 767G</td><td><code>/data</code></td><td>Dữ liệu, dự án, archive</td><td>Ít khi đầy</td></tr>
+<tr><td><code>nvme1n1p1</code> 1G</td><td><code>/boot</code></td><td>Kernel</td><td>Nix tự xoá kernel cũ khi GC</td></tr>
+<tr><td><code>nvme1n1p2</code> 238G</td><td><i>không gắn</i></td><td>Chưa rõ, có thể là OS cũ</td><td>Cân nhắc tận dụng</td></tr>
+</table></div>
+<div class="callout">⚠️ Podman <b>không</b> nằm trên <code>/</code>, mà nằm trên <code>/mnt/build_cache</code> (cấu hình trong <code>modules/dev/containers.nix</code>). Dọn podman làm trống ổ CACHE, không phải ổ <code>/</code>.</div>
+
+<h2 id="auto">4. Đã tự động hoá (không cần làm gì)</h2>
+<div class="table-wrap"><table>
+<tr><th>Cái gì</th><th>Cơ chế</th><th>Ở đâu trong config</th></tr>
+<tr><td>Nix store</td><td><code>nix.gc</code> hằng tuần, xoá generation &gt;3 ngày</td><td><code>hosts/nixos/system.nix</code></td></tr>
+<tr><td>File trùng trong Nix store</td><td><code>auto-optimise-store</code></td><td><code>hosts/nixos/system.nix</code></td></tr>
+<tr><td>Log hệ thống (journal)</td><td>Giới hạn 500M, tự xoay vòng</td><td><code>hosts/nixos/system.nix</code></td></tr>
+<tr><td>Cache Chrome</td><td>Giới hạn 1GB</td><td><code>modules/apps/browsers.nix</code></td></tr>
+<tr><td>Image podman <code>&lt;none&gt;</code></td><td>Timer <code>podman-prune-dangling</code> hằng tuần</td><td><code>modules/dev/containers.nix</code></td></tr>
+<tr><td>Cảnh báo ổ đầy</td><td>Timer <code>disk-alert</code> hằng ngày + 10' sau đăng nhập; ≥85% thì gửi thông báo</td><td><code>modules/desktop/hypr-daemons.nix</code></td></tr>
+</table></div>
+<p>Kiểm tra các timer:</p>
+<pre><code>systemctl --user list-timers disk-alert podman-prune-dangling
+systemctl --user start disk-alert        # chạy thử ngay
+journalctl --user -u podman-prune-dangling -n 20</code></pre>
+
+<h2 id="schedule">5. Lịch bảo trì</h2>
+<div class="timeline">
+  <div class="tl auto"><b>Hằng ngày</b>Kiểm tra ổ, ≥85% thì báo<div class="who">🤖 tự động</div></div>
+  <div class="tl auto"><b>Hằng tuần</b>Nix GC, journal, image <code>&lt;none&gt;</code><div class="who">🤖 tự động</div></div>
+  <div class="tl me"><b>Hằng tháng</b><code>make health</code> → <code>make clean</code><div class="who">👤 ~5 phút</div></div>
+  <div class="tl data"><b>Quý / xong dự án</b>Volume DB, distrobox, VM, dự án cũ, Downloads<div class="who">👤 tự quyết</div></div>
+</div>
+<p>Thêm: sau mỗi <code>make update</code> thì chạy <code>make nixos</code> và kiểm tra máy còn chạy ổn. Generation cũ còn giữ để rollback.</p>
+
+<h2 id="monthly">6. Quy trình hằng tháng (~5 phút)</h2>
+<pre><code>cd ~/.dotfiles
+make health            # 1. Xem báo cáo (chỉ đọc, ~4 giây)
+make clean ARGS=-n     # 2. Xem trước sẽ dọn gì
+make clean             # 3. Dọn (hỏi y/N); Chrome nên tắt trước</code></pre>
+<div class="table-wrap"><table>
+<tr><th><code>make health</code> in ra</th><th><code>make clean</code> dọn (an toàn)</th></tr>
+<tr><td>
+% dùng của <code>/</code>, <code>/mnt/build_cache</code>, <code>/data</code>, <code>/boot</code> (vàng ≥80%, đỏ ≥90%)<br>
+Top thư mục trong <code>~</code> và <code>~/.cache</code><br>
+Podman: image, container, volume, working-container sót<br>
+distrobox, lima, Boxes<br>
+Journal, số generation NixOS, <code>/nix/store</code><br>
+<code>~/Downloads</code> và số mục &gt;90 ngày<br>
+<b>Gợi ý</b> cụ thể nên làm gì
+</td><td>
+Working-container buildah/devcontainer<br>
+Image podman không container nào dùng<br>
+Cache pnpm, npm, yarn, uv, thumbnails<br>
+Cache Chrome (tự bỏ qua nếu Chrome đang mở)<br>
+Cuối cùng <b>liệt kê</b> những thứ cần tự quyết (không xoá)
+</td></tr>
+</table></div>
+<p>Tham số: <code>ARGS=-n</code> (xem trước), <code>ARGS=-y</code> (không hỏi). Script: <code>scripts/health.sh</code>, <code>scripts/clean.sh</code>.</p>
+
+<h2 id="manual">7. Cần tự quyết (có dữ liệu)</h2>
+<div class="table-wrap"><table>
+<tr><th>Thứ</th><th>Xem</th><th>Dọn</th></tr>
+<tr><td>Volume podman (DB…)</td><td><code>podman volume ls</code></td><td><code>podman volume rm &lt;tên&gt;</code> hoặc <code>podman volume prune --all -f</code> <span class="warn">phải có --all</span></td></tr>
+<tr><td>distrobox</td><td><code>distrobox list</code></td><td><code>distrobox rm &lt;box&gt;</code> + <code>rm -rf ~/.distrobox/&lt;box&gt;</code></td></tr>
+<tr><td>lima VM</td><td><code>limactl list</code></td><td><code>limactl delete --force &lt;vm&gt;</code> + <code>rm -rf ~/.cache/lima</code></td></tr>
+<tr><td>VM Boxes</td><td>mở Boxes</td><td>xoá trong Boxes</td></tr>
+<tr><td><code>node_modules</code> dự án cũ</td><td><code>du -sh /data/**/node_modules</code></td><td><code>rm -rf</code> hoặc archive cả dự án</td></tr>
+<tr><td><code>~/Downloads</code></td><td><code>make health</code></td><td>chuyển sang <code>/data/archive</code></td></tr>
+<tr><td>Model ollama</td><td><code>ollama list</code></td><td><code>ollama rm &lt;model&gt;</code></td></tr>
+<tr><td>Generation NixOS (gấp)</td><td><code>ls /nix/var/nix/profiles/</code></td><td><code>sudo nix-collect-garbage --delete-older-than 7d</code></td></tr>
+</table></div>
+
+<h2 id="cmds">8. Các lệnh xem nhanh</h2>
+<pre><code>df -h / /mnt/build_cache /data
+du -xh --max-depth=1 ~ ~/.cache ~/.local/share 2&gt;/dev/null | sort -rh | head -20
+podman system df
+podman ps -a --external          # cả working-container ẩn
+journalctl --disk-usage
+lsblk -f</code></pre>
+
+<h2 id="traps">9. Bẫy đã gặp</h2>
+<ul>
+  <li><b><code>podman volume prune</code> không xoá gì</b>: podman bản mới (6.x) mặc định chỉ xoá volume vô danh, cần <code>--all</code>.</li>
+  <li><b>Image <code>&lt;none&gt;</code> không prune được</b>: có working-container của buildah/devcontainer giữ lại, không hiện trong <code>podman ps -a</code>. Phải dùng <code>podman ps -a --external</code> rồi <code>podman rm -f</code>.</li>
+  <li><b><code>yarn cache clean</code> báo command not found</b>: máy không cài yarn global; xoá thẳng <code>~/.cache/yarn</code>.</li>
+  <li><b><code>podman system prune -a</code> xoá luôn các box distrobox</b> (là container đang tắt). Dùng <code>podman image prune -a</code> thay thế.</li>
+  <li><b><code>docker</code> trên máy này = podman</b> (symlink).</li>
+  <li><b>Xoá <code>~/.cache/google-chrome</code> an toàn</b>: mật khẩu, bookmark, lịch sử nằm ở <code>~/.config/google-chrome</code>.</li>
+  <li><b>Log journal</b>: chỉ để tra lỗi; xoá log cũ không ảnh hưởng máy.</li>
+</ul>
+
+<h2 id="log">10. Nhật ký</h2>
+<div class="table-wrap"><table>
+<tr><th>Ngày</th><th>Việc</th><th>Kết quả</th></tr>
+<tr><td>2026-11-14…16</td><td>Dọn lần đầu: podman, distrobox, VM Win11, lima, cache Chrome/pnpm/yarn, journal</td><td><code>/</code>: 168G (76%) → 89G (41%)</td></tr>
+<tr><td>2026-11-16</td><td>Thêm giới hạn journal 500M, cache Chrome 1GB, timer dọn podman, cảnh báo ổ đầy, <code>make health</code>/<code>make clean</code></td><td></td></tr>
+</table></div>
+<footer>~/.dotfiles/docs/maintenance.html · nội dung đồng bộ với maintenance.md</footer>
+</main>
+</div>
+</body>
+</html>

@@ -19,3 +19,12 @@ nixos:
 update:
 	# nix flake update && make detect
 	sudo nix flake update
+
+# Bảo trì — xem docs/maintenance.md
+health:   # báo cáo dung lượng & rác, chỉ đọc
+	@bash scripts/health.sh
+
+clean:    # dọn phần an toàn; ARGS=-n để xem trước, ARGS=-y để khỏi hỏi
+	@bash scripts/clean.sh $(ARGS)
+
+.PHONY: detect ubuntu macos nixos update health clean

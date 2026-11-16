@@ -28,6 +28,31 @@
       "-p" # báo khi cắm/rút sạc
     ];
   };
+  # Cảnh báo ổ đầy: mỗi ngày (và 10' sau khi đăng nhập) kiểm tra các phân vùng,
+  # vượt 85% thì gửi thông báo qua mako. Xem docs/maintenance.md.
+  systemd.user.services.disk-alert = {
+    Unit.Description = "Cảnh báo khi ổ đĩa sắp đầy";
+    Service = {
+      Type = "oneshot";
+      ExecStart = toString (pkgs.writeShellScript "disk-alert" ''
+        limit=85
+        for m in / /mnt/build_cache /data; do
+          ${pkgs.util-linux}/bin/mountpoint -q "$m" || continue
+          p=$(${pkgs.coreutils}/bin/df --output=pcent "$m" | ${pkgs.coreutils}/bin/tail -1 | ${pkgs.coreutils}/bin/tr -dc 0-9)
+          if [ "$p" -ge "$limit" ]; then
+            ${pkgs.libnotify}/bin/notify-send -u critical -a disk-alert \
+              "Ổ $m đã dùng $p%" "Chạy 'make health' trong ~/.dotfiles để xem nên dọn gì."
+          fi
+        done
+      '');
+    };
+  };
+  systemd.user.timers.disk-alert = {
+    Unit.Description = "Kiểm tra dung lượng ổ hằng ngày";
+    Timer = { OnStartupSec = "10min"; OnCalendar = "daily"; Persistent = true; };
+    Install.WantedBy = [ "timers.target" ];
+  };
+
   # Wallpaper giờ do wayle quản lý (backend swww) để có auto-retheme theo
   # matugen — xem modules/wayle.nix. hyprpaper tắt để khỏi có 2 daemon tranh nhau.
 
