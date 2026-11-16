@@ -5,6 +5,7 @@
 { pkgs, config, lib, ... }:
 let
   wallpaperDir = "${config.home.homeDirectory}/Pictures/Wallpapers";
+  wallpaperBank = "${config.home.homeDirectory}/Pictures/Wallpaper-Bank/wallpapers";
 
   # TẠM THỜI (2026-11): nixpkgs @ f4a03c0 link wayle với sqlite của hệ thống
   # nhưng package quên khai báo sqlite -> "ld: cannot find -lsqlite3".
@@ -30,6 +31,22 @@ in {
       "${pkgs.nixos-artwork.wallpapers.dracula}/share/backgrounds/nixos/nix-wallpaper-dracula.png";
   };
 
+  # waypaper: cửa sổ xem trước & chọn wallpaper bằng chuột. backend "none" +
+  # post_command -> waypaper chỉ chọn hình, còn việc đặt hình vẫn do wayle làm
+  # (giữ auto-retheme matugen, không 2 tool tranh nhau vẽ nền).
+  # use_xdg_state: waypaper ghi trạng thái vào ~/.local/state thay vì ghi đè
+  # config.ini (file này do Nix quản lý, chỉ đọc).
+  home.packages = [ pkgs.waypaper ];
+  xdg.configFile."waypaper/config.ini".text = ''
+    [Settings]
+    folder = ${wallpaperBank}
+    all_subfolders = True
+    backend = none
+    fill = fill
+    post_command = wayle wallpaper set $wallpaper
+    use_xdg_state = True
+  '';
+
   services.wayle = {
     enable = true;
     package = wayle;
@@ -53,14 +70,13 @@ in {
       wallpaper = {
         cycling-enabled = true;
         cycling-mode = "shuffle";
-        # Bộ ảnh riêng của bạn, không phải thư mục curated ở trên.
-        cycling-directory = "${config.home.homeDirectory}/Pictures/Wallpaper-Bank/wallpapers/Dynamic-Wallpapers/Dark";
-        monitors = [
-          {
-            name = "eDP-1";
-            wallpaper = "${config.home.homeDirectory}/Pictures/Wallpaper-Bank/wallpapers/Dynamic-Wallpapers/Dark/Fuji-Dark.png";
-          }
-        ];
+        cycling-interval-mins = 5;
+        # Bộ ảnh riêng của bạn (~160 hình), không phải thư mục curated ở trên.
+        # Lưu ý: chỉnh wallpaper trong Settings của wayle sẽ ghi vào
+        # ~/.config/wayle/runtime.toml và ĐÈ lên các giá trị ở đây
+        # -> `wayle config reset wallpaper.<field>` để quay về config Nix.
+        cycling-directory = wallpaperBank;
+        monitors = [ { name = "eDP-1"; fit-mode = "fill"; } ];
       };
       modules = {
         clock.format = "%H:%M";
