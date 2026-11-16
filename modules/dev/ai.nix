@@ -12,6 +12,7 @@ let
 in {
   home.packages = with pkgs; [
     claude-code
+    antigravity-cli
     aichat
     # mods
     # tgpt
