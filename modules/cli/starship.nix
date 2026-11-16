@@ -1,11 +1,10 @@
 { config, pkgs, lib, ... }:
 
 let
-  # 1. Tải file preset từ GitHub của Starship
-  nerdFontSymbols = builtins.fromTOML (builtins.readFile (pkgs.fetchurl {
-    url = "https://raw.githubusercontent.com/starship/starship/master/docs/public/presets/toml/nerd-font-symbols.toml";
-    sha256 = "sha256-NikTdNoPtPtModrvqJiGL6AObzLSYauCz/Fk7hxrjOc="; # Bạn sẽ cần chạy lệnh để lấy mã hash đúng
-  }));
+  # 1. Lấy preset từ chính binary starship đã cài (không tải từ GitHub master
+  #    -> không lệch hash khi upstream sửa file, và luôn khớp phiên bản starship).
+  nerdFontSymbols = builtins.fromTOML (builtins.readFile (pkgs.runCommand "nerd-font-symbols.toml" { }
+    "${pkgs.starship}/bin/starship preset nerd-font-symbols -o $out"));
 
   # 2. Định nghĩa danh sách đen (Blacklist) và danh sách trắng (Whitelist)
   # Danh sách các mục gây lỗi (bạn cứ thấy lỗi cái nào thì thêm vào đây)
