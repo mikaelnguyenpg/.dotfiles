@@ -87,6 +87,9 @@ in {
 
   nix.settings.auto-optimise-store = true;
 
+  # Giới hạn log hệ thống (journalctl) ở 500M, log cũ tự bị xoá dần.
+  services.journald.settings.Journal.SystemMaxUse = "500M";
+
   # ─── Nix-ld ─────────────────────────────────────────────────────────────────
   # to let external plugin/extension(of Cursor/VSCode/...) can run
   programs.nix-ld.enable = true;
