@@ -35,11 +35,18 @@ du -xh --max-depth=1 "$HOME" 2>/dev/null | sort -rh | sed -n '2,11p' | sed 's/^/
 
 hdr "Cache (~/.cache)"
 du -xh --max-depth=1 "$HOME/.cache" 2>/dev/null | sort -rh | sed -n '1,9p' | sed 's/^/  /'
-for d in yarn google-chrome pnpm ms-playwright lima; do
+for d in yarn pnpm ms-playwright lima; do
   [ -d "$HOME/.cache/$d" ] || continue
   kb=$(du -sk "$HOME/.cache/$d" 2>/dev/null | cut -f1)
-  [ "${kb:-0}" -gt 2097152 ] && hint "~/.cache/$d $(size "$HOME/.cache/$d") → make clean"
+  [ "${kb:-0}" -gt 2097152 ] && hint "~/.cache/$d $(size "$HOME/.cache/$d") → make clean"   # >2G
 done
+# Chrome đã giới hạn cache theo từng profile (browsers.nix) nên có trần sẵn
+# (~vài GB với 4 profile) → chỉ nhắc khi vượt hẳn mức bình thường.
+if [ -d "$HOME/.cache/google-chrome" ]; then
+  kb=$(du -sk "$HOME/.cache/google-chrome" 2>/dev/null | cut -f1)
+  [ "${kb:-0}" -gt 6291456 ] && \
+    hint "~/.cache/google-chrome $(size "$HOME/.cache/google-chrome") (>6G) → tắt Chrome rồi make clean ARGS=--chrome"
+fi
 
 # ─── 3. Podman ──────────────────────────────────────────────────────────────
 if have podman; then

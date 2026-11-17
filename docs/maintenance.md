@@ -46,7 +46,7 @@
 | Nix store | `nix.gc` hằng tuần, xoá generation >3 ngày | `hosts/nixos/system.nix` |
 | File trùng trong Nix store | `auto-optimise-store` | `hosts/nixos/system.nix` |
 | Log hệ thống (journal) | Giới hạn 500M, tự xoay vòng | `hosts/nixos/system.nix` (`services.journald.settings`) |
-| Cache Chrome | Giới hạn 1GB | `modules/apps/browsers.nix` (`--disk-cache-size`) |
+| Cache Chrome | Giới hạn 512MB **mỗi profile** (4 profile + Code Cache → tổng ~2–3GB). Không cần dọn định kỳ | `modules/apps/browsers.nix` (`--disk-cache-size`) |
 | Image podman `<none>` | Timer user `podman-prune-dangling` hằng tuần | `modules/dev/containers.nix` |
 | Cảnh báo ổ đầy | Timer user `disk-alert` hằng ngày + 10' sau đăng nhập; ≥85% thì gửi thông báo | `modules/desktop/hypr-daemons.nix` |
 
@@ -77,7 +77,8 @@ journalctl --user -u podman-prune-dangling -n 20
 cd ~/.dotfiles
 make health            # 1. Xem báo cáo (chỉ đọc, ~4 giây)
 make clean ARGS=-n     # 2. Xem trước sẽ dọn gì
-make clean             # 3. Dọn (hỏi y/N); Chrome nên tắt trước
+make clean             # 3. Dọn (hỏi y/N)
+make clean ARGS=--chrome   # (hiếm khi) dọn thêm cache Chrome, tắt Chrome trước
 ```
 
 **`make health`** in ra:
@@ -92,10 +93,10 @@ make clean             # 3. Dọn (hỏi y/N); Chrome nên tắt trước
 **`make clean`** chỉ dọn phần an toàn:
 - working-container của buildah/devcontainer, image podman không container nào dùng
 - cache pnpm, npm, yarn, uv, thumbnails
-- cache Chrome (tự bỏ qua nếu Chrome đang mở)
+- cache Chrome **chỉ khi** thêm `ARGS=--chrome` (tự bỏ qua nếu Chrome đang mở)
 - cuối cùng **liệt kê** những thứ cần tự quyết (không xoá)
 
-Tham số: `ARGS=-n` (xem trước), `ARGS=-y` (không hỏi).
+Tham số: `ARGS=-n` (xem trước), `ARGS=-y` (không hỏi), `ARGS=--chrome` (dọn cả cache Chrome); gộp: `ARGS="-n --chrome"`.
 Script: `scripts/health.sh`, `scripts/clean.sh`.
 
 ---
@@ -146,3 +147,4 @@ lsblk -f
 |---|---|---|
 | 2026-11-14…16 | Dọn lần đầu: podman, distrobox, VM Win11, lima, cache Chrome/pnpm/yarn, journal | `/`: 168G (76%) → 89G (41%) |
 | 2026-11-16 | Thêm giới hạn journal 500M, cache Chrome 1GB, timer dọn podman, cảnh báo ổ đầy, `make health`/`make clean` | |
+| 2026-11-17 | Chrome xuống 512MB/profile; `make clean` không dọn Chrome mặc định (`ARGS=--chrome`); `make health` chỉ nhắc Chrome khi >6G | |

@@ -121,7 +121,7 @@ footer{margin-top:56px;color:var(--muted);font-size:13px}
 <tr><td>Nix store</td><td><code>nix.gc</code> hằng tuần, xoá generation &gt;3 ngày</td><td><code>hosts/nixos/system.nix</code></td></tr>
 <tr><td>File trùng trong Nix store</td><td><code>auto-optimise-store</code></td><td><code>hosts/nixos/system.nix</code></td></tr>
 <tr><td>Log hệ thống (journal)</td><td>Giới hạn 500M, tự xoay vòng</td><td><code>hosts/nixos/system.nix</code></td></tr>
-<tr><td>Cache Chrome</td><td>Giới hạn 1GB</td><td><code>modules/apps/browsers.nix</code></td></tr>
+<tr><td>Cache Chrome</td><td>Giới hạn 512MB <b>mỗi profile</b> (4 profile + Code Cache → tổng ~2–3GB). Không cần dọn định kỳ</td><td><code>modules/apps/browsers.nix</code></td></tr>
 <tr><td>Image podman <code>&lt;none&gt;</code></td><td>Timer <code>podman-prune-dangling</code> hằng tuần</td><td><code>modules/dev/containers.nix</code></td></tr>
 <tr><td>Cảnh báo ổ đầy</td><td>Timer <code>disk-alert</code> hằng ngày + 10' sau đăng nhập; ≥85% thì gửi thông báo</td><td><code>modules/desktop/hypr-daemons.nix</code></td></tr>
 </table></div>
@@ -143,7 +143,8 @@ journalctl --user -u podman-prune-dangling -n 20</code></pre>
 <pre><code>cd ~/.dotfiles
 make health            # 1. Xem báo cáo (chỉ đọc, ~4 giây)
 make clean ARGS=-n     # 2. Xem trước sẽ dọn gì
-make clean             # 3. Dọn (hỏi y/N); Chrome nên tắt trước</code></pre>
+make clean             # 3. Dọn (hỏi y/N)
+make clean ARGS=--chrome   # (hiếm khi) dọn thêm cache Chrome, tắt Chrome trước</code></pre>
 <div class="table-wrap"><table>
 <tr><th><code>make health</code> in ra</th><th><code>make clean</code> dọn (an toàn)</th></tr>
 <tr><td>
@@ -158,11 +159,11 @@ Journal, số generation NixOS, <code>/nix/store</code><br>
 Working-container buildah/devcontainer<br>
 Image podman không container nào dùng<br>
 Cache pnpm, npm, yarn, uv, thumbnails<br>
-Cache Chrome (tự bỏ qua nếu Chrome đang mở)<br>
+Cache Chrome <b>chỉ khi</b> thêm <code>ARGS=--chrome</code> (tự bỏ qua nếu Chrome đang mở)<br>
 Cuối cùng <b>liệt kê</b> những thứ cần tự quyết (không xoá)
 </td></tr>
 </table></div>
-<p>Tham số: <code>ARGS=-n</code> (xem trước), <code>ARGS=-y</code> (không hỏi). Script: <code>scripts/health.sh</code>, <code>scripts/clean.sh</code>.</p>
+<p>Tham số: <code>ARGS=-n</code> (xem trước), <code>ARGS=-y</code> (không hỏi), <code>ARGS=--chrome</code> (dọn cả cache Chrome); gộp: <code>ARGS="-n --chrome"</code>. Script: <code>scripts/health.sh</code>, <code>scripts/clean.sh</code>.</p>
 
 <h2 id="manual">7. Cần tự quyết (có dữ liệu)</h2>
 <div class="table-wrap"><table>
@@ -201,6 +202,7 @@ lsblk -f</code></pre>
 <tr><th>Ngày</th><th>Việc</th><th>Kết quả</th></tr>
 <tr><td>2026-11-14…16</td><td>Dọn lần đầu: podman, distrobox, VM Win11, lima, cache Chrome/pnpm/yarn, journal</td><td><code>/</code>: 168G (76%) → 89G (41%)</td></tr>
 <tr><td>2026-11-16</td><td>Thêm giới hạn journal 500M, cache Chrome 1GB, timer dọn podman, cảnh báo ổ đầy, <code>make health</code>/<code>make clean</code></td><td></td></tr>
+<tr><td>2026-11-17</td><td>Chrome xuống 512MB/profile; <code>make clean</code> không dọn Chrome mặc định (<code>ARGS=--chrome</code>); <code>make health</code> chỉ nhắc Chrome khi &gt;6G</td><td></td></tr>
 </table></div>
 <footer>~/.dotfiles/docs/maintenance.html · nội dung đồng bộ với maintenance.md</footer>
 </main>
